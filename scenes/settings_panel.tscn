@@ -1,0 +1,66 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://assets/font/matchup_pro.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://scripts/settings_panel.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.454902, 0.92549, 0.486275, 1 )
+
+[sub_resource type="DynamicFont" id=2]
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxLine" id=3]
+thickness = 5
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.376471, 0.0235294, 1, 1 )
+
+[node name="SettingsPanel" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 26.7668, 17.1335 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+margin_left = 3.92862
+margin_top = 93.7256
+margin_right = 43.9286
+margin_bottom = 133.726
+rect_scale = Vector2( 4.44, 1.84 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="ViewportContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Label" type="Label" parent="ViewportContainer/CenterContainer"]
+margin_top = 13.0
+margin_right = 42.0
+margin_bottom = 26.0
+custom_fonts/font = SubResource( 2 )
+text = "VOLUME"
+
+[node name="HSlider" type="HSlider" parent="."]
+margin_left = 15.6828
+margin_top = 151.704
+margin_right = 115.683
+margin_bottom = 167.704
+rect_scale = Vector2( 2.02043, 1.98514 )
+custom_styles/slider = SubResource( 3 )
+custom_styles/grabber_area_highlight = SubResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
