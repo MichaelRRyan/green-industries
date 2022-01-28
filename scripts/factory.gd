@@ -23,8 +23,10 @@ func _on_Factory_input_event(viewport, event, shape_idx):
 func _on_Factory_mouse_entered():
 	sprite.set_modulate(mouse_over)
 	sprite.set_scale(Vector2(1.25,1.25))
+	z_index += 1
 
 
 func _on_Factory_mouse_exited():
 	sprite.set_modulate(mouse_out)
 	sprite.set_scale(Vector2(1.0,1.0))
+	z_index -= 1

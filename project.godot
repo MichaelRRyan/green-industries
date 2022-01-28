@@ -17,6 +17,7 @@ config/icon="res://assets/images/icon.png"
 [autoload]
 
 WorldTiles="*res://scripts/world_tiles.gd"
+TileGenerator="*res://scripts/tile_random_generation.gd"
 
 [global]
 
