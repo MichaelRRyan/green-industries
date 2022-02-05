@@ -61,4 +61,4 @@ func on_click(mouse_position: Vector2):
 
 func _input(event):
 	if event.is_action_pressed("place_factory"):
-		self.on_click(event.position)
+		self.on_click(get_global_mouse_position())
