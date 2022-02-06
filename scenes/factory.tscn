@@ -7,6 +7,8 @@
 radius = 54.4518
 
 [node name="Factory" type="Area2D"]
+collision_layer = 2
+collision_mask = 2
 script = ExtResource( 2 )
 mouse_over = Color( 0.721569, 0.207843, 0.207843, 1 )
 mouse_out = Color( 1, 1, 1, 1 )
@@ -24,6 +26,17 @@ margin_right = 73.0
 margin_bottom = 31.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HasPower" type="Label" parent="."]
+margin_left = -36.0
+margin_top = -42.0
+margin_right = 37.0
+margin_bottom = -28.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "UnPowered"
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -11,4 +11,5 @@ enum Type {
 	FACTORY = 6,
 	LUMBERJACK = 7,
 	MINE = 8,
+	POWER_PLANT = 9,
 }
