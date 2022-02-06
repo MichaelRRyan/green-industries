@@ -45,7 +45,7 @@ func _process(delta):
 	if mouse_pos.y > get_viewport().size.y - mouse_move_border:
 		move_down()
 	
-	position += input.normalized() * movement_speed * delta
+	position += input.normalized() * zoom * movement_speed * delta
 	
 	position.x = clamp(position.x, left, right)
 	position.y = clamp(position.y, top, bottom)
@@ -80,19 +80,19 @@ func _input(event):
 	
 	
 func move_left():
-	input.x -= zoom.x
+	input.x -= 1.0
 
 
 func move_right():
-	input.x += zoom.x
+	input.x += 1.0
 
 
 func move_up():
-	input.y -=  zoom.y
+	input.y -= 1.0
 
 
 func move_down():
-	input.y += zoom.y
+	input.y += 1.0
 
 
 func zoom_in():

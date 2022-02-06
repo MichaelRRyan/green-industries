@@ -4,14 +4,6 @@ var map = [[]]
 const WIDTH = 100
 const HEIGHT = 100
 
-const TILES = {
-	'grass': 1,
-	'water': 2,
-	'stone': 4,
-	'farm': 5,
-	'woods': 6
-}
-
 var open_simplex_noise: OpenSimplexNoise
 
 var params = {
@@ -83,13 +75,13 @@ func generate_world():
 
 func get_tile_index(noise_sample):
 	if noise_sample < -0.4:
-		return TILES.water
+		return Tile.Type.WATER
 	if noise_sample < -0.1:
-		return TILES.grass
+		return Tile.Type.GRASS
 	if noise_sample < 0.0:
-		return TILES.farm
+		return Tile.Type.FARM
 	if noise_sample < 0.15:
-		return TILES.grass
+		return Tile.Type.GRASS
 	if noise_sample < 0.5:
-		return TILES.woods
-	return TILES.stone
+		return Tile.Type.FOREST
+	return Tile.Type.STONE
