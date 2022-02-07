@@ -2,7 +2,7 @@ extends Control
 
 
 func _on_Play_pressed():
-	var _value = get_tree().change_scene("res://scenes/gameplay.tscn");
+	var _value = get_tree().change_scene("res://scenes/lobby.tscn");
 
 
 func _on_Options_pressed():
