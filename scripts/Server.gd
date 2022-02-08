@@ -36,7 +36,7 @@ func solo_Player():
 	if state == State.SOLO:
 		emit_signal("single_player")
 		print("ONE PLAYER NOT A SERVER")
-		var _val = get_tree().change_scene("res://Scenes/gameplay.tscn")
+		var _val = get_tree().change_scene("res://scenes/gameplay.tscn")
 
 
 func start_server():
@@ -57,12 +57,21 @@ func close_connection():
 	
 
 func _peer_connected(peer_id):
+	print("peer connected")
 	current_players += 1
 	emit_signal("player_connected", peer_id)
-	print("Peer " + str(current_players) + " Connected")
-	var _val=get_tree().change_scene("res://Scenes/gameplay.tscn")
+	print("Peer " + str(peer_id) + " Connected")
+	
+	if state == State.HOSTING:
+		print("Hosting")
+		rpc_id(peer_id, "save_terrain_data", TerrainData.noise_seed)
 
 
+remote func save_terrain_data(noise_seed):
+	TerrainData.noise_seed = noise_seed
+	var _val = get_tree().change_scene("res://scenes/gameplay.tscn")
+	
+	
 func _peer_disconnected(peer_id):
 	emit_signal("player_disconnected", peer_id)
 	print("Peer " + str(current_players) + " Disconnected")
@@ -87,4 +96,10 @@ func _on_connection_failed():
 	print("Failed to Connect")
 
 
+func is_host() -> bool:
+	return state == State.HOSTING
+	
+	
+func is_client() -> bool:
+	return state == State.CONNECTED
 

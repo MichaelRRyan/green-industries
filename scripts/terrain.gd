@@ -81,9 +81,11 @@ func _ready() -> void:
 		for y in range($WorldGenerator.map[x].size()):
 			tile_map.set_cell(x, y, $WorldGenerator.map[x][y])
 
-
 # ------------------------------------------------------------------------------
-func _damage_cell(cell : Vector2) -> void:
+remote func _damage_cell(cell : Vector2, remote_call: bool = false) -> void:
+	if not remote_call and Network.is_online:
+		rpc("_damage_cell", cell, true)
+	
 	if !damage_dict.has(cell):
 		damage_dict[cell] = { 
 			health = 9,
@@ -100,7 +102,7 @@ func _damage_cell(cell : Vector2) -> void:
 		if tile_data.health == 0:
 			tile_map.set_cellv(cell, Tile.Type.GRASS)
 			_remove_damage_info(cell)
-
+			
 
 # ------------------------------------------------------------------------------
 func _remove_damage_info(cell : Vector2) -> void:
@@ -115,15 +117,8 @@ func _input(event) -> void:
 	elif event.is_action_pressed("place_power_plant"):
 		self.place_power_plant(get_global_mouse_position(),\
 		 	get_tile_clicked(get_global_mouse_position()))
-	
-	if event.is_action_pressed("ui_home"):
-		$WorldGenerator.generate_world()
-		for x in range($WorldGenerator.map.size()):
-			for y in range($WorldGenerator.map[x].size()):
-				$TileMap.set_cell(x, y, $WorldGenerator.map[x][y])
-		
-	
-# ------------------------------------------------------------------------------		
+
+				
 func on_click(mouse_position: Vector2):
 	var tile_clicked: Vector2 = tile_map.world_to_map(mouse_position)
 	var tile = tile_map.get_cellv(tile_clicked)

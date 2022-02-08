@@ -59,6 +59,17 @@ func _on_CoalPowerPlant_area_shape_exited(_area_rid, area, _area_shape_index, _l
 	area.decrease_amount_of_power_plants()
 	list_of_powered_objects.erase(area)
 
+remote func increase_fuel(is_caller: bool) -> void:
+	if Network.is_online and is_caller:
+		rpc("increase_fuel", false)
+	if current_fuel_amount < max_fuel_amount:
+				if current_fuel_amount == 0:
+					for item in list_of_powered_objects:
+						item.increase_amount_of_power_plants()
+				current_fuel_amount += fuel_increase_amount
+				current_fuel_amount = clamp(current_fuel_amount, 0, max_fuel_amount)
+				fuel_amount_display.text = str(current_fuel_amount)
+
 func _on_CoalPowerPlant_input_event(_viewport, event, shape_idx):
 	if event.is_action_pressed("upgrade_factory") and shape_idx == 0:
 		var collision_radius = collision_shape.shape.radius + 2
@@ -66,10 +77,4 @@ func _on_CoalPowerPlant_input_event(_viewport, event, shape_idx):
 		if (mouse_position.x - position.x) * (mouse_position.x - position.x) + \
 		(mouse_position.y - position.y) * (mouse_position.y - position.y) \
 		< collision_radius * collision_radius:
-			if current_fuel_amount < max_fuel_amount:
-				if current_fuel_amount == 0:
-					for item in list_of_powered_objects:
-						item.increase_amount_of_power_plants()
-				current_fuel_amount += fuel_increase_amount
-				current_fuel_amount = clamp(current_fuel_amount, 0, max_fuel_amount)
-				fuel_amount_display.text = str(current_fuel_amount)
+			increase_fuel(true)

@@ -42,7 +42,8 @@ func _get_property_list():
 func _set(property, value):
 	if params.has(property):
 		params[property] = value
-	generate_world()
+	if Engine.editor_hint:
+		generate_world()
 
 func _get(property):
 	if params.has(property):
@@ -53,6 +54,7 @@ func _ready():
 	generate_world()
 
 func generate_world():
+	print("Generate world")
 	map.clear()
 	for x in WIDTH:
 		map.append([])
@@ -61,12 +63,11 @@ func generate_world():
 			map[x][y] = 0
 	randomize()
 	open_simplex_noise = OpenSimplexNoise.new()
-	open_simplex_noise.seed = randi()
-	
-	open_simplex_noise.octaves = params.octaves
-	open_simplex_noise.period = params.period
-	open_simplex_noise.lacunarity = params.lacunarity
-	open_simplex_noise.persistence = params.persistence
+	open_simplex_noise.seed = TerrainData.noise_seed
+	open_simplex_noise.octaves = TerrainData.octaves
+	open_simplex_noise.period = TerrainData.period
+	open_simplex_noise.lacunarity = TerrainData.lacunarity
+	open_simplex_noise.persistence = TerrainData.persistence
 	
 	for x in WIDTH:
 		for y in HEIGHT:

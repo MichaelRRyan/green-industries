@@ -33,7 +33,9 @@ func decrease_amount_of_power_plants():
 func has_power() -> bool:
 	return number_of_power_plants > 0
 
-func on_click():
+remote func on_click(is_caller: bool):
+	if Network.is_online and is_caller:
+		rpc("on_click", false)
 	if current_level < max_level:
 		current_level += 1
 		label.text = str(current_level)
@@ -42,7 +44,7 @@ func on_click():
 
 func _on_Factory_input_event(_viewport, event, _shape_idx):
 	if event.is_action_pressed("upgrade_factory") and respond_to_input:
-		self.on_click()
+		self.on_click(true)
 
 
 func _on_Factory_mouse_entered():

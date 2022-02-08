@@ -21,7 +21,7 @@ func _ready() -> void:
 	_terrain = Utility.get_dependency("terrain", self, true)
 	
 	# If the terrain was found, start the harvest timer and find our tile pos.
-	if _terrain:
+	if _terrain and (not Network.is_online or is_network_master()):
 		$HarvestTimer.start(seconds_per_harvest)
 		_tile_position = _terrain.get_tile_from_global_position(global_position)
 
@@ -33,7 +33,6 @@ func _on_HarvestTimer_timeout() -> void:
 		
 		# Checks if the neighbour's tile type matches the harvest tile type.
 		if _terrain.get_cellv(neighbour) == harvest_tile_type:
-			
 			# Tries to harvest the tile.
 			var resource = _terrain.harvest_cell(neighbour)
 			

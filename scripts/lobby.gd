@@ -29,8 +29,7 @@ func _on_HostButton_pressed():
 	
 	set_connect_type(true)
 	Network.start_server()
-	
-	rpc("begin_game")
+	#rpc("begin_game")
 	begin_game()
 
 
@@ -44,13 +43,17 @@ func _on_JoinButton_pressed():
 		Network.current_players += 1
 		set_connect_type(false)
 		Network.connect_to_server($join/IP.text)
+	elif $join/IP.text == "":
+		Network.current_players += 1
+		set_connect_type(false)
+		Network.connect_to_server("127.0.0.1")
 	else:
 		$join/InvalidIP.show()
 
 
 remote func begin_game():
 	if Network.state != Network.State.SOLO: 
-		var _val=get_tree().change_scene("res://Scenes/gameplay.tscn")
+		var _val=get_tree().change_scene("res://scenes/gameplay.tscn")
 
 
 func _on_solo_pressed():
