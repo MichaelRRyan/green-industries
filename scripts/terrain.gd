@@ -81,12 +81,6 @@ func _ready() -> void:
 		for y in range($WorldGenerator.map[x].size()):
 			tile_map.set_cell(x, y, $WorldGenerator.map[x][y])
 
-func _process(_delta):
-	var mouse_position: Vector2 = get_viewport().get_mouse_position()
-	var tile_clicked: Vector2 = tile_map.world_to_map(mouse_position)
-	
-	if Input.is_action_just_pressed("ui_accept"):
-		$WorldGenerator.generate_world()
 
 # ------------------------------------------------------------------------------
 func _damage_cell(cell : Vector2) -> void:
@@ -127,27 +121,34 @@ func _input(event) -> void:
 		for x in range($WorldGenerator.map.size()):
 			for y in range($WorldGenerator.map[x].size()):
 				$TileMap.set_cell(x, y, $WorldGenerator.map[x][y])
-				
+		
+	
+# ------------------------------------------------------------------------------		
 func on_click(mouse_position: Vector2):
 	var tile_clicked: Vector2 = tile_map.world_to_map(mouse_position)
-	var tile = tile_map.get_cell(tile_clicked.x, tile_clicked.y)
+	var tile = tile_map.get_cellv(tile_clicked)
 
-		
 	if tile == Tile.Type.STONE or tile == Tile.Type.FOREST:
 		_damage_cell(tile_clicked)
-				
-func place_power_plant(mouse_position: Vector2, tile):
+		
+	
+# ------------------------------------------------------------------------------		
+func place_power_plant(mouse_position: Vector2, tile : int) -> void:
 	if tile == Tile.Type.GRASS:
 		var plant = factory_pattern.create_coal_power_plant(resources, 2)
 		if plant != null:
 			resources -= factory_pattern.resources_required_coal_power_plant()
 			var tile_clicked: Vector2 = tile_map.world_to_map(mouse_position)
-			tile_map.set_cell(tile_clicked.x, tile_clicked.y, Tile.Type.POWER_PLANT)
+			tile_map.set_cellv(tile_clicked, Tile.Type.POWER_PLANT)
 			plant.position = tile_map.map_to_world(tile_clicked) + offset	
 			get_parent().add_child(plant)
 
-func get_tile_clicked(position):
-	var tile_clicked: Vector2 = tile_map.world_to_map(position)
-	var tile = tile_map.get_cell(tile_clicked.x, tile_clicked.y)
-	return tile
 	
+# ------------------------------------------------------------------------------
+func get_tile_clicked(position : Vector2) -> int:
+	var tile_clicked: Vector2 = tile_map.world_to_map(position)
+	var tile = tile_map.get_cellv(tile_clicked)
+	return tile
+
+	
+# ------------------------------------------------------------------------------

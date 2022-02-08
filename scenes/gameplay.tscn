@@ -5,14 +5,14 @@
 [ext_resource path="res://scenes/terrain.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scripts/resource_manager.gd" type="Script" id=4]
 [ext_resource path="res://scenes/camera.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scripts/player_inventory.gd" type="Script" id=6]
+[ext_resource path="res://scripts/player_data.gd" type="Script" id=6]
 
 [node name="Gameplay" type="Node2D"]
 
 [node name="ResourceManager" type="Node" parent="." groups=["resource_manager"]]
 script = ExtResource( 4 )
 
-[node name="PlayerInventory" type="Node" parent="."]
+[node name="PlayerData" type="Node" parent="."]
 script = ExtResource( 6 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -30,4 +30,4 @@ script = ExtResource( 6 )
 [node name="Camera" parent="." instance=ExtResource( 5 )]
 limit_smoothed = false
 
-[connection signal="building_placed" from="Toolbelt/BuildTool" to="PlayerInventory" method="_on_BuildTool_building_placed"]
+[connection signal="building_placed" from="Toolbelt/BuildTool" to="PlayerData" method="_on_BuildTool_building_placed"]

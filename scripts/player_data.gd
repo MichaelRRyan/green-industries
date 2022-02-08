@@ -1,9 +1,11 @@
 extends Node
 
 var _owned_buildings : Array = []
+var _inventory : Inventory = Inventory.new()
 var _resources = { }
 
-
+	
+# ------------------------------------------------------------------------------
 func _on_BuildTool_building_placed(building : Node2D, type : int):
 	_owned_buildings.append(building)
 	
@@ -12,11 +14,11 @@ func _on_BuildTool_building_placed(building : Node2D, type : int):
 		var _r = building.connect("resource_gathered", self, 
 			"_on_harvester_resource_gathered")
 
-
-func _on_harvester_resource_gathered(resource : ResourceType):
-	if _resources.has(resource):
-		_resources[resource] += 1
-	else:
-		_resources[resource] = 1
 	
-	print(resource.name + " x " + str(_resources[resource]))
+# ------------------------------------------------------------------------------
+func _on_harvester_resource_gathered(resource : ResourceType):
+	_inventory.add_resources(resource, 1)
+	print(resource.name + " x " + str(_inventory.get_quantity(resource)))
+
+	
+# ------------------------------------------------------------------------------

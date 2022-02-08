@@ -1,11 +1,11 @@
 extends Control
 
-var host : String = "Unknown"
 const CONNECT_TEXT = ["Waiting for players...", "Connecting to server..."]
 
+
 func _ready():
-
-
+	var host : String = "Unknown"
+	
 	if OS.has_feature("Windows"):
 		if OS.has_environment("COMPUTERNAME"):
 			host =  IP.resolve_hostname(str(OS.get_environment("COMPUTERNAME")),1)
