@@ -74,7 +74,7 @@ remote func save_terrain_data(noise_seed):
 	
 func _peer_disconnected(peer_id):
 	emit_signal("player_disconnected", peer_id)
-	print("Peer " + str(current_players) + " Disconnected")
+	print("Peer " + str(peer_id) + " Disconnected")
 
 
 func connect_to_server(ip : String):
