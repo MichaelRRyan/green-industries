@@ -47,7 +47,7 @@ func before_each() -> void:
 		_terrain.set_cellv(neighbour, Tile.Type.GRASS)
 	
 	_buy_tool._inventory.set_money(29000)
-
+	_buy_tool.owner_dict.clear()
 func test_tile_bought() ->void:
 	
 	

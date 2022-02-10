@@ -1,5 +1,5 @@
 extends Node
-tool
+
 var map = [[]]
 const WIDTH = 100
 const HEIGHT = 100
@@ -60,7 +60,7 @@ func generate_world():
 		map.append([])
 		for y in HEIGHT:
 			map[x].append([])
-			map[x][y] = 0
+			map[x][y] = 0 
 	randomize()
 	open_simplex_noise = OpenSimplexNoise.new()
 	open_simplex_noise.seed = TerrainData.noise_seed
@@ -72,17 +72,28 @@ func generate_world():
 	for x in WIDTH:
 		for y in HEIGHT:
 			map[x][y] = get_tile_index(open_simplex_noise.get_noise_2d(float(x), float(y)))
+	print("Forests = ",Pollution.td)
+	print("Grass = ",Pollution.gd)
+	print("Stones/Mountains = ",Pollution.md)		
+	print("Lakes = ",Pollution.wd)
+	print("Farms = ",Pollution.fd)
+	
 			
-
 func get_tile_index(noise_sample):
 	if noise_sample < -0.4:
+		Pollution.wd += 1
 		return Tile.Type.WATER
 	if noise_sample < -0.1:
+		Pollution.gd += 1
 		return Tile.Type.GRASS
 	if noise_sample < 0.0:
+		Pollution.fd += 1
 		return Tile.Type.FARM
 	if noise_sample < 0.15:
+		Pollution.gd += 1
 		return Tile.Type.GRASS
 	if noise_sample < 0.5:
+		Pollution.td += 1
 		return Tile.Type.FOREST
+	Pollution.md += 1
 	return Tile.Type.STONE

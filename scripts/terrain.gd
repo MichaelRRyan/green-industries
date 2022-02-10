@@ -1,26 +1,23 @@
 extends Node2D
-tool 
+
 
 var tile_size : Vector2  = Vector2.ZERO
-
+var l=10
+var test = 0
 onready var tile_map : TileMap = $TileMap
 onready var factory_prefab = preload("res://scenes/factory.tscn")
 onready var factory_pattern = preload("res://scenes/factory_pattern.tscn").instance()
 onready var resources = 100
-
 var offset : Vector2 = Vector2(56, 64)
-var damage_dict = {}
-
+var damage_dict = {health = 9}
 var _wood_resource = null
 var _minerals_resource = null
-
 
 # ------------------------------------------------------------------------------
 # Will be used to allow for more empty tiles to be added later (e.g. dirt).
 func is_tile_empty(tile : Vector2) -> bool:
 	var type = tile_map.get_cellv(tile)
 	return type == Tile.Type.GRASS
-
 
 # ------------------------------------------------------------------------------
 # This method will later be extended to account for the hexagonal shape.
@@ -64,8 +61,8 @@ func harvest_cell(cell : Vector2) -> ResourceType:
 		return _minerals_resource
 	
 	return null
-	
-	
+
+
 # ------------------------------------------------------------------------------
 func _ready() -> void:
 	# If not running in the editor.
@@ -76,10 +73,10 @@ func _ready() -> void:
 		_minerals_resource = resource_manager.get_resource_type_by_name("minerals")
 	
 	tile_size = offset * 2.0 # TEMP
-	
 	for x in range($WorldGenerator.map.size()):
 		for y in range($WorldGenerator.map[x].size()):
 			tile_map.set_cell(x, y, $WorldGenerator.map[x][y])
+			$pollution_Spreading.get_tile_map(tile_map)
 
 # ------------------------------------------------------------------------------
 remote func _damage_cell(cell : Vector2, remote_call: bool = false) -> void:
@@ -91,14 +88,25 @@ remote func _damage_cell(cell : Vector2, remote_call: bool = false) -> void:
 			health = 9,
 			label = Label.new(),
 		}
+		
 		var tile_data = damage_dict[cell]
+		$pollution_Spreading.polluted_dict(cell)#gets what cell is currently being harvasted 
 		add_child(tile_data.label)
 		tile_data.label.rect_position = tile_map.map_to_world(cell) + offset
 		tile_data.label.text = str(tile_data.health)
 	else:
 		var tile_data = damage_dict[cell]
 		tile_data.health -= 1
+		#to get the harvasted tiles health, and if it is 5 start polluting ^^
+		$pollution_Spreading.polluted_dict.health = tile_data.health 
+		l=tile_data.health
 		tile_data.label.text = str(tile_data.health)
+		if tile_data.health == 5:
+			#starts pollution ^^----------------------
+			$pollution_Spreading.pollute_cell(cell)
+			$pollution_Spreading.active_pollution = true
+			$pollution_Spreading.get_active_pollution($pollution_Spreading.active_pollution)
+			
 		if tile_data.health == 0:
 			tile_map.set_cellv(cell, Tile.Type.GRASS)
 			_remove_damage_info(cell)
@@ -108,7 +116,7 @@ remote func _damage_cell(cell : Vector2, remote_call: bool = false) -> void:
 func _remove_damage_info(cell : Vector2) -> void:
 	damage_dict[cell].label.queue_free()
 	damage_dict.erase(cell)
-
+	
 
 # ------------------------------------------------------------------------------
 func _input(event) -> void:
@@ -145,5 +153,3 @@ func get_tile_clicked(position : Vector2) -> int:
 	var tile = tile_map.get_cellv(tile_clicked)
 	return tile
 
-	
-# ------------------------------------------------------------------------------

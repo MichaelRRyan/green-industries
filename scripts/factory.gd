@@ -46,7 +46,12 @@ func _on_Factory_input_event(_viewport, event, _shape_idx):
 	if event.is_action_pressed("upgrade_factory") and respond_to_input:
 		self.on_click(true)
 
-
+func _process(delta):
+	 if has_power_text.text == "powered":
+			Pollution.carbon += 0.01 * delta
+			Pollution.get_carbon(Pollution.carbon)
+			
+			
 func _on_Factory_mouse_entered():
 	sprite.set_modulate(mouse_over)
 	sprite.set_scale(Vector2(1.25,1.25))
