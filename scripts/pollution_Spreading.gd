@@ -52,7 +52,7 @@ func forest_pollute(cell : Vector2) -> void:
 		if Pollution.count_t >= 10: #max pollution
 				tile_map.set_cellv(cell, Tile.Type.DIRT)
 				Pollution.tree_pollution += 1
-				Pollution.get_tree_pollution(Pollution.tree_pollution)
+				Pollution.set_tree_pollution(Pollution.tree_pollution)
 				Pollution.count_t = 0
 				
 				_pollute_pos = cell
@@ -69,7 +69,7 @@ func grass_pollute(cell : Vector2) -> void:
 				tile_map.set_cellv(cell, Tile.Type.DIRT)
 				Pollution.count_g = 0
 				Pollution.grass_pollution+=1
-				Pollution.get_grass_pollution(Pollution.grass_pollution)
+				Pollution.set_grass_pollution(Pollution.grass_pollution)
 				
 				_pollute_pos = cell
 				spreading()
@@ -85,7 +85,7 @@ func stone_pollute(cell : Vector2) -> void:
 		tile_map.set_cellv(cell, Tile.Type.DIRT)
 		Pollution.count_s = 0
 		Pollution.mountain_pollution+=1
-		Pollution.get_mountain_pollution( Pollution.mountain_pollution)#TEDDY
+		Pollution.set_mountain_pollution( Pollution.mountain_pollution)#TEDDY
 		_pollute_pos = cell
 		spreading()
 		print(" stone polluted")
@@ -100,7 +100,7 @@ func water_pollute(cell : Vector2) -> void:
 		tile_map.set_cellv(cell, Tile.Type.DIRT)
 		Pollution.count_w = 0
 		Pollution.water_pollution+=1
-		Pollution.get_water_pollution(Pollution.water_pollution)
+		Pollution.set_water_pollution(Pollution.water_pollution)
 		_pollute_pos = cell
 		spreading()
 		print(" water polluted")

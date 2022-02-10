@@ -49,7 +49,7 @@ func _on_Factory_input_event(_viewport, event, _shape_idx):
 func _process(delta):
 	 if has_power_text.text == "powered":
 			Pollution.carbon += 0.01 * delta
-			Pollution.get_carbon(Pollution.carbon)
+			Pollution.set_carbon(Pollution.carbon)
 			
 			
 func _on_Factory_mouse_entered():
