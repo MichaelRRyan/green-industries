@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/tools/build_tool.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/pause_menu.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://scripts/player_data_manager.gd" type="Script" id=7]
 [ext_resource path="res://scenes/tools/buy_tool.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/pollution_spreading.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/resource_shop.tscn" type="PackedScene" id=10]
 
 [node name="Gameplay" type="Node2D"]
 
@@ -24,9 +25,30 @@ script = ExtResource( 7 )
 
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource( 2 )]
 
+[node name="ShopButton" type="Button" parent="CanvasLayer"]
+pause_mode = 2
+margin_left = 876.0
+margin_top = 56.0
+margin_right = 999.0
+margin_bottom = 114.0
+hint_tooltip = "SHOP"
+custom_colors/font_color_disabled = Color( 0.929412, 0.87451, 0.87451, 1 )
+custom_colors/font_color_focus = Color( 0.952941, 0.905882, 0.905882, 1 )
+custom_colors/font_color = Color( 0.952941, 0.929412, 0.929412, 1 )
+custom_colors/font_color_hover = Color( 0.968627, 0.94902, 0.94902, 1 )
+custom_colors/font_color_pressed = Color( 0.964706, 0.956863, 0.956863, 1 )
+text = "SHOP"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ResourceShop" parent="CanvasLayer" instance=ExtResource( 10 )]
+
 [node name="World" type="Node2D" parent="." groups=["world"]]
 
 [node name="Terrain" parent="World" groups=["terrain"] instance=ExtResource( 3 )]
+
+[node name="pollution_Spreading" parent="World/Terrain" instance=ExtResource( 9 )]
 
 [node name="Toolbelt" type="Node2D" parent="."]
 
@@ -34,9 +56,8 @@ script = ExtResource( 7 )
 
 [node name="BuyTool" parent="Toolbelt" instance=ExtResource( 8 )]
 
-[node name="pollution_Spreading" parent="World/Terrain" instance=ExtResource( 9 )]
-
 [node name="Camera" parent="." instance=ExtResource( 5 )]
 limit_smoothed = false
 
+[connection signal="button_down" from="CanvasLayer/ShopButton" to="CanvasLayer/ResourceShop" method="_on_Shop_button_down"]
 [connection signal="building_placed" from="Toolbelt/BuildTool" to="PlayerDataManager/PlayerData" method="_on_BuildTool_building_placed"]
