@@ -1,9 +1,13 @@
 extends Node
 
+onready var local_player_data = get_node("PlayerData")
+
 var PlayerDataScene = preload("res://scenes/player_data.tscn")
+var owner_dict = {}
 
 #-------------------------------------------------------------------------------
 func _ready() -> void:
+	local_player_data._inventory.set_money(30000)
 	# Connects to the player connected and disconnected signals if the host.
 	if Network.state == Network.State.HOSTING:
 		var _r = Network.connect("player_connected", self, "_on_Network_player_connected")

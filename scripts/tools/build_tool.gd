@@ -6,6 +6,7 @@ var building_type : int = Tile.Type.LUMBERJACK
 
 var _terrain = null
 var _world = null
+var _buy_tool = null
 
 onready var BuildingScenes = {
 	Tile.Type.LUMBERJACK: preload("res://scenes/buildings/lumberjack.tscn"),
@@ -72,16 +73,23 @@ remote func place_building_remote(tile_pos : Vector2, type : int) -> void:
 func _ready() -> void:
 	_world = Utility.get_dependency("world", self, true)
 	_terrain = Utility.get_dependency("terrain", self, true)
+	_buy_tool = Utility.get_dependency("buy_tool", self, true)
 
 
 # ------------------------------------------------------------------------------
 func _input(event : InputEvent) -> void:
 	if event.is_action_pressed("select"):
-		
 		# Needs to be extended to get the selection instead of the mouse pos.
 		var mouse_pos = get_global_mouse_position()
 		var mouse_tile : Vector2 = _terrain.get_tile_from_global_position(mouse_pos)
-		var _success = place_building(mouse_tile)
+		if !_buy_tool.buying:
+			if _buy_tool.owner_dict.has(mouse_tile):
+				if (Network.state == Network.State.SOLO and _buy_tool.owner_dict[mouse_tile].id == 1) \
+					or _buy_tool.owner_dict[mouse_tile].id == get_tree().get_network_unique_id():
+						var _success = place_building(mouse_tile)
+			
+		
+		buy_tile_and_place_building(mouse_tile)
 	
 	if event.is_action_pressed("select_1"):
 		building_type = Tile.Type.LUMBERJACK
@@ -97,3 +105,9 @@ func _input(event : InputEvent) -> void:
 
 
 # ------------------------------------------------------------------------------
+func buy_tile_and_place_building(tile_pos : Vector2) ->bool:
+	if _buy_tool.check_availble(tile_pos) and _terrain.is_tile_empty(tile_pos):
+			_buy_tool.buy_tile(tile_pos)
+			place_building(tile_pos)
+			return true
+	return false

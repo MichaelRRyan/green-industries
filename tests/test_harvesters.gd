@@ -5,6 +5,7 @@ const TERRAIN_NAME : String = "Terrain"
 const BUILD_TOOL_NAME : String = "BuildTool"
 const LUMBERJACK_NAME : String = "Lumberjack"
 const MINE_NAME : String = "Mine"
+const BUY_TOOL_NAME : String = "BuyTool"
 
 # The cell in the tile map where the test will take place.
 const TEST_CELL = Vector2(5, 5)
@@ -14,7 +15,7 @@ var GameplayScene = preload("res://scenes/gameplay.tscn")
 var _gameplay = null
 var _terrain = null
 var _build_tool = null
-
+var _buy_tool = null
 
 # ------------------------------------------------------------------------------
 func before_all() -> void:
@@ -31,7 +32,9 @@ func before_all() -> void:
 	_build_tool = find_node(BUILD_TOOL_NAME, true, false)
 	assert_not_null(_build_tool)
 	
-	
+	_buy_tool = find_node(BUY_TOOL_NAME, true, false)
+	assert_not_null(_buy_tool)
+
 # ------------------------------------------------------------------------------
 func after_all():
 	_gameplay.free()
@@ -64,7 +67,7 @@ func test_lumberjack_harvests_wood() -> void:
 	
 	# Loops through all the lumberjack's neighbours.
 	for neighbour in neighbours:
-		
+		_buy_tool.buy_tile(neighbour)
 		# Sets a forest tile to the neighbour location.
 		_terrain.set_cellv(neighbour, Tile.Type.FOREST)
 		
@@ -93,7 +96,7 @@ func test_mine_harvests_minerals() -> void:
 	
 	# Loops through all the mine's neighbours.
 	for neighbour in neighbours:
-		
+		_buy_tool.buy_tile(neighbour)
 		# Sets a stone tile to the neighbour location.
 		_terrain.set_cellv(neighbour, Tile.Type.STONE)
 		

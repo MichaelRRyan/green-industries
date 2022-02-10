@@ -7,6 +7,7 @@ const LUMBERJACK_NAME : String = "Lumberjack"
 const PLAYER_DATA_NAME : String = "PlayerData"
 const RESOURCE_MANAGER_NAME = "ResourceManager"
 const WOOD_RESOURCE_NAME = "wood"
+const BUY_TOOL_NAME : String = "BuyTool"
 
 # The cell in the tile map where the test will take place.
 const TEST_CELL = Vector2(5, 5)
@@ -19,7 +20,7 @@ var _build_tool = null
 var _player_data = null
 var _resource_manager = null
 var _inventory : Inventory = null
-
+var _buy_tool = null
 
 # ------------------------------------------------------------------------------
 func before_all() -> void:
@@ -48,7 +49,9 @@ func before_all() -> void:
 	_resource_manager = find_node(RESOURCE_MANAGER_NAME, true, false)
 	assert_not_null(_resource_manager)
 	
-	
+	_buy_tool = find_node(BUY_TOOL_NAME, true, false)
+	assert_not_null(_buy_tool)
+
 # ------------------------------------------------------------------------------
 func after_all():
 	_gameplay.free()
@@ -116,10 +119,10 @@ func test_inventory_resource_methods() -> void:
 
 # ------------------------------------------------------------------------------
 func test_player_gains_resources() -> void:
-	
+	_inventory.set_money(30000)
 	# Sets the tile type to empty so we can place a building.
 	_terrain.set_cellv(TEST_CELL, Tile.Type.GRASS)
-	
+	_buy_tool.buy_tile(TEST_CELL)
 	# Places the lumberjack building.
 	_build_tool.set_building_type(Tile.Type.LUMBERJACK)
 	_build_tool.place_building(TEST_CELL)
@@ -130,8 +133,8 @@ func test_player_gains_resources() -> void:
 	
 	# Gets the lumberjack's neighbours and sets the first to a forest.
 	var neighbours = Utility.get_neighbours(TEST_CELL)
+	_buy_tool.buy_tile(neighbours[0])
 	_terrain.set_cellv(neighbours[0], Tile.Type.FOREST)
-	
 	# Waits a little longer than the harvest time.
 	yield(yield_for(0.15), YIELD)
 	
@@ -141,6 +144,6 @@ func test_player_gains_resources() -> void:
 	
 	# Checks that the player's inventory has one wood resource.
 	assert_eq(_inventory.get_quantity(wood), 1)
-
-
+	
+	
 # ------------------------------------------------------------------------------
