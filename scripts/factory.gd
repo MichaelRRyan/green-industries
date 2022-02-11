@@ -1,4 +1,4 @@
-extends Area2D
+extends "res://scripts/buildings/powered_building.gd"
 
 var current_level = 1
 var max_level = 10
@@ -23,12 +23,14 @@ func _on_timer_timeout():
 	timer.queue_free()
 
 func increase_amount_of_power_plants():
-	print("Increase number of plants for: " + str(get_rid()))
+	print("Increase number of plants for factory: " + str(get_rid()))
 	number_of_power_plants += 1
 	
 func decrease_amount_of_power_plants():
-	number_of_power_plants -= 1
+	if number_of_power_plants > 0:
+		number_of_power_plants -= 1
 	print("Decrease number of plants for: " + str(get_rid()))
+	print(str(number_of_power_plants) + " number of power plants left for factory")
 	
 func has_power() -> bool:
 	return number_of_power_plants > 0
@@ -56,7 +58,7 @@ func _on_Factory_mouse_entered():
 	sprite.set_modulate(mouse_over)
 	sprite.set_scale(Vector2(1.25,1.25))
 	z_index += 1
-	has_power_text.text = "powered" if has_power() else "unpowered"
+	has_power_text.text = "powered" if is_powered() else "unpowered"
 	has_power_text.visible = true
 
 

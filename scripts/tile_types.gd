@@ -13,5 +13,5 @@ enum Type {
 	MINE = 8,
 	POWER_PLANT = 9,
 	DEAD_FOREST = 10,
-	
+	PYLON = 11,
 }

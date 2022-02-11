@@ -7,12 +7,19 @@ var building_type : int = Tile.Type.LUMBERJACK
 var _terrain = null
 var _world = null
 var _buy_tool = null
+const CAN_PLACE_COLOUR : Color = Color(0 / 255,165.0 / 255,0,175.0 / 255)
+const CANNOT_PLACE_COLOUR : Color = Color(165.0 / 255,0 / 255,0,175.0 / 255)
+onready var colour = CAN_PLACE_COLOUR
+onready var centre: Vector2 = Vector2(0,0)
+var num_tiles = 0.5
+var radius = 110 * num_tiles
 
 onready var BuildingScenes = {
 	Tile.Type.LUMBERJACK: preload("res://scenes/buildings/lumberjack.tscn"),
 	Tile.Type.MINE: preload("res://scenes/buildings/mine.tscn"),
 	Tile.Type.FACTORY: preload("res://scenes/factory.tscn"),
-	Tile.Type.POWER_PLANT: preload("res://scenes/coal_power_plant.tscn"),
+	Tile.Type.POWER_PLANT: preload("res://scenes/buildings/power_plant.tscn"),
+	Tile.Type.PYLON: preload("res://scenes/buildings/pylon.tscn"),
 }
 
 
@@ -104,6 +111,8 @@ func _input(event : InputEvent) -> void:
 	if event.is_action_pressed("select_4"):
 		building_type = Tile.Type.POWER_PLANT
 
+	if event.is_action_pressed("select_5"):
+		building_type = Tile.Type.PYLON
 
 # ------------------------------------------------------------------------------
 func buy_tile_and_place_building(tile_pos : Vector2) ->bool:
@@ -112,3 +121,29 @@ func buy_tile_and_place_building(tile_pos : Vector2) ->bool:
 			place_building(tile_pos)
 			return true
 	return false
+
+
+func _process(delta):
+	_place_circle_position()
+	set_colour()
+	update()
+
+
+func _draw():
+	draw_circle(centre, radius, colour)
+	
+	
+func _place_circle_position() -> void:
+	var mouse_pos = get_global_mouse_position()
+	var mouse_tile : Vector2 = _terrain.get_tile_from_global_position(mouse_pos)
+	var position : Vector2 = _terrain.get_global_position_from_tile(mouse_tile)
+	centre = position + Vector2(55, 60)
+	
+	
+func set_colour() -> void:
+	var mouse_pos = get_global_mouse_position()
+	var mouse_tile : Vector2 = _terrain.get_tile_from_global_position(mouse_pos)
+	if _terrain.is_tile_empty(mouse_tile):
+		colour = CAN_PLACE_COLOUR
+	else:
+		colour = CANNOT_PLACE_COLOUR

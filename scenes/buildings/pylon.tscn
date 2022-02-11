@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/buildings/power_building.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/pylon.gd" type="Script" id=2]
+[ext_resource path="res://assets/images/pylon.png" type="Texture" id=3]
+
+[node name="Pylon" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+tile_radius = 2.0
+
+[node name="Sprite" type="Sprite" parent="." index="1"]
+texture = ExtResource( 3 )
+
+[connection signal="mouse_entered" from="." to="." method="_on_Pylon_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_Pylon_mouse_exited"]
