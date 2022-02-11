@@ -88,8 +88,9 @@ func _input(event : InputEvent) -> void:
 					or _buy_tool.owner_dict[mouse_tile].id == get_tree().get_network_unique_id():
 						var _success = place_building(mouse_tile)
 			
+			else:
+				buy_tile_and_place_building(mouse_tile)
 		
-		buy_tile_and_place_building(mouse_tile)
 	
 	if event.is_action_pressed("select_1"):
 		building_type = Tile.Type.LUMBERJACK

@@ -20,7 +20,7 @@ var state = State.OFFLINE
 
 var network = NetworkedMultiplayerENet.new()
 var port = 1909
-var max_players = 30
+var max_players = 10
 var is_online = false # Stored as an alternative to state for quick checks.
 var current_players = 0
 

@@ -37,7 +37,7 @@ func _on_HarvestTimer_timeout() -> void:
 			if _owner_dict.has(neighbour):
 				
 				if (Network.state == Network.State.SOLO and _owner_dict[neighbour].id == 1) \
-					or _owner_dict[neighbour].id == get_tree().get_network_unique_id():
+					or _owner_dict[neighbour].id == _owner_dict[_tile_position].id:
 						# Tries to harvest the tile.
 						var resource = _terrain.harvest_cell(neighbour)
 						

@@ -98,6 +98,6 @@ func _ready():
 	var managers = get_tree().get_nodes_in_group("resource_manager")
 	if managers and not managers.empty():
 		_resource_manager = managers[0]
-
+	_money = 30000
 	
 # ------------------------------------------------------------------------------
