@@ -53,3 +53,17 @@ func get_neighbours(cell : Vector2) -> Array:
 		
 
 	return neighbours
+
+
+# ------------------------------------------------------------------------------
+func get_currency_format_string(number : int) -> String:
+	var string = str(number)
+
+	# Adds commas every 3 numbers from the back of the string.
+	for i in range(3, string.length(), 3):
+		#warning-ignore:integer_division
+		var index = string.length() - (i + (i / 3) - 1)
+		string = string.insert(index, ",")
+	
+	# Assigns the new text.
+	return "$" + string

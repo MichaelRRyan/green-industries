@@ -72,28 +72,29 @@ func generate_world():
 	for x in WIDTH:
 		for y in HEIGHT:
 			map[x][y] = get_tile_index(open_simplex_noise.get_noise_2d(float(x), float(y)))
-	print("Forests = ",Pollution.td)
-	print("Grass = ",Pollution.gd)
-	print("Stones/Mountains = ",Pollution.md)		
-	print("Lakes = ",Pollution.wd)
-	print("Farms = ",Pollution.fd)
+	
+	print("Lakes = ",Pollution.water_tiles)
+	print("Grass = ",Pollution.grass_tiles)
+	print("Forests = ",Pollution.forest_tiles)
+	print("Farms = ",Pollution.farm_tiles)
+	print("Stones/Mountains = ",Pollution.stone_tiles)		
 	
 			
 func get_tile_index(noise_sample):
 	if noise_sample < -0.4:
-		Pollution.wd += 1
+		Pollution.water_tiles += 1
 		return Tile.Type.WATER
 	if noise_sample < -0.1:
-		Pollution.gd += 1
+		Pollution.grass_tiles += 1
 		return Tile.Type.GRASS
 	if noise_sample < 0.0:
-		Pollution.fd += 1
-		return Tile.Type.FARM
+		Pollution.farm_tiles += 1
+		return Tile.Type.MEADOW
 	if noise_sample < 0.15:
-		Pollution.gd += 1
+		Pollution.grass_tiles += 1
 		return Tile.Type.GRASS
 	if noise_sample < 0.5:
-		Pollution.td += 1
+		Pollution.forest_tiles += 1
 		return Tile.Type.FOREST
-	Pollution.md += 1
+	Pollution.stone_tiles += 1
 	return Tile.Type.STONE

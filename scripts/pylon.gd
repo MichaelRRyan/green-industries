@@ -8,11 +8,11 @@ onready var centre: Vector2 = Vector2(0,0)
 onready var display_energy_circle = false
 
 
-func _process(delta):
+func _process(_delta):
 	update()
 	if is_powered():
 		colour = GREEN
-	elif power_sources_buildings.size() > 0:
+	elif power_roots.size() > 0:
 		colour = BLUE
 	else:
 		colour = RED

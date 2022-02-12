@@ -9,7 +9,7 @@ const MINE_NAME : String = "Mine"
 # The cell in the tile map where the test will take place.
 const TEST_CELL = Vector2(0, 0)
 
-var GameplayScene = preload("res://scenes/gameplay.tscn")
+var GameplayScene = preload("res://scenes/gameplay/gameplay.tscn")
 
 var _gameplay = null
 var _terrain = null

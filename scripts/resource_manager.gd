@@ -20,9 +20,12 @@ func get_resource_type_by_name(_name : String) -> ResourceType:
 
 # ------------------------------------------------------------------------------
 # Creates a new resource with the given values and returns the id.
-func add_resource_type(_name : String, recipe : ResourceType.Recipe = null) -> int:
+func add_resource_type(_name : String, texture_region : Rect2,
+					   recipe : ResourceType.Recipe = null) -> int:
+			
 	var resource = ResourceType.new()
 	resource.name = _name
+	resource.texture_region = texture_region
 	resource.recipe = recipe
 	resource.id = types.size() # The position of the new resource in the array.
 	types.append(resource)
@@ -33,8 +36,8 @@ func add_resource_type(_name : String, recipe : ResourceType.Recipe = null) -> i
 func _ready() -> void:
 	# These creations will later be moved to an external json file.
 	var _v # A variable to discard the return value without warnings.
-	_v = add_resource_type("wood") # Creates a 'wood' resource type.
-	_v = add_resource_type("minerals") # Creates a 'minerals' resource type.
+	_v = add_resource_type("wood", Rect2(0, 0, 128, 128)) # Creates a 'wood' resource type.
+	_v = add_resource_type("minerals", Rect2(128, 0, 128, 128)) # Creates a 'minerals' resource type.
 
 
 # ------------------------------------------------------------------------------

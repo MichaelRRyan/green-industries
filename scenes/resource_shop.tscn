@@ -1,201 +1,230 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/resource_shop.gd" type="Script" id=1]
+[ext_resource path="res://resources/themes/ui_theme.tres" type="Theme" id=2]
 
-[node name="ResourceShop" type="Node2D"]
+[node name="ResourceShop" type="Control"]
 pause_mode = 2
-visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Background" type="ColorRect" parent="."]
-margin_left = 57.0
-margin_top = 32.0
-margin_right = 871.0
-margin_bottom = 598.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 color = Color( 0.898039, 0.662745, 0.0980392, 0.588235 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Wood" type="Label" parent="."]
-margin_left = 113.0
-margin_top = 76.0
-margin_right = 180.0
-margin_bottom = 105.0
+[node name="Sections" type="VBoxContainer" parent="."]
+anchor_left = 0.05
+anchor_top = 0.08
+anchor_right = 0.95
+anchor_bottom = 0.92
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProductSection" type="VBoxContainer" parent="Sections"]
+margin_right = 921.0
+margin_bottom = 200.0
+size_flags_vertical = 3
+
+[node name="Wood" type="Label" parent="Sections/ProductSection"]
+margin_right = 921.0
+margin_bottom = 26.0
 text = "Wood"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="WoodContainer" type="HBoxContainer" parent="."]
-margin_left = 109.0
-margin_top = 104.0
-margin_right = 759.0
-margin_bottom = 162.0
-custom_constants/separation = 30
+[node name="WoodContainer" type="HBoxContainer" parent="Sections/ProductSection"]
+margin_top = 30.0
+margin_right = 921.0
+margin_bottom = 83.0
+size_flags_vertical = 3
+custom_constants/separation = 20
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Wood +1" type="Button" parent="WoodContainer"]
-margin_right = 140.0
-margin_bottom = 58.0
+[node name="Wood +1" type="Button" parent="Sections/ProductSection/WoodContainer"]
+margin_right = 215.0
+margin_bottom = 53.0
 size_flags_horizontal = 3
 text = "+1"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Wood +5" type="Button" parent="WoodContainer"]
-margin_left = 170.0
-margin_right = 310.0
-margin_bottom = 58.0
+[node name="Wood +5" type="Button" parent="Sections/ProductSection/WoodContainer"]
+margin_left = 235.0
+margin_right = 450.0
+margin_bottom = 53.0
 size_flags_horizontal = 3
 text = "+5"
 
-[node name="Wood +10" type="Button" parent="WoodContainer"]
-margin_left = 340.0
-margin_right = 480.0
-margin_bottom = 58.0
+[node name="Wood +10" type="Button" parent="Sections/ProductSection/WoodContainer"]
+margin_left = 470.0
+margin_right = 685.0
+margin_bottom = 53.0
 size_flags_horizontal = 3
 text = "+10"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Wood All" type="Button" parent="WoodContainer"]
-margin_left = 510.0
-margin_right = 650.0
-margin_bottom = 58.0
+[node name="Wood All" type="Button" parent="Sections/ProductSection/WoodContainer"]
+margin_left = 705.0
+margin_right = 921.0
+margin_bottom = 53.0
 size_flags_horizontal = 3
 text = "All"
 
-[node name="Minerals" type="Label" parent="."]
-margin_left = 110.0
-margin_top = 186.0
-margin_right = 188.0
-margin_bottom = 218.0
-text = "Minerals
-"
+[node name="Minerals" type="Label" parent="Sections/ProductSection"]
+margin_top = 87.0
+margin_right = 921.0
+margin_bottom = 142.0
+text = "
+Minerals"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MineralsContainer" type="HBoxContainer" parent="."]
-margin_left = 110.0
-margin_top = 220.0
-margin_right = 753.0
-margin_bottom = 290.0
-custom_constants/separation = 30
+[node name="MineralsContainer" type="HBoxContainer" parent="Sections/ProductSection"]
+margin_top = 146.0
+margin_right = 921.0
+margin_bottom = 200.0
+size_flags_vertical = 3
+custom_constants/separation = 20
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Minerals +1" type="Button" parent="MineralsContainer"]
-margin_right = 138.0
-margin_bottom = 70.0
+[node name="Minerals +1" type="Button" parent="Sections/ProductSection/MineralsContainer"]
+margin_right = 215.0
+margin_bottom = 54.0
 size_flags_horizontal = 3
 text = "+1"
 
-[node name="Minerals +5" type="Button" parent="MineralsContainer"]
-margin_left = 168.0
-margin_right = 306.0
-margin_bottom = 70.0
+[node name="Minerals +5" type="Button" parent="Sections/ProductSection/MineralsContainer"]
+margin_left = 235.0
+margin_right = 450.0
+margin_bottom = 54.0
 size_flags_horizontal = 3
 text = "+5"
 
-[node name="Minerals +10" type="Button" parent="MineralsContainer"]
-margin_left = 336.0
-margin_right = 474.0
-margin_bottom = 70.0
+[node name="Minerals +10" type="Button" parent="Sections/ProductSection/MineralsContainer"]
+margin_left = 470.0
+margin_right = 685.0
+margin_bottom = 54.0
 size_flags_horizontal = 3
 text = "+10"
 
-[node name="Minerals All" type="Button" parent="MineralsContainer"]
-margin_left = 504.0
-margin_right = 643.0
-margin_bottom = 70.0
+[node name="Minerals All" type="Button" parent="Sections/ProductSection/MineralsContainer"]
+margin_left = 705.0
+margin_right = 921.0
+margin_bottom = 54.0
 size_flags_horizontal = 3
 text = "All"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Basket" type="Label" parent="."]
-margin_left = 119.0
-margin_top = 302.0
-margin_right = 172.0
-margin_bottom = 326.0
-text = "Basket"
+[node name="BasketSection" type="VBoxContainer" parent="Sections"]
+margin_top = 204.0
+margin_right = 921.0
+margin_bottom = 504.0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.5
+custom_constants/separation = 10
+
+[node name="Basket" type="Label" parent="Sections/BasketSection"]
+margin_right = 921.0
+margin_bottom = 55.0
+text = "
+Basket"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BasketRect" type="ColorRect" parent="."]
-margin_left = 100.0
-margin_top = 328.0
-margin_right = 639.0
-margin_bottom = 508.0
+[node name="BasketRect" type="ColorRect" parent="Sections/BasketSection"]
+margin_top = 65.0
+margin_right = 921.0
+margin_bottom = 225.0
+size_flags_vertical = 3
 color = Color( 0.952941, 0.0509804, 0.0509804, 0.270588 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BasketButtons" type="HBoxContainer" parent="."]
-margin_left = 101.0
-margin_top = 524.0
-margin_right = 707.0
-margin_bottom = 579.0
+[node name="WoodAmount" type="Label" parent="Sections/BasketSection/BasketRect"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 108.0
+margin_bottom = 45.0
+text = "Wood Amount: 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MineralsAmount" type="Label" parent="Sections/BasketSection/BasketRect"]
+margin_left = 10.0
+margin_top = 40.0
+margin_right = 126.0
+margin_bottom = 45.0
+text = "Minerals Amount: 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BasketButtons" type="HBoxContainer" parent="Sections/BasketSection"]
+margin_top = 235.0
+margin_right = 921.0
+margin_bottom = 300.0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.4
 custom_constants/separation = 30
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Clear" type="Button" parent="BasketButtons"]
-margin_right = 182.0
-margin_bottom = 55.0
+[node name="Clear" type="Button" parent="Sections/BasketSection/BasketButtons"]
+margin_right = 287.0
+margin_bottom = 65.0
 size_flags_horizontal = 3
 text = "Clear"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Sell" type="Button" parent="BasketButtons"]
-margin_left = 212.0
-margin_right = 394.0
-margin_bottom = 55.0
+[node name="Sell" type="Button" parent="Sections/BasketSection/BasketButtons"]
+margin_left = 317.0
+margin_right = 604.0
+margin_bottom = 65.0
 size_flags_horizontal = 3
 text = "Sell"
 
-[node name="Buy" type="Button" parent="BasketButtons"]
-margin_left = 424.0
-margin_right = 606.0
-margin_bottom = 55.0
+[node name="Buy" type="Button" parent="Sections/BasketSection/BasketButtons"]
+margin_left = 634.0
+margin_right = 921.0
+margin_bottom = 65.0
 size_flags_horizontal = 3
 text = "Buy"
 
-[node name="WoodAmount" type="Label" parent="."]
-margin_left = 128.0
-margin_top = 352.0
-margin_right = 236.0
-margin_bottom = 397.0
-text = "Wood Amount: 0"
-
-[node name="MineralsAmount" type="Label" parent="."]
-margin_left = 272.0
-margin_top = 352.0
-margin_right = 398.0
-margin_bottom = 397.0
-text = "Minerals Amount: 0"
-
-[connection signal="button_down" from="WoodContainer/Wood +1" to="." method="_on_Wood_1_button_down"]
-[connection signal="button_down" from="WoodContainer/Wood +5" to="." method="_on_Wood_5_button_down"]
-[connection signal="button_down" from="WoodContainer/Wood +10" to="." method="_on_Wood_10_button_down"]
-[connection signal="button_down" from="WoodContainer/Wood All" to="." method="_on_Wood_All_button_down"]
-[connection signal="button_down" from="MineralsContainer/Minerals +1" to="." method="_on_Minerals_1_button_down"]
-[connection signal="button_down" from="MineralsContainer/Minerals +5" to="." method="_on_Minerals_5_button_down"]
-[connection signal="button_down" from="MineralsContainer/Minerals +10" to="." method="_on_Minerals_10_button_down"]
-[connection signal="button_down" from="MineralsContainer/Minerals All" to="." method="_on_Minerals_All_button_down"]
-[connection signal="button_down" from="BasketButtons/Clear" to="." method="_on_Clear_button_down"]
-[connection signal="button_down" from="BasketButtons/Sell" to="." method="_on_Sell_button_down"]
-[connection signal="button_down" from="BasketButtons/Buy" to="." method="_on_Buy_button_down"]
+[connection signal="button_down" from="Sections/ProductSection/WoodContainer/Wood +1" to="." method="_on_Wood_1_button_down"]
+[connection signal="button_down" from="Sections/ProductSection/WoodContainer/Wood +5" to="." method="_on_Wood_5_button_down"]
+[connection signal="button_down" from="Sections/ProductSection/WoodContainer/Wood +10" to="." method="_on_Wood_10_button_down"]
+[connection signal="button_down" from="Sections/ProductSection/WoodContainer/Wood All" to="." method="_on_Wood_All_button_down"]
+[connection signal="button_down" from="Sections/ProductSection/MineralsContainer/Minerals +1" to="." method="_on_Minerals_1_button_down"]
+[connection signal="button_down" from="Sections/ProductSection/MineralsContainer/Minerals +5" to="." method="_on_Minerals_5_button_down"]
+[connection signal="button_down" from="Sections/ProductSection/MineralsContainer/Minerals +10" to="." method="_on_Minerals_10_button_down"]
+[connection signal="button_down" from="Sections/ProductSection/MineralsContainer/Minerals All" to="." method="_on_Minerals_All_button_down"]
+[connection signal="button_down" from="Sections/BasketSection/BasketButtons/Clear" to="." method="_on_Clear_button_down"]
+[connection signal="button_down" from="Sections/BasketSection/BasketButtons/Sell" to="." method="_on_Sell_button_down"]
+[connection signal="button_down" from="Sections/BasketSection/BasketButtons/Buy" to="." method="_on_Buy_button_down"]

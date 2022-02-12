@@ -53,7 +53,7 @@ func _on_JoinButton_pressed():
 
 remote func begin_game():
 	if Network.state != Network.State.SOLO: 
-		var _val=get_tree().change_scene("res://scenes/gameplay.tscn")
+		var _val=get_tree().change_scene("res://scenes/gameplay/gameplay.tscn")
 
 
 func _on_solo_pressed():

@@ -5,7 +5,6 @@ export var tile_radius : float = 0 setget set_radius, get_radius
 
 var nearby_buildings = []
 
-var power_sources_buildings = []
 var powered_buildings = []
 var power_roots = {}
 
@@ -21,11 +20,8 @@ func _on_PowerBuilding_area_entered(area):
 # ------------------------------------------------------------------------------
 func _on_PowerBuilding_area_exited(area):
 	nearby_buildings.erase(area)
-	
-	if power_sources_buildings.has(area):
-		power_sources_buildings.erase(area)
 		
-	elif powered_buildings.has(area):
+	if powered_buildings.has(area):
 		powered_buildings.erase(area)
 
 
@@ -73,12 +69,6 @@ func is_a_power_source(building) -> bool:
 				return true
 				
 	return false
-	
-	for source in power_sources_buildings:
-		if building == source or source.is_a_power_source(building):
-			return true
-			
-	return false
 
 
 func get_power_root():
@@ -86,9 +76,6 @@ func get_power_root():
 		return self
 	elif not power_roots.empty():
 		return power_roots.keys().front()
-#	elif power_sources_buildings.size() > 0:
-#		return power_sources_buildings.front().get_power_root()
-#	return null
 	
 
 # ------------------------------------------------------------------------------

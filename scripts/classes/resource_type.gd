@@ -16,5 +16,6 @@ class Ingredient:
 # ResourceType's members.
 #-------------------------------------------------------------------------------
 var name : String = "blank_resource"
+var texture_region : Rect2
 var id : int = -1
 var recipe : Recipe = null

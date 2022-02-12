@@ -11,7 +11,7 @@ const BUILD_TOOL_NAME : String = "BuildTool"
 const LUMBERJACK_NAME : String = "Lumberjack"
 const PLAYER_DATA_NAME : String = "PlayerData"
 
-var GameplayScene = preload("res://scenes/gameplay.tscn")
+var GameplayScene = preload("res://scenes/gameplay/gameplay.tscn")
 
 var _gameplay = null
 var _terrain = null

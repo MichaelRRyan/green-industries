@@ -1,0 +1,195 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scripts/pollution.gd" type="Script" id=1]
+[ext_resource path="res://assets/font/matchup_pro.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://scripts/poll_average.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 100
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 32
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 32
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 48
+font_data = ExtResource( 2 )
+
+[node name="Pollution" type="Control"]
+margin_left = -29.0
+margin_top = 8.0
+margin_right = -29.0
+margin_bottom = 8.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="back" type="Control" parent="."]
+margin_left = 327.0
+margin_top = 382.0
+margin_right = 367.0
+margin_bottom = 422.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="background" type="ColorRect" parent="back"]
+margin_left = -23.047
+margin_top = -311.342
+margin_right = 16.953
+margin_bottom = -271.342
+rect_scale = Vector2( 15.2952, 11.295 )
+color = Color( 1, 0.121569, 0.121569, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="back"]
+margin_left = 117.0
+margin_top = -309.0
+margin_right = 449.0
+margin_bottom = -229.0
+custom_fonts/font = SubResource( 1 )
+text = "Pollution"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tp" type="Label" parent="back"]
+margin_left = -1.0
+margin_top = -199.0
+margin_right = 175.0
+margin_bottom = -173.0
+custom_fonts/font = SubResource( 2 )
+text = "Tree_Pollution:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tp2" type="Label" parent="back/tp"]
+margin_left = 181.0
+margin_top = 1.0
+margin_right = 221.0
+margin_bottom = 27.0
+custom_fonts/font = SubResource( 4 )
+text = "0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PollutionTime" type="Timer" parent="back"]
+
+[node name="wp" type="Label" parent="back"]
+margin_left = 1.0
+margin_top = -165.0
+margin_right = 189.0
+margin_bottom = -139.0
+custom_fonts/font = SubResource( 2 )
+text = "Water_Pollution:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="wp2" type="Label" parent="back/wp"]
+margin_left = 190.0
+margin_top = 2.0
+margin_right = 230.0
+margin_bottom = 28.0
+custom_fonts/font = SubResource( 4 )
+text = "0%"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="mp" type="Label" parent="back"]
+margin_left = -1.0
+margin_top = -129.0
+margin_right = 213.0
+margin_bottom = -103.0
+custom_fonts/font = SubResource( 2 )
+text = "Moutain_Pollution:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="mp2" type="Label" parent="back/mp"]
+margin_left = 216.0
+margin_top = 3.0
+margin_right = 256.0
+margin_bottom = 29.0
+custom_fonts/font = SubResource( 4 )
+text = "0%"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gp" type="Label" parent="back"]
+margin_left = -1.0
+margin_top = -95.0
+margin_right = 185.0
+margin_bottom = -69.0
+custom_fonts/font = SubResource( 2 )
+text = "Grass_Pollution:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gp2" type="Label" parent="back/gp"]
+margin_left = 190.0
+margin_top = 2.0
+margin_right = 230.0
+margin_bottom = 28.0
+custom_fonts/font = SubResource( 4 )
+text = "0%"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="op" type="Label" parent="back"]
+margin_right = 273.0
+margin_bottom = 38.0
+custom_fonts/font = SubResource( 3 )
+text = "Total_Pollution:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pre" type="Label" parent="back/op"]
+margin_left = 287.0
+margin_top = 3.0
+margin_right = 463.0
+margin_bottom = 41.0
+custom_fonts/font = SubResource( 3 )
+text = " 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="carbon" type="Label" parent="back"]
+margin_left = -2.0
+margin_top = -64.0
+margin_right = 186.0
+margin_bottom = -38.0
+custom_fonts/font = SubResource( 2 )
+text = "Carbon:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="c" type="Label" parent="back/carbon"]
+margin_left = 92.0
+margin_top = 1.0
+margin_right = 132.0
+margin_bottom = 27.0
+custom_fonts/font = SubResource( 4 )
+text = "0%"
+__meta__ = {
+"_edit_use_anchors_": false
+}

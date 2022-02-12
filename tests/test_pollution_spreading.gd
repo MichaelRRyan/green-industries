@@ -7,7 +7,7 @@ const POLLUTION_NAME : String = "Polution_spreading"
 
 const TEST_CELL = Vector2(5, 5)
 
-var GameplayScene = preload("res://scenes/gameplay.tscn")
+var GameplayScene = preload("res://scenes/gameplay/gameplay.tscn")
 
 var _gameplay = null
 var _terrain = null

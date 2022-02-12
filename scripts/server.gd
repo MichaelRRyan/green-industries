@@ -37,7 +37,7 @@ func solo_Player():
 	if state == State.SOLO:
 		emit_signal("single_player")
 		print("ONE PLAYER NOT A SERVER")
-		var _val = get_tree().change_scene("res://scenes/gameplay.tscn")
+		var _val = get_tree().change_scene("res://scenes/gameplay/gameplay.tscn")
 
 
 func start_server():
@@ -70,7 +70,7 @@ func _peer_connected(peer_id):
 
 remote func save_terrain_data(noise_seed):
 	TerrainData.noise_seed = noise_seed
-	var _val = get_tree().change_scene("res://scenes/gameplay.tscn")
+	var _val = get_tree().change_scene("res://scenes/gameplay/gameplay.tscn")
 	
 	
 func _peer_disconnected(peer_id):

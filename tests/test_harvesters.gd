@@ -10,7 +10,7 @@ const BUY_TOOL_NAME : String = "BuyTool"
 # The cell in the tile map where the test will take place.
 const TEST_CELL = Vector2(5, 5)
 
-var GameplayScene = preload("res://scenes/gameplay.tscn")
+var GameplayScene = preload("res://scenes/gameplay/gameplay.tscn")
 
 var _gameplay = null
 var _terrain = null

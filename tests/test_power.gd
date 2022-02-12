@@ -11,7 +11,7 @@ const FACTORY_NAME : String = "Factory"
 const TEST_CELL = Vector2(0, 0)
 const POSIBLE_CELLS = [Vector2(0,5), Vector2(10,10), Vector2(0,6),  Vector2(6,4), Vector2(0, 7), Vector2(0,1)]
 
-var GameplayScene = preload("res://scenes/gameplay.tscn")
+var GameplayScene = preload("res://scenes/gameplay/gameplay.tscn")
 
 var _gameplay = null
 var _terrain = null

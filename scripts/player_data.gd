@@ -10,7 +10,7 @@ func set_peer_id(peer_id : int) -> void:
 	
 	
 # ------------------------------------------------------------------------------
-func _on_BuildTool_building_placed(building : Node2D, type : int) -> void:
+func on_building_placed(building : Node2D, type : int) -> void:
 	_owned_buildings.append(building)
 	
 	# Needs to be refactored in the future.

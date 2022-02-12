@@ -1,5 +1,6 @@
 extends Node2D
 
+var _game_state = null
 var _terrain = null
 var _inventory = null
 var _networked_players = null
@@ -15,15 +16,20 @@ onready var tile_map : TileMap = $TileMap
 var tile_Prices = { 
 	Tile.Type.GRASS: 1000, 
 	Tile.Type.WATER: 1500, 
-	Tile.Type.FARM: 2000, 
+	Tile.Type.MEADOW: 2000, 
 	Tile.Type.FOREST: 3000, 
 	Tile.Type.STONE: 3500,
 	}
 
 func _ready() -> void:
+	_terrain = Utility.get_dependency("terrain", self, true)
+	_game_state = Utility.get_dependency("game_state", self, true)
+
+	_game_state.connect("selected_tool_changed", self, 
+		"_on_game_state_selected_tool_changed")
+
 	var player_data_manager = Utility.get_dependency("player_data_manager", self, true)
 	
-	_terrain = Utility.get_dependency("terrain", self, true)
 	#needs to change to specific peer
 	_inventory = player_data_manager.local_player_data._inventory
 	if Network.is_host():
@@ -32,15 +38,21 @@ func _ready() -> void:
 	owner_dict = player_data_manager.owner_dict
 	#_outline_col = player_data_manager.local_player_data.id
 
-func _input(event) -> void:
-	if event.is_action_pressed("switch_buying"):
-		buying = !buying
+
+func _on_game_state_selected_tool_changed(new_tool : int, _old_tool : int) -> void:
+	if Tool.Type.BUY_LAND != new_tool:
 		label.text = ""
-	
-	if event.is_action_pressed("select") and buying:
-		var mouse_pos = get_global_mouse_position()
-		var mouse_tile : Vector2 = _terrain.get_tile_from_global_position(mouse_pos)
-		buy_tile(mouse_tile)
+
+
+func _unhandled_input(event) -> void:
+	if Tool.Type.BUY_LAND == _game_state.get_selected_tool():
+		if event.is_action_pressed("select"):
+			var mouse_pos = get_global_mouse_position()
+			var mouse_tile : Vector2 = _terrain.get_tile_from_global_position(mouse_pos)
+			buy_tile(mouse_tile)
+			
+	elif event.is_action_pressed("buy_land_tool_shortcut"):
+		_game_state.set_selected_tool(Tool.Type.BUY_LAND)
 
 
 func buy_tile(tile_pos : Vector2) -> void:
@@ -69,8 +81,10 @@ remote func add_to_owner_dict(tile_pos: Vector2, id) ->void:
 	else:
 		sync_owner_tile_map(tile_pos, owner_dict[tile_pos].id-1)
 
+
 remote func sync_owner_tile_map(tile_pos: Vector2, outline_id) ->void:
 	tile_map.set_cellv(tile_pos, outline_id)
+
 
 func _check_price_and_buy(tile_pos : Vector2, inventory) ->bool:
 	if !owner_dict.has(tile_pos):
@@ -91,8 +105,9 @@ func check_availble(tile_pos : Vector2) ->bool:
 			return true
 	return false
 
-func _process(delta):
-	if buying:
+	
+func _process(_delta):
+	if Tool.Type.BUY_LAND == _game_state.get_selected_tool():
 		var mouse_pos = get_global_mouse_position()
 		var mouse_tile : Vector2 = _terrain.get_tile_from_global_position(mouse_pos)
 		

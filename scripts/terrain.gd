@@ -8,7 +8,7 @@ onready var tile_map : TileMap = $TileMap
 onready var factory_prefab = preload("res://scenes/factory.tscn")
 onready var factory_pattern = preload("res://scenes/factory_pattern.tscn").instance()
 onready var resources = 100
-var offset : Vector2 = Vector2(56, 64)
+var offset : Vector2 = Vector2(68, 64)
 var damage_dict = {health = 9}
 var _wood_resource = null
 var _minerals_resource = null
@@ -83,6 +83,8 @@ remote func _damage_cell(cell : Vector2, remote_call: bool = false) -> void:
 	if not remote_call and Network.is_online:
 		rpc("_damage_cell", cell, true)
 	
+	Pollution.tree_pollution += 1
+	
 	if !damage_dict.has(cell):
 		damage_dict[cell] = { 
 			health = 9,
@@ -126,7 +128,8 @@ func _input(event) -> void:
 		self.place_power_plant(get_global_mouse_position(),\
 		 	get_tile_clicked(get_global_mouse_position()))
 
-				
+	
+# ------------------------------------------------------------------------------	
 func on_click(mouse_position: Vector2):
 	var tile_clicked: Vector2 = tile_map.world_to_map(mouse_position)
 	var tile = tile_map.get_cellv(tile_clicked)

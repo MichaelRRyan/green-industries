@@ -4,9 +4,3 @@
 
 [node name="WorldGenerator" type="Node2D"]
 script = ExtResource( 1 )
-octaves = 2
-period = 64.0
-lacunarity = 2.0
-persistence = 0.75
-randomize_seed = true
-generate = null

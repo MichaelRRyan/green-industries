@@ -9,6 +9,7 @@ var colour_outlines = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
 
 #-------------------------------------------------------------------------------
 func _ready() -> void:
+	local_player_data._inventory.set_money(30000)
 	# Connects to the player connected and disconnected signals if the host.
 	if Network.state == Network.State.HOSTING:
 		var _r = Network.connect("player_connected", self, "_on_Network_player_connected")

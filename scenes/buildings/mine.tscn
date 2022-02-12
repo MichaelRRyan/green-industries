@@ -3,4 +3,4 @@
 [ext_resource path="res://scenes/buildings/harvester.tscn" type="PackedScene" id=1]
 
 [node name="Mine" instance=ExtResource( 1 )]
-harvest_tile_type = 3
+harvest_tile_type = 7

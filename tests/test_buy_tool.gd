@@ -9,7 +9,7 @@ const MINE_NAME : String = "Mine"
 
 const TEST_CELL = Vector2(5, 5)
 
-var GameplayScene = preload("res://scenes/gameplay.tscn")
+var GameplayScene = preload("res://scenes/gameplay/gameplay.tscn")
 
 var _gameplay = null
 var _terrain = null
@@ -75,7 +75,7 @@ func test_right_price() ->void:
 	assert_eq(inventory.get_money(), 26500)
 	
 	tile_pos += Vector2(1,1)
-	_terrain.set_cellv(tile_pos, Tile.Type.FARM) 
+	_terrain.set_cellv(tile_pos, Tile.Type.MEADOW) 
 	_buy_tool.buy_tile(tile_pos)
 	assert_eq(inventory.get_money(), 24500)
 	

@@ -5,7 +5,7 @@ const WOOD_RESOURCE_NAME = "wood"
 const MINERALS_RESOURCE_NAME = "minerals"
 const RESOURCE_MANAGER_NAME = "ResourceManager"
 
-var GameplayScene = preload("res://scenes/gameplay.tscn")
+var GameplayScene = preload("res://scenes/gameplay/gameplay.tscn")
 
 var _gameplay = null
 var _resource_manager = null
@@ -44,7 +44,7 @@ func test_minerals_resource_exists() -> void:
 
 # ------------------------------------------------------------------------------
 func test_new_resources_can_be_created() -> void:
-	var id = _resource_manager.add_resource_type("paper")
+	var id = _resource_manager.add_resource_type("paper", Rect2())
 	
 	# Tries to get the resource by id and ensures it's not null.
 	var paper = _resource_manager.get_resource_type(id)

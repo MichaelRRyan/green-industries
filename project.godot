@@ -22,12 +22,18 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "Tile",
 "language": "GDScript",
-"path": "res://scripts/tile_types.gd"
+"path": "res://scripts/classes/tile_types.gd"
+}, {
+"base": "Reference",
+"class": "Tool",
+"language": "GDScript",
+"path": "res://scripts/classes/tool_types.gd"
 } ]
 _global_script_class_icons={
 "Inventory": "",
 "ResourceType": "",
-"Tile": ""
+"Tile": "",
+"Tool": ""
 }
 
 [WAT]
@@ -46,11 +52,11 @@ Display=4
 
 config/name="ARGO"
 run/main_scene="res://scenes/main_menu.tscn"
-config/icon="res://assets/images/icon.png"
+config/icon="res://assets/images/powerPlant.png"
 
 [autoload]
 
-Network="*res://scripts/Server.gd"
+Network="*res://scripts/server.gd"
 Utility="*res://scripts/utility.gd"
 TerrainData="*res://scripts/terrain_data.gd"
 Pollution="*res://scripts/pollution.gd"
@@ -177,9 +183,14 @@ open={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":16777237,"unicode":0,"echo":false,"script":null)
  ]
 }
-switch_buying={
+buy_land_tool_shortcut={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":66,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+build_tool_shortcut={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":80,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 select_5={

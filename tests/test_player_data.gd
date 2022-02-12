@@ -12,7 +12,7 @@ const BUY_TOOL_NAME : String = "BuyTool"
 # The cell in the tile map where the test will take place.
 const TEST_CELL = Vector2(5, 5)
 
-var GameplayScene = preload("res://scenes/gameplay.tscn")
+var GameplayScene = preload("res://scenes/gameplay/gameplay.tscn")
 
 var _gameplay = null
 var _terrain = null
@@ -70,7 +70,7 @@ func test_player_has_inventory() -> void:
 	
 	# Checks the money exists and is a float.
 	assert_not_null(_inventory._money)
-	assert_typeof(_inventory._money, TYPE_REAL)
+	assert_typeof(_inventory._money, TYPE_INT)
 	
 	# Checks the resources container exists and is a dictionary.
 	assert_not_null(_inventory._resources)
@@ -79,8 +79,6 @@ func test_player_has_inventory() -> void:
 	
 # ------------------------------------------------------------------------------
 func test_inventory_money_methods() -> void:
-	
-	
 	_inventory.set_money(100)
 	assert_eq(_inventory._money, 100)
 	
