@@ -21,6 +21,8 @@ onready var BuildingScenes = {
 	Tile.Type.FACTORY: preload("res://scenes/factory.tscn"),
 	Tile.Type.POWER_PLANT: preload("res://scenes/buildings/power_plant.tscn"),
 	Tile.Type.PYLON: preload("res://scenes/buildings/pylon.tscn"),
+	Tile.Type.WOOD_REFINERY: null,
+	Tile.Type.MINERALS_REFINERY: null,
 }
 
 
@@ -31,7 +33,16 @@ func set_building_type(type : int) -> void:
 remote func request_build(tile_pos: Vector2, _building_type: int) -> void:
 	if _terrain.is_tile_empty(tile_pos):			
 		_terrain.set_cellv(tile_pos, _building_type)
-		var building = BuildingScenes[_building_type].instance()		
+		var building = null
+		var factory_pattern = null
+		if building_type == Tile.Type.WOOD_REFINERY:
+			factory_pattern = WoodRefineryFactory.new()
+		elif building_type == Tile.Type.MINERALS_REFINERY:
+			factory_pattern = MineralsRefineryFactory.new()
+		else:
+			building = BuildingScenes[building_type].instance()
+		if factory_pattern != null:
+			building = factory_pattern.generate_scene()		
 		#sending the other clients where the building was placed
 		rpc("place_building_remote", tile_pos, _building_type)
 		building.set_network_master(get_tree().get_network_unique_id())
@@ -51,8 +62,16 @@ func place_building(tile_pos : Vector2) -> bool:
 		return true
 	if _terrain.is_tile_empty(tile_pos):			
 		_terrain.set_cellv(tile_pos, building_type)
-		var building = BuildingScenes[building_type].instance()
-		
+		var building = null
+		var factory_pattern = null
+		if building_type == Tile.Type.WOOD_REFINERY:
+			factory_pattern = WoodRefineryFactory.new()
+		elif building_type == Tile.Type.MINERALS_REFINERY:
+			factory_pattern = MineralsRefineryFactory.new()
+		else:
+			building = BuildingScenes[building_type].instance()
+		if factory_pattern != null:
+			building = factory_pattern.generate_scene()
 		#sending the other clients where the building was placed
 		if Network.is_online:
 			rpc("place_building_remote", tile_pos, building_type)
@@ -70,7 +89,16 @@ func place_building(tile_pos : Vector2) -> bool:
 
 remote func place_building_remote(tile_pos : Vector2, type : int) -> void:
 	_terrain.set_cellv(tile_pos, type)
-	var building = BuildingScenes[type].instance()
+	var building = null
+	var factory_pattern = null
+	if building_type == Tile.Type.WOOD_REFINERY:
+		factory_pattern = WoodRefineryFactory.new()
+	elif building_type == Tile.Type.MINERALS_REFINERY:
+		factory_pattern = MineralsRefineryFactory.new()
+	else:
+		building = BuildingScenes[building_type].instance()
+	if factory_pattern != null:
+		building = factory_pattern.generate_scene()
 	building.set_network_master(get_tree().get_rpc_sender_id())
 	# Places the building uniformly on a tile corner.
 	building.position = (_terrain.get_global_position_from_tile(tile_pos) +
@@ -116,6 +144,12 @@ func _unhandled_input(event : InputEvent) -> void:
 		
 		if event.is_action_pressed("select_5"):
 			building_type = Tile.Type.PYLON
+			
+		if event.is_action_pressed("select_6"):
+			building_type = Tile.Type.WOOD_REFINERY
+			
+		if event.is_action_pressed("select_7"):
+			building_type = Tile.Type.MINERALS_REFINERY
 			
 	elif event.is_action_pressed("build_tool_shortcut"):
 		_game_state.set_selected_tool(Tool.Type.BUILD)

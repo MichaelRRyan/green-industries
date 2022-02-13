@@ -38,6 +38,17 @@ func _ready() -> void:
 	var _v # A variable to discard the return value without warnings.
 	_v = add_resource_type("wood", Rect2(0, 0, 128, 128)) # Creates a 'wood' resource type.
 	_v = add_resource_type("minerals", Rect2(128, 0, 128, 128)) # Creates a 'minerals' resource type.
-
+	var lumber_recipe = ResourceType.Recipe.new()
+	var wood_ingredient = ResourceType.Ingredient.new()
+	wood_ingredient.resource_id = get_resource_type_by_name("wood").id
+	wood_ingredient.quantity = 1
+	lumber_recipe.ingredients.append(wood_ingredient)
+	_v = add_resource_type("lumber", Rect2(0, 0, 128, 128), lumber_recipe)
+	var metal_recipe = ResourceType.Recipe.new()
+	var minerals_ingredient = ResourceType.Ingredient.new()
+	minerals_ingredient.resource_id = get_resource_type_by_name("minerals").id
+	minerals_ingredient.quantity = 1
+	metal_recipe.ingredients.append(minerals_ingredient)
+	_v = add_resource_type("metal", Rect2(128, 0, 128, 128), metal_recipe)
 
 # ------------------------------------------------------------------------------
