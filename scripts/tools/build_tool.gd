@@ -1,6 +1,6 @@
 extends Node2D
 
-signal building_placed(building, type)
+signal building_placed(building, type, owner_id)
 
 onready var _game_state = Utility.get_dependency("game_state", self, true)
 onready var _world = Utility.get_dependency("world", self, true)
@@ -66,7 +66,7 @@ remote func request_build(tile_pos: Vector2, _building_type: int) -> void:
 			_terrain.tile_size * 0.5)
 		
 		_world.add_child(building)
-		emit_signal("building_placed", building, _building_type)
+		emit_signal("building_placed", building, _building_type, get_tree().get_rpc_sender_id())
 
 
 # ------------------------------------------------------------------------------
@@ -96,7 +96,7 @@ func place_building(tile_pos : Vector2) -> bool:
 			_terrain.tile_size * 0.5)
 		
 		_world.add_child(building)
-		emit_signal("building_placed", building, building_type)
+		emit_signal("building_placed", building, building_type, get_tree().get_network_unique_id())
 		
 		return true
 	return false
@@ -119,7 +119,7 @@ remote func place_building_remote(tile_pos : Vector2, type : int) -> void:
 		_terrain.tile_size * 0.5)
 		
 	_world.add_child(building)
-	emit_signal("building_placed", building, type)
+	#emit_signal("building_placed", building, type, get_tree().get_network_unique_id())
 
 # ------------------------------------------------------------------------------
 func _ready() -> void:
