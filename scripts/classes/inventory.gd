@@ -125,3 +125,6 @@ func _ready():
 	_money = 30000
 	
 # ------------------------------------------------------------------------------
+func _process(_delta):
+	#GetGameStat.stats = get_money()
+	GetGameStat.money(get_money())

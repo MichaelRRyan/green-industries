@@ -23,7 +23,7 @@ func update_grass_pollution_label():
 	$gp/gp2.text = str(Pollution.grass_pollution) + "%"
 	
 	
-func overall():
+func total_pollution():
 	var sum = Pollution.total()
 	$op/pre.text = str(sum) + "%"
 	
@@ -37,4 +37,4 @@ func show() -> void:
 	update_carbon_label()
 	update_mountain_pollution_label()
 	update_water_pollution_label()
-	overall()
+	total_pollution()

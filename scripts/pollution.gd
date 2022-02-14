@@ -18,7 +18,8 @@ var mountain_pollution = 0.0
 var carbon = 0.0 # from all the factories and coal powerplants, more of them present the higher it gets
 var factory_amount = 0#add this to factory 
 var pd = 0 #pollution deciptation? (down poll)
-var overall_pollution
+var td = 0 # tree deciptation(amount of tree tiles ^^)
+var overall_pollution = [water_pollution,tree_pollution,mountain_pollution,grass_pollution]
 const MAX_POLLUTION = 10.0 #end state
 var pollut=false
 var gone = false
