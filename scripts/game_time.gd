@@ -4,7 +4,7 @@ var minutes = 0
 var seconds = 0
 var milliseconds = 0
 
-func _process(delta):
+func _process(_delta):
 
 	if milliseconds > 9:
 		seconds += 1
