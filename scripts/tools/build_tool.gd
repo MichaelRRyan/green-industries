@@ -14,6 +14,8 @@ onready var colour = CAN_PLACE_COLOUR
 onready var centre: Vector2 = Vector2(0,0)
 var num_tiles = 0.5
 var radius = 110 * num_tiles
+onready var _preview_building : Sprite = $PreviewBuilding
+
 
 onready var BuildingScenes = {
 	Tile.Type.LUMBERJACK: preload("res://scenes/buildings/lumberjack.tscn"),
@@ -26,9 +28,21 @@ onready var BuildingScenes = {
 }
 
 
+onready var BuildingPreviews = {
+	Tile.Type.LUMBERJACK: Rect2(390, 500, 128, 140),
+	Tile.Type.MINE: Rect2(520, 500, 120, 140),
+	Tile.Type.FACTORY: Rect2(640, 500, 120, 140),
+	Tile.Type.POWER_PLANT: Rect2(770, 500, 128, 140),
+	Tile.Type.PYLON: Rect2(900, 500, 128, 140),
+	Tile.Type.WOOD_REFINERY: Rect2(1040, 500, 128, 128),
+	Tile.Type.MINERALS_REFINERY: Rect2(1040, 500, 128, 128),
+}
+
+
 # ------------------------------------------------------------------------------
 func set_building_type(type : int) -> void:
 	building_type = type
+	_preview_building.region_rect = BuildingPreviews[building_type]
 
 remote func request_build(tile_pos: Vector2, _building_type: int) -> void:
 	if _terrain.is_tile_empty(tile_pos):			
@@ -112,6 +126,8 @@ func _ready() -> void:
 	_world = Utility.get_dependency("world", self, true)
 	_terrain = Utility.get_dependency("terrain", self, true)
 	_buy_tool = Utility.get_dependency("buy_tool", self, true)
+	_preview_building.self_modulate = Color(1, 1, 1, 0.4)
+	_preview_building.region_rect = BuildingPreviews[building_type]
 
 
 # ------------------------------------------------------------------------------
@@ -132,30 +148,35 @@ func _unhandled_input(event : InputEvent) -> void:
 	
 		if event.is_action_pressed("select_1"):
 			building_type = Tile.Type.LUMBERJACK
+			_preview_building.region_rect = BuildingPreviews[building_type]
+			#_preview_building.region_rect = Rect2(390, 500, 128, 140)
 		
 		if event.is_action_pressed("select_2"):
 			building_type = Tile.Type.MINE
+			_preview_building.region_rect = BuildingPreviews[building_type]
 		
 		if event.is_action_pressed("select_3"):
 			building_type = Tile.Type.FACTORY
+			_preview_building.region_rect = BuildingPreviews[building_type]
 			
 		if event.is_action_pressed("select_4"):
 			building_type = Tile.Type.POWER_PLANT
+			_preview_building.region_rect = BuildingPreviews[building_type]
 		
 		if event.is_action_pressed("select_5"):
 			building_type = Tile.Type.PYLON
+			_preview_building.region_rect = BuildingPreviews[building_type]
 			
 		if event.is_action_pressed("select_6"):
 			building_type = Tile.Type.WOOD_REFINERY
+			_preview_building.region_rect = BuildingPreviews[building_type]
 			
 		if event.is_action_pressed("select_7"):
 			building_type = Tile.Type.MINERALS_REFINERY
+			_preview_building.region_rect = BuildingPreviews[building_type]
 			
 	elif event.is_action_pressed("build_tool_shortcut"):
 		_game_state.set_selected_tool(Tool.Type.BUILD)
-
-	if event.is_action_pressed("select_5"):
-		building_type = Tile.Type.PYLON
 
 # ------------------------------------------------------------------------------
 func buy_tile_and_place_building(tile_pos : Vector2) -> void:
@@ -168,6 +189,10 @@ func _process(_delta):
 	if Tool.Type.BUILD == _game_state.get_selected_tool():
 		_place_circle_position()
 		set_colour()
+		_preview_building.visible = true
+		_preview_building.position = centre
+	else:
+		_preview_building.visible = false
 	update()
 
 

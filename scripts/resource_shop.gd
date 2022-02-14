@@ -143,7 +143,8 @@ func _on_Sell_button_down():
 	if actual_minerals_amount >= num_minerals and actual_wood_amount >= num_wood \
 	and actual_lumber_amount >= num_lumber and actual_metal_amount >= num_metal and (num_wood > 0\
 	or num_minerals > 0 or num_lumber > 0 or num_metal > 0):
-		var total_cost = (num_wood * WOOD_SELL_AMOUNT) + (num_minerals * MINERALS_SELL_AMOUNT)
+		var total_cost = (num_wood * WOOD_SELL_AMOUNT) + (num_minerals * MINERALS_SELL_AMOUNT) +\
+			(num_lumber * LUMBER_SELL_AMOUNT) + (num_metal * METALS_SELL_AMOUNT)
 		data._inventory.change_money(total_cost)
 		data._inventory.\
 			remove_resources(resource_manager.get_resource_type_by_name("wood"), num_wood)
