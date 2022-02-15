@@ -74,7 +74,7 @@ func _ready() -> void:
 	for x in range($WorldGenerator.map.size()):
 		for y in range($WorldGenerator.map[x].size()):
 			tile_map.set_cell(x, y, $WorldGenerator.map[x][y])
-			$pollution_Spreading.get_tile_map(tile_map)
+			$PollutionSpreading.get_tile_map(tile_map)
 
 # ------------------------------------------------------------------------------
 remote func _damage_cell(cell : Vector2, remote_call: bool = false) -> void:
@@ -90,7 +90,7 @@ remote func _damage_cell(cell : Vector2, remote_call: bool = false) -> void:
 		}
 		
 		var tile_data = damage_dict[cell]
-		$pollution_Spreading.polluted_dict(cell)#gets what cell is currently being harvasted 
+		$PollutionSpreading.add_to_polluted_dict(cell)#gets what cell is currently being harvasted 
 		add_child(tile_data.label)
 		tile_data.label.rect_position = tile_map.map_to_world(cell) + offset
 		tile_data.label.text = str(tile_data.health)
@@ -98,14 +98,14 @@ remote func _damage_cell(cell : Vector2, remote_call: bool = false) -> void:
 		var tile_data = damage_dict[cell]
 		tile_data.health -= 1
 		#to get the harvasted tiles health, and if it is 5 start polluting ^^
-		$pollution_Spreading.polluted_dict.health = tile_data.health 
+		$PollutionSpreading.polluted_dict.health = tile_data.health 
 		l=tile_data.health
 		tile_data.label.text = str(tile_data.health)
 		if tile_data.health == 5:
 			#starts pollution ^^----------------------
-			$pollution_Spreading.pollute_cell(cell)
-			$pollution_Spreading.active_pollution = true
-			$pollution_Spreading.get_active_pollution($pollution_Spreading.active_pollution)
+			$PollutionSpreading.pollute_cell(cell)
+			$PollutionSpreading.active_pollution = true
+			$PollutionSpreading.get_active_pollution($PollutionSpreading.active_pollution)
 			
 		if tile_data.health == 0:
 			tile_map.set_cellv(cell, Tile.Type.GRASS)

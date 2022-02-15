@@ -22,7 +22,6 @@ func on_building_placed(building : Node2D, type : int) -> void:
 # ------------------------------------------------------------------------------
 func _on_harvester_resource_gathered(resource : ResourceType) -> void:
 	_inventory.add_resources(resource, 1)
-	print(resource.name + " x " + str(_inventory.get_quantity(resource)))
 
 	
 # ------------------------------------------------------------------------------

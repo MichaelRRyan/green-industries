@@ -18,7 +18,7 @@ func _ready() -> void:
 	# Renames its player data to match the host, if not the host.
 	elif Network.state == Network.State.CONNECTED:
 		var player_data = find_node("PlayerData")
-		if player_data:
+		if player_data and get_tree().network_peer != null:
 			player_data.set_name("PlayerData" + str(get_tree().get_network_unique_id()))
 	
 	networked_players[1] = local_player_data

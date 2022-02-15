@@ -23,7 +23,7 @@ class BuildTool:
 	
 	# --------------------------------------------------------------------------
 	# Pure virtual, throws an error if called.
-	func request_place_building(_tile_pos: Vector2, _building_type: int, _id: int) -> void:
+	func request_place_building(_tile_pos: Vector2, _building_type: int) -> void:
 		assert(false)
 
 # ------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ class BuyTool:
 	
 	# --------------------------------------------------------------------------
 	# Pure virtual, throws an error if called.
-	remote func request_buy(_tile_pos : Vector2, _id) -> void:
+	remote func request_buy(_tile_pos : Vector2) -> void:
 		assert(false)
 		
 	# --------------------------------------------------------------------------

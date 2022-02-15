@@ -22,7 +22,7 @@ func _ready() -> void:
 	_owner_dict = Utility.get_dependency("player_data_manager", self, true).owner_dict
 	
 	# If the terrain was found, start the harvest timer and find our tile pos.
-	if _terrain and (not Network.is_online or is_network_master()):
+	if _terrain and (not Network.is_online or Network.state == Network.State.HOSTING):
 		$HarvestTimer.start(seconds_per_harvest)
 		_tile_position = _terrain.get_tile_from_global_position(global_position)
 
@@ -43,7 +43,6 @@ func _on_HarvestTimer_timeout() -> void:
 						
 						# If resources were returned, print and break from the loop.
 						if resource:
-							print("+1 " + resource.name)
 							emit_signal("resource_gathered", resource)
 							break
 

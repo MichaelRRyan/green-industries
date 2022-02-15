@@ -37,7 +37,7 @@ func after_all():
 
 
 func test_pollution_spread():
-	var spread = find_node(POLLUTION_NAME, false, false)
+	#var spread = find_node(POLLUTION_NAME, false, false)
 	#checks the neighbouring cells 
 	var neighbours = Utility.get_neighbours(TEST_CELL)
 	assert_eq(neighbours.size(), 6)

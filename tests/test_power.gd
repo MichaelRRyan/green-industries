@@ -77,6 +77,7 @@ func test_become_powered_by_power_plant_in_range() -> void:
 	power_plant.queue_free()
 	
 func test_factory_powered_inside_range_of_pylon() -> void:
+	_inventory.set_money(50000)
 	_build_tool.set_building_type(Tile.Type.POWER_PLANT)
 	_build_tool.place_building(TEST_CELL)
 	assert_eq(Tile.Type.POWER_PLANT, _terrain.get_cellv(TEST_CELL))

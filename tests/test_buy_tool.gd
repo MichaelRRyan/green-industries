@@ -156,7 +156,7 @@ func test_buy_tile_when_placing_building() ->void:
 	
 	_build_tool.set_building_type(Tile.Type.FACTORY)
 	
-	_build_tool.buy_tile_and_place_building(TEST_CELL)
+	_build_tool.place_building(TEST_CELL)
 		
 	assert_eq(_buy_tool.owner_dict[TEST_CELL].id, 1)
 	

@@ -24,8 +24,6 @@ var max_players = 10
 var is_online = false # Stored as an alternative to state for quick checks.
 var current_players = 0
 
-var pylons = 0
-
 func _ready():
 	network.connect("peer_connected", self, "_peer_connected")
 	network.connect("peer_disconnected", self, "_peer_disconnected")

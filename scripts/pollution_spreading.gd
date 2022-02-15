@@ -13,7 +13,7 @@ func _ready():
 	$Timer.start(2)
 
 
-func polluted_dict(cell : Vector2)->Pollution:
+func add_to_polluted_dict(cell : Vector2)->Pollution:
 	_pollute_pos = cell
 	return _pollute_pos
 
@@ -115,11 +115,11 @@ func spreading():
 	
 
 func _on_Timer_timeout():
-	print(pollut_dict)
+	#print(pollut_dict)
 	if pollut_dict.health == 5 or polluted_dict.health == 5:
 		neighbours = Utility.get_neighbours(_pollute_pos)
 		var random_neightbour = neighbours[randi() % neighbours.size()]
-		print(random_neightbour)
+		#print(random_neightbour)
 		pollute_cell(random_neightbour)
 		if  pollut_dict.health <= 0:
 				pollut_dict.health = 9

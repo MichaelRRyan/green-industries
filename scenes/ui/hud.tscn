@@ -125,7 +125,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time_left" parent="Header" instance=ExtResource( 7 )]
+[node name="TimeLeft" parent="Header" instance=ExtResource( 7 )]
 
 [node name="ButtonSections" type="HBoxContainer" parent="Header"]
 anchor_right = 1.0

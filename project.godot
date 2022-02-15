@@ -15,6 +15,16 @@ _global_script_classes=[ {
 "path": "res://scripts/classes/abstract_factory_pattern.gd"
 }, {
 "base": "Reference",
+"class": "CommandFactories",
+"language": "GDScript",
+"path": "res://scripts/classes/command_factory.gd"
+}, {
+"base": "Reference",
+"class": "Commands",
+"language": "GDScript",
+"path": "res://scripts/classes/command.gd"
+}, {
+"base": "Reference",
 "class": "FactoryFactory",
 "language": "GDScript",
 "path": "res://scripts/classes/factory_factory.gd"
@@ -81,6 +91,8 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AbstractFactory": "",
+"CommandFactories": "",
+"Commands": "",
 "FactoryFactory": "",
 "Inventory": "",
 "MineralsHarvesterFactory": "",
