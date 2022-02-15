@@ -6,7 +6,7 @@ onready var networked_players = Utility.get_dependency("player_data_manager", se
 
 # ------------------------------------------------------------------------------
 func _on_Tools_building_placed(building : Node2D, type : int, owner_id : int) -> void:
-	if Network.state != Network.State.SOLO:
+	if Network.state != Network.State.SOLO and Network.state != Network.State.OFFLINE:
 		networked_players[owner_id].on_building_placed(building, type)
 	else:
 		networked_players[1].on_building_placed(building, type)

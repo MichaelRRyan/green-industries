@@ -6,6 +6,8 @@ const BUILD_TOOL_NAME : String = "BuildTool"
 const PYLON_NAME : String = "Pylon"
 const POWER_PLANT_NAME : String = "PowerPlant"
 const FACTORY_NAME : String = "Factory"
+const PLAYER_DATA_NAME : String = "PlayerData"
+const RESOURCE_MANAGER_NAME = "ResourceManager"
 
 # The cell in the tile map where the test will take place.
 const TEST_CELL = Vector2(0, 0)
@@ -16,6 +18,9 @@ var GameplayScene = preload("res://scenes/gameplay/gameplay.tscn")
 var _gameplay = null
 var _terrain = null
 var _build_tool = null
+var _player_data = null
+var _resource_manager = null
+var _inventory : Inventory = null
 
 
 # ------------------------------------------------------------------------------
@@ -32,6 +37,14 @@ func before_all() -> void:
 	# Finds a child node with the build tool name and ensures it's not null.
 	_build_tool = find_node(BUILD_TOOL_NAME, true, false)
 	assert_not_null(_build_tool)
+	
+	# Finds a child node with the player data name and ensures it's not null.
+	_player_data = find_node(PLAYER_DATA_NAME, true, false)
+	assert_not_null(_player_data)
+	
+	# Gets a the player data's inventory and ensures it's not null.
+	_inventory = _player_data._inventory
+	assert_not_null(_inventory)
 
 
 # ------------------------------------------------------------------------------
@@ -130,6 +143,7 @@ func test_factory_powered_inside_range() -> void:
 	factory.queue_free()
 
 func test_pylon_can_power_other_pylon() -> void:
+	_inventory.set_money(50000)
 	_build_tool.set_building_type(Tile.Type.POWER_PLANT)
 	_build_tool.place_building(TEST_CELL)
 	assert_eq(Tile.Type.POWER_PLANT, _terrain.get_cellv(TEST_CELL))
