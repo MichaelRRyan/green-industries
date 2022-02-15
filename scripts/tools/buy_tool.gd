@@ -1,10 +1,10 @@
-extends Node2D
+extends ToolInterfaces.BuyTool
 
 var _game_state = null
 var _terrain = null
 var _inventory = null
 var _networked_players = null
-#var _outline_col = null
+
 
 var owner_dict = null
 var buying = false
@@ -71,7 +71,7 @@ remote func request_buy(tile_pos : Vector2, id) -> void:
 			rpc("add_to_owner_dict", tile_pos, id)
 			add_to_owner_dict(tile_pos, id)
 
-remote func add_to_owner_dict(tile_pos: Vector2, id) ->void:
+remote func add_to_owner_dict(tile_pos: Vector2, id) -> void:
 	owner_dict[tile_pos] = {
 		id = id,
 		}
@@ -82,7 +82,7 @@ remote func add_to_owner_dict(tile_pos: Vector2, id) ->void:
 		sync_owner_tile_map(tile_pos, owner_dict[tile_pos].id-1)
 
 
-remote func sync_owner_tile_map(tile_pos: Vector2, outline_id) ->void:
+remote func sync_owner_tile_map(tile_pos: Vector2, outline_id) -> void:
 	tile_map.set_cellv(tile_pos, outline_id)
 
 
@@ -97,7 +97,7 @@ func _check_price_and_buy(tile_pos : Vector2, inventory) ->bool:
 	return false
 	
 
-func check_availble(tile_pos : Vector2) ->bool:
+func check_availble(tile_pos : Vector2) -> bool:
 	if !owner_dict.has(tile_pos):
 		var tile_type = _terrain.get_cellv(tile_pos)
 		var tile_price = tile_Prices[tile_type]

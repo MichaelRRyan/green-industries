@@ -1,4 +1,4 @@
-extends Node2D
+extends ToolInterfaces.BuildTool
 
 signal building_placed(building, type, owner_id)
 
@@ -47,6 +47,10 @@ func set_building_type(type : int) -> void:
 	building_type = type
 	_preview_building.region_rect = BuildingPreviews[building_type]
 	
+func get_building_type() -> int:
+	return building_type
+	
+	
 func get_factory_pattern(type : int) -> Node2D:
 	var factory_pattern = BuildingScenes[type].new()
 	return factory_pattern
@@ -55,29 +59,27 @@ func get_factory_pattern(type : int) -> Node2D:
 remote func request_build(tile_pos: Vector2, _building_type: int, id : int) -> void:
 	if _terrain.is_tile_empty(tile_pos):			
 		_terrain.set_cellv(tile_pos, _building_type)
-		var building = get_factory_pattern(building_type).generate_scene(networked_players[id]._inventory)	
+		var building = get_factory_pattern(_building_type).generate_scene(networked_players[id]._inventory)	
 		#sending the other clients where the building was placed
 		rpc("place_building_remote", tile_pos, _building_type)
 		building.set_network_master(get_tree().get_network_unique_id())
-			
 		# Places the building uniformly on a tile corner.
 		building.position = (_terrain.get_global_position_from_tile(tile_pos) +
 			_terrain.tile_size * 0.5)
-		
 		_world.add_child(building)
 		emit_signal("building_placed", building, _building_type, get_tree().get_rpc_sender_id())
 
 
 # ------------------------------------------------------------------------------
-func place_building(tile_pos : Vector2) -> bool:
+func place_building(tile_pos : Vector2) -> void:
 	if Network.is_client():
 		rpc_id(1, "request_build", tile_pos, building_type, get_tree().get_network_unique_id())
-		return true
+		return 
 	if _terrain.is_tile_empty(tile_pos):	
 		var building = get_factory_pattern(building_type).generate_scene(data._inventory)
 		if building == null:
 			print("Cannot place building")
-			return false		
+			return 		
 		_terrain.set_cellv(tile_pos, building_type)
 		#sending the other clients where the building was placed
 		if Network.is_online:
@@ -91,17 +93,21 @@ func place_building(tile_pos : Vector2) -> bool:
 		_world.add_child(building)
 		emit_signal("building_placed", building, building_type, 1)
 		
-		return true
-	return false
+		return 
+	return 
 
 remote func place_building_remote(tile_pos : Vector2, type : int) -> void:
-	_terrain.set_cellv(tile_pos, type)
-	var building = get_factory_pattern(building_type).generate_bought_scene()
+	var building = set_building(tile_pos, type)
 	building.set_network_master(get_tree().get_rpc_sender_id())
-	# Places the building uniformly on a tile corner.
+	
+	
+func set_building(tile_pos: Vector2, building_type : int):
+	_terrain.set_cellv(tile_pos, building_type)
+	var building = get_factory_pattern(building_type).generate_bought_scene()
 	building.position = (_terrain.get_global_position_from_tile(tile_pos) +
-		_terrain.tile_size * 0.5)		
+		_terrain.tile_size * 0.5)
 	_world.add_child(building)
+	return building
 
 # ------------------------------------------------------------------------------
 func _ready() -> void:

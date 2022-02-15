@@ -125,7 +125,7 @@ func _input(event) -> void:
 
 	
 # ------------------------------------------------------------------------------	
-func on_click(mouse_position: Vector2):
+func on_click(mouse_position: Vector2) -> void:
 	var tile_clicked: Vector2 = tile_map.world_to_map(mouse_position)
 	var tile = tile_map.get_cellv(tile_clicked)
 
