@@ -154,7 +154,7 @@ func test_buy_tile_when_placing_building() ->void:
 	_buy_tool.owner_dict.clear()
 	_terrain.set_cellv(TEST_CELL, Tile.Type.GRASS)
 	
-	_build_tool.set_building_type(Tile.Type.FACTORY)
+	_build_tool.set_building_type(Tile.Type.WOOD_FACTORY)
 	
 	_build_tool.place_building(TEST_CELL)
 		
@@ -162,7 +162,7 @@ func test_buy_tile_when_placing_building() ->void:
 	
 	
 	# Places the building and check that it has been placed.
-	assert_eq(Tile.Type.FACTORY, _terrain.get_cellv(TEST_CELL))
+	assert_eq(Tile.Type.WOOD_FACTORY, _terrain.get_cellv(TEST_CELL))
 	
 	# Checks if a mine instance can be found.
 	var factory = find_node(FACTORY_NAME, true, false)

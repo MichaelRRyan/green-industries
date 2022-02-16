@@ -23,7 +23,10 @@ var resource_manager = null
 onready var BuildingScenes = {
 	Tile.Type.LUMBERJACK: preload("res://scripts/classes/wood_harvester_factory.gd"),
 	Tile.Type.MINE: preload("res://scripts/classes/minerals_harvester_factory.gd"),
-	Tile.Type.FACTORY: preload("res://scripts/classes/factory_factory.gd"),
+	Tile.Type.LUMBER_FACTORY: preload("res://scripts/classes/lumber_factory_factory.gd"),
+	Tile.Type.METAL_FACTORY: preload("res://scripts/classes/metal_factory_factory.gd"),
+	Tile.Type.MINERALS_FACTORY: preload("res://scripts/classes/minerals_factory_factory.gd"),
+	Tile.Type.WOOD_FACTORY: preload("res://scripts/classes/wood_factory_factory.gd"),
 	Tile.Type.POWER_PLANT: preload("res://scripts/classes/power_plant_factory.gd"),
 	Tile.Type.PYLON: preload("res://scripts/classes/pylon_factory.gd"),
 	Tile.Type.WOOD_REFINERY: preload("res://scripts/classes/wood_refinery_factory.gd"),
@@ -34,7 +37,10 @@ onready var BuildingScenes = {
 onready var BuildingPreviews = {
 	Tile.Type.LUMBERJACK: Rect2(390, 500, 128, 140),
 	Tile.Type.MINE: Rect2(520, 500, 120, 140),
-	Tile.Type.FACTORY: Rect2(640, 500, 120, 140),
+	Tile.Type.LUMBER_FACTORY: Rect2(640, 510, 120, 140),
+	Tile.Type.METAL_FACTORY: Rect2(640, 510, 120, 140),
+	Tile.Type.MINERALS_FACTORY: Rect2(640, 510, 120, 140),
+	Tile.Type.WOOD_FACTORY: Rect2(640, 510, 120, 140),
 	Tile.Type.POWER_PLANT: Rect2(770, 500, 128, 140),
 	Tile.Type.PYLON: Rect2(900, 500, 128, 140),
 	Tile.Type.WOOD_REFINERY: Rect2(1040, 500, 128, 128),
@@ -172,18 +178,27 @@ func _unhandled_input(event : InputEvent) -> void:
 			set_building_type(Tile.Type.MINE)
 		
 		elif event.is_action_pressed("select_3"):
-			set_building_type(Tile.Type.FACTORY)
-			
-		elif event.is_action_pressed("select_4"):
-			set_building_type(Tile.Type.POWER_PLANT)
+			set_building_type(Tile.Type.LUMBER_FACTORY)
 		
+		elif event.is_action_pressed("select_4"):
+			set_building_type(Tile.Type.METAL_FACTORY)
+			
 		elif event.is_action_pressed("select_5"):
-			set_building_type(Tile.Type.PYLON)
+			set_building_type(Tile.Type.MINERALS_FACTORY)
 			
 		elif event.is_action_pressed("select_6"):
+			set_building_type(Tile.Type.WOOD_FACTORY)
+				
+		elif event.is_action_pressed("select_7"):
+			set_building_type(Tile.Type.POWER_PLANT)
+		
+		elif event.is_action_pressed("select_8"):
+			set_building_type(Tile.Type.PYLON)
+			
+		elif event.is_action_pressed("select_9"):
 			set_building_type(Tile.Type.WOOD_REFINERY)
 			
-		elif event.is_action_pressed("select_7"):
+		elif event.is_action_pressed("select_0"):
 			set_building_type(Tile.Type.MINERALS_REFINERY)
 			
 	elif event.is_action_pressed("build_tool_shortcut"):

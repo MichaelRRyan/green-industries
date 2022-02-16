@@ -11,7 +11,9 @@ func generate_scene(_inventory):
 	_inventory.change_money(-purchase_amount)
 	_inventory.remove_resources(resource_manager.get_resource_type_by_name("wood"), 5)
 	print("Current Money: " + str(_inventory.get_money()))
-	return generate_bought_scene()
+	var scene = generate_bought_scene()
+	scene.set_inventory(_inventory)
+	return scene
 
 func is_able_build(_inventory) -> bool:
 	var purchase_amount = 3000
