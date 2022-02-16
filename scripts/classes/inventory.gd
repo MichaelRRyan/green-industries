@@ -18,7 +18,6 @@ var _resource_manager = null
 func set_peer_id(peer_id : int) -> void:
 	_peer_id = peer_id
 
-
 # ------------------------------------------------------------------------------
 func get_money() -> int:
 	return _money
