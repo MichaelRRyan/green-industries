@@ -16,12 +16,8 @@ func _ready() -> void:
 	networked_players[1] = local_player_data
 	local_player_data.outline_id = colour_outlines.front()
 	colour_outlines.remove(0)
-		
-	# Connects to the player connected and disconnected signals if the host.
-	if Network.state == Network.State.HOSTING:
-		var _r = Network.connect("player_connected", self, "_on_Network_player_connected")
-		_r = Network.connect("player_disconnected", self, "_on_Network_player_disconnected")
-		
+	
+	if not Network.is_client():
 		var id = 1
 		for _i in range(9):
 			id += 1
@@ -37,6 +33,12 @@ func _ready() -> void:
 			add_child(new_ai)
 			ais.back()._set_player_data(player_data)
 			networked_players[id] = ai_data.back()
+		
+	# Connects to the player connected and disconnected signals if the host.
+	if Network.state == Network.State.HOSTING:
+		var _r = Network.connect("player_connected", self, "_on_Network_player_connected")
+		_r = Network.connect("player_disconnected", self, "_on_Network_player_disconnected")
+			
 	# Renames its player data to match the host, if not the host.
 	elif Network.state == Network.State.CONNECTED:
 		var player_data = find_node("PlayerData")

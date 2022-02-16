@@ -1,5 +1,8 @@
 extends Node2D
 
+tool
+
+export var _clear = false setget _set_clear, _get_clear
 
 var tile_size : Vector2  = Vector2.ZERO
 var l=10
@@ -64,6 +67,16 @@ func harvest_cell(cell : Vector2) -> ResourceType:
 
 
 # ------------------------------------------------------------------------------
+func _set_clear(_value : bool) -> void:
+	$TileMap.clear()
+
+
+# ------------------------------------------------------------------------------
+func _get_clear() -> bool:
+	return false
+
+
+# ------------------------------------------------------------------------------
 func _ready() -> void:
 	# If not running in the editor.
 	if not Engine.editor_hint:
@@ -71,12 +84,24 @@ func _ready() -> void:
 		var resource_manager = Utility.get_dependency("resource_manager", self, true)
 		_wood_resource = resource_manager.get_resource_type_by_name("wood")
 		_minerals_resource = resource_manager.get_resource_type_by_name("minerals")
-	
+		
+		if not Network.is_client():
+			randomize()
+			TerrainData.noise_seed = randi()
+			
+		$WorldGenerator.generate_world()
+
+
+# ------------------------------------------------------------------------------
+func _on_WorldGenerator_world_generated(terrain_tiles):
 	tile_size = offset * 2.0 # TEMP
-	for x in range($WorldGenerator.map.size()):
-		for y in range($WorldGenerator.map[x].size()):
-			tile_map.set_cell(x, y, $WorldGenerator.map[x][y])
-			$PollutionSpreading.get_tile_map(tile_map)
+	for x in range(terrain_tiles.size()):
+		for y in range(terrain_tiles[x].size()):
+			$TileMap.set_cell(x, y, terrain_tiles[x][y])
+	
+	if not Engine.editor_hint:
+		$PollutionSpreading.get_tile_map(tile_map)
+
 
 # ------------------------------------------------------------------------------
 remote func _damage_cell(cell : Vector2, remote_call: bool = false) -> void:
@@ -126,8 +151,10 @@ func _remove_damage_info(cell : Vector2) -> void:
 
 # ------------------------------------------------------------------------------
 func _input(event) -> void:
-	if event.is_action_pressed("place_factory"):
-		self.on_click(get_global_mouse_position())
+	# If not running in the editor.
+	if not Engine.editor_hint:
+		if event.is_action_pressed("place_factory"):
+			self.on_click(get_global_mouse_position())
 
 	
 # ------------------------------------------------------------------------------	
@@ -143,4 +170,3 @@ func get_tile_clicked(position : Vector2) -> int:
 	var tile_clicked: Vector2 = tile_map.world_to_map(position)
 	var tile = tile_map.get_cellv(tile_clicked)
 	return tile
-

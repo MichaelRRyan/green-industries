@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scripts/terrain.gd" type="Script" id=1]
 [ext_resource path="res://assets/images/sprite_sheet.png" type="Texture" id=2]
-[ext_resource path="res://scenes/world_generator.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/world/terrain_generator.tscn" type="PackedScene" id=3]
 
 [sub_resource type="TileSet" id=1]
 0/name = "0 Forest"
@@ -241,3 +241,13 @@ format = 1
 
 [node name="WorldGenerator" parent="." instance=ExtResource( 3 )]
 position = Vector2( 178, 186 )
+height/octaves = 3.0
+height/period = 9.6
+height/lacunarity = 0.25
+height/persistence = 0.39
+vegetation/octaves = 3.0
+vegetation/period = 12.075
+vegetation/lacunarity = 2.85
+vegetation/persistence = 0.7
+
+[connection signal="world_generated" from="WorldGenerator" to="." method="_on_WorldGenerator_world_generated"]
