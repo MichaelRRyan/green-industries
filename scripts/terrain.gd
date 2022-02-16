@@ -10,6 +10,8 @@ var offset : Vector2 = Vector2(68, 64)
 var damage_dict = {health = 9}
 var _wood_resource = null
 var _minerals_resource = null
+onready var event_triggers = Utility.get_dependency("event_triggers", self, true)
+onready var owner_dict = Utility.get_dependency("player_data_manager", self, true).owner_dict
 
 # ------------------------------------------------------------------------------
 # Will be used to allow for more empty tiles to be added later (e.g. dirt).
@@ -108,6 +110,10 @@ remote func _damage_cell(cell : Vector2, remote_call: bool = false) -> void:
 			$PollutionSpreading.get_active_pollution($PollutionSpreading.active_pollution)
 			
 		if tile_data.health == 0:
+			if tile_map.get_cellv(cell) == Tile.Type.FOREST:
+				event_triggers.wood_tile_depleted()
+			elif tile_map.get_cellv(cell) == Tile.Type.STONE:
+				event_triggers.stone_tile_depleted()
 			tile_map.set_cellv(cell, Tile.Type.GRASS)
 			_remove_damage_info(cell)
 			

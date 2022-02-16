@@ -23,6 +23,7 @@ func _on_Timer_timeout():
 		current_fuel_amount -= 1
 		fuel_amount_display.text = str(current_fuel_amount)
 		if current_fuel_amount == 0:
+			Utility.get_dependency("event_triggers", self, true).no_power()
 			for building in powered_buildings:
 				building.remove_from_power_sources(self)
 			powered_buildings.clear()
