@@ -4,21 +4,20 @@ onready var _game_state = Utility.get_dependency("game_state", self, true)
 onready var _build_tool = Utility.get_dependency("build_tool", self, true)
 onready var _terrain = Utility.get_dependency("terrain", self, true)
 
+
 var _command_factory : CommandFactories.CommandFactory = null
+	
 
 
 # ------------------------------------------------------------------------------
 func _ready():
-	if Network.is_host():
-		_command_factory = CommandFactories.HostCommandFactory.new()
-		print("Host commands")
-	elif Network.is_client():
-		_command_factory = CommandFactories.ClientCommandFactory.new()
-		print("Client commands")
-	else:
-		_command_factory = CommandFactories.OfflineCommandFactory.new()
-		print("Offline commands")
+	#make sure that the command factory gets a chance to be loaded before trying to access it
+	call_deferred("_get_factory")
 
+
+# ------------------------------------------------------------------------------
+func _get_factory():
+	_command_factory = Utility.get_dependency("command_tool", self, true).command_factory
 
 # ------------------------------------------------------------------------------
 func _unhandled_input(event):

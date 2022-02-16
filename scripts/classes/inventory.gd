@@ -28,7 +28,7 @@ remote func set_money(new_amount : int) -> void:
 	_money = new_amount
 		
 	# Syncs if this is not a local inventory.
-	if _peer_id != _LOCAL_PEER_ID:
+	if _peer_id > 10:
 		rpc_id(_peer_id, "set_money", new_amount)
 	else:
 		emit_signal("money_changed", _money)
@@ -39,7 +39,7 @@ func change_money(change_amount : int) -> void:
 	_money += change_amount
 	
 	# Syncs if this is not a local inventory.
-	if _peer_id != _LOCAL_PEER_ID:
+	if _peer_id > 10:
 		rpc_id(_peer_id, "set_money", _money)
 	else:
 		emit_signal("money_changed", _money)
@@ -65,7 +65,7 @@ func add_resources(resource : ResourceType, quantity : int) -> void:
 		_resources[resource] = quantity
 	
 	# Syncs if this is not a local inventory.
-	if _peer_id != _LOCAL_PEER_ID:
+	if _peer_id > 10:
 		rpc_id(_peer_id, "remotely_set_resource", resource.name, _resources[resource])
 	else:
 		emit_signal("resource_changed", resource, _resources[resource])
@@ -84,7 +84,7 @@ func remove_resources(resource : ResourceType, quantity : int) -> bool:
 		_resources[resource] -= quantity
 		
 		# Syncs if this is not a local inventory.
-		if _peer_id != _LOCAL_PEER_ID:
+		if _peer_id > 10:
 			rpc_id(_peer_id, "remotely_set_resource", resource.name, _resources[resource])
 		else:
 			emit_signal("resource_changed", resource, _resources[resource])

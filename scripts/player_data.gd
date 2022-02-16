@@ -3,10 +3,12 @@ extends Node
 var _owned_buildings : Array = []
 onready var _inventory : Inventory = get_node("Inventory")
 var outline_id
+var id = 0
 
 # ------------------------------------------------------------------------------
 func set_peer_id(peer_id : int) -> void:
 	_inventory.set_peer_id(peer_id)
+	id = peer_id
 	
 	
 # ------------------------------------------------------------------------------

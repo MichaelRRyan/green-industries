@@ -68,7 +68,7 @@ class OfflineBuildCommand:
 	
 	# --------------------------------------------------------------------------
 	func execute() -> void:
-		_build_tool.place_building(_tile_pos)
+		_build_tool.place_building(_tile_pos, _owner_id, _building_type)
 
 
 # ------------------------------------------------------------------------------
@@ -109,7 +109,7 @@ class HostBuildCommand:
 	
 	# --------------------------------------------------------------------------
 	func execute() -> void:
-		_build_tool.place_building(_tile_pos)
+		_build_tool.place_building(_tile_pos, _owner_id, _building_type)
 
 
 # ------------------------------------------------------------------------------

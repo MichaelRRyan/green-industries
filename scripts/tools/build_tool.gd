@@ -60,18 +60,24 @@ func _get_factory_pattern(type : int) -> Node2D:
 
 
 # ------------------------------------------------------------------------------
-func place_building(tile_pos : Vector2) -> void:
+func place_building(tile_pos : Vector2, id : int = 1, building_type: int = -1) -> void:
 	if _terrain.is_tile_empty(tile_pos):
 		
 		# If the tile is already owned.
 		if _buy_tool.owner_dict.has(tile_pos):
 			
 			# If we own the tile.
-			if _buy_tool.owner_dict[tile_pos].id == 1:
-				buy_and_place_building(tile_pos, _building_type)
+			if _buy_tool.owner_dict[tile_pos].id == id:
+				if building_type == -1:
+					buy_and_place_building(tile_pos, _building_type, id)
+				else:
+					buy_and_place_building(tile_pos, building_type, id)
 					
 		else:
-			buy_tile_and_place_building(tile_pos, _building_type)
+			if building_type == -1:
+				buy_tile_and_place_building(tile_pos, _building_type, id)
+			else:
+				buy_tile_and_place_building(tile_pos, building_type, id)
 
 
 # ------------------------------------------------------------------------------

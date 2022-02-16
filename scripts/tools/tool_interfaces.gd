@@ -18,7 +18,7 @@ class BuildTool:
 
 	# --------------------------------------------------------------------------
 	# Pure virtual, throws an error if called.
-	func place_building(_tile_pos : Vector2) -> void:
+	func place_building(_tile_pos : Vector2, _id : int = 1, _building_type: int = 1) -> void:
 		assert(false)
 	
 	# --------------------------------------------------------------------------

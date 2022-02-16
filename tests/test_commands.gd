@@ -13,6 +13,10 @@ var GameplayScene = preload("res://scenes/gameplay/gameplay.tscn")
 const TEST_TILE = Vector2(0, 0)
 
 
+func before_all() -> void:
+	yield(yield_for(0.1), YIELD)
+
+
 # ------------------------------------------------------------------------------
 func test_abstract_command_exists() -> void:
 	# Asserts the abstract command exists.
@@ -153,10 +157,12 @@ func test_factory_output_depends_on_network_state() -> void:
 	
 	var gameplay = GameplayScene.instance()
 	add_child(gameplay)
+	yield(yield_for(0.2), YIELD)
 	var factory = find_node(USER_INPUT_NAME, true, false)._command_factory
 	assert_not_null(factory)
 	
 	# Ensures the factory and its commands are the right type.
+	
 	assert_is(factory, CommandFactories.OfflineCommandFactory)
 	var build_cmd = factory.create_build_command(Vector2(), 0, 0)
 	var buy_land_cmd = factory.create_buy_land_command(Vector2(), 0)
@@ -171,7 +177,7 @@ func test_factory_output_depends_on_network_state() -> void:
 	
 	gameplay = GameplayScene.instance()
 	add_child(gameplay)
-	factory = find_node(USER_INPUT_NAME, true, false)._command_factory
+	factory = find_node("CommandTool", true, false).command_factory
 	assert_not_null(factory)
 	
 	# Ensures the factory and its commands are the right type.
@@ -189,7 +195,7 @@ func test_factory_output_depends_on_network_state() -> void:
 	
 	gameplay = GameplayScene.instance()
 	add_child(gameplay)
-	factory = find_node(USER_INPUT_NAME, true, false)._command_factory
+	factory = find_node("CommandTool", true, false).command_factory
 	assert_not_null(factory)
 	
 	# Ensures the factory and its commands are the right type.
