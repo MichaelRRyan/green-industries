@@ -1,10 +1,14 @@
 extends Control
 
 # Dependencies.
-var _game_state = null
 onready var _pause_menu = Utility.get_dependency("pause_menu", self, true)
 onready var _resource_shop = Utility.get_dependency("resource_shop", self, true)
-var local_player_inventory : Inventory = null
+var _game_state = null
+var _local_player = null
+
+# No real max money, but we need to set a cap for the visual.
+const MAX_MONEY = 40000
+const MAX_POLLUTION = 100 # Percentage.
 
 var _ui_slots = [] # A list of the ui slot nodes.
 var _filled_slots = {} # ResourceType : slot/slot index
@@ -35,14 +39,14 @@ func _ready():
 	var player_data_manager = \
 		Utility.get_dependency("player_data_manager", self, true)
 	
-	local_player_inventory = player_data_manager.local_player_data._inventory
+	_local_player = player_data_manager.local_player_data
 
 	var _r # To discard the return value without warnings.
 	
-	_r = local_player_inventory.connect("money_changed", self, 
+	_r = _local_player._inventory.connect("money_changed", self, 
 		"_on_local_player_money_changed")
 	
-	_r = local_player_inventory.connect("resource_changed", self, 
+	_r = _local_player._inventory.connect("resource_changed", self, 
 		"_on_local_player_resource_changed")
 	
 
@@ -117,7 +121,8 @@ func _on_ShopButton_pressed():
 
 # ------------------------------------------------------------------------------
 func _on_ScoreUpdateTimer_timeout():
-	var pollution = Pollution.total() / 100.0 # Now between 0 and 1
+	var pollution = _local_player.pollution_caused / 100.0 # Now between 0 and 1
+	#var profit = _local_player._inventory.get_money() / MAX_MONEY
 	_score_visual.value = 1 - pollution
 
 

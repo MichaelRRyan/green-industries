@@ -1,6 +1,8 @@
 extends Node
 
+
 var owned_buildings : Dictionary = {}
+var pollution_caused = 0
 onready var _inventory : Inventory = get_node("Inventory")
 var outline_id
 var id = 0

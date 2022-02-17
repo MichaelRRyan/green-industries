@@ -20,6 +20,11 @@ class CommandFactory:
 			
 		assert(false)
 		return Commands.BuyLandCommand.new()
+		
+	func create_bulldoze_command(_tile_pos : Vector2, _owner_id : int = 1) \
+		-> Commands.BullDozeCommand:
+		assert(false)
+		return Commands.BullDozeCommand.new()
 
 
 # ------------------------------------------------------------------------------
@@ -42,6 +47,12 @@ class OfflineCommandFactory:
 		var command = Commands.OfflineBuyLandCommand.new()
 		command.setup(tile_pos, owner_id)
 		return command
+		
+	func create_bulldoze_command(_tile_pos : Vector2, _owner_id : int = 1) \
+		-> Commands.BullDozeCommand:
+		var command = Commands.OfflineBullDozeCommand.new()
+		command.setup(_tile_pos, _owner_id)
+		return command
 
 
 # ------------------------------------------------------------------------------
@@ -63,6 +74,12 @@ class HostCommandFactory:
 		
 		var command = Commands.HostBuyLandCommand.new()
 		command.setup(tile_pos, owner_id)
+		return command
+		
+	func create_bulldoze_command(_tile_pos : Vector2, _owner_id : int = 1) \
+		-> Commands.BullDozeCommand:
+		var command = Commands.HostBullDozeCommand.new()
+		command.setup(_tile_pos, _owner_id)
 		return command
 
 
@@ -87,5 +104,9 @@ class ClientCommandFactory:
 		command.setup(tile_pos)
 		return command
 
-
+	func create_bulldoze_command(_tile_pos : Vector2, _owner_id : int = 1) \
+		-> Commands.BullDozeCommand:
+		var command = Commands.ClientBullDozeComand.new()
+		command.setup(_tile_pos, _owner_id)
+		return command
 # ------------------------------------------------------------------------------

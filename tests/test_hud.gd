@@ -20,6 +20,7 @@ const MINERALS_RESOURCE_NAME = "minerals"
 
 var _gameplay = null
 var _hud = null
+var _local_player = null
 var _inventory : Inventory = null
 var _resource_manager = null
 
@@ -38,11 +39,11 @@ func before_all() -> void:
 	assert_not_null(_hud)
 	
 	# Finds a child node with the player data name and ensures it's not null.
-	var player_data = find_node(PLAYER_DATA_NAME, true, false)
-	assert_not_null(player_data)
+	_local_player = find_node(PLAYER_DATA_NAME, true, false)
+	assert_not_null(_local_player)
 	
 	# Gets a the player data's inventory and ensures it's not null.
-	_inventory = player_data._inventory
+	_inventory = _local_player._inventory
 	assert_not_null(_inventory)
 	
 	# Tries to find the resource manager and ensures it's not null.
@@ -226,9 +227,9 @@ func test_score_visualiser() -> void:
 	assert_not_null(score_visual)
 	assert_true(score_visual.visible)
 	
-	# Changes the pollution level and checks the value changes.
+	# Changes the local player's pollution level and checks the value changes.
 	var value = score_visual.value
-	Pollution.tree_pollution += 50
+	_local_player.pollution_caused += 50
 	yield(yield_for(0.3), YIELD) # Waits for the visual to update.
 	assert_ne(score_visual.value, value)
 

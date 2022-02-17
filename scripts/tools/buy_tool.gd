@@ -114,11 +114,12 @@ func _unhandled_input(event) -> void:
 func _check_price_and_buy(tile_pos : Vector2, inventory) ->bool:
 	if !owner_dict.has(tile_pos):
 		var tile_type = _terrain.get_cellv(tile_pos)
-		var tile_price = tile_Prices[tile_type]
-		if inventory.get_money() >= tile_price:
-			inventory.change_money(-tile_price)
-			return true
-		return false
+		if tile_Prices.has(tile_type):
+			var tile_price = tile_Prices[tile_type]
+			if inventory.get_money() >= tile_price:
+				inventory.change_money(-tile_price)
+				return true
+			
 	return false
 	
 

@@ -91,12 +91,14 @@ func buy_and_place_building(tile_pos : Vector2, building_type : int, player_id :
 
 	var building = set_building(tile_pos, building_type, \
 		_networked_players[player_id]._inventory)
-				
-	# Tells the other clients to place a building.
-	if Network.is_online:
-		rpc("place_building_remote", tile_pos, building_type)
 	
-	emit_signal("building_placed", building, building_type, player_id)
+	# Checks the buildings isn't null.
+	if building:
+		# Tells the other clients to place a building.
+		if Network.is_online:
+			rpc("place_building_remote", tile_pos, building_type)
+		
+		emit_signal("building_placed", building, building_type, player_id)
 
 
 # ------------------------------------------------------------------------------
@@ -111,10 +113,12 @@ remote func request_place_building(tile_pos: Vector2, requested_type: int) -> vo
 					var building = set_building(tile_pos, requested_type, \
 						_networked_players[sender_id]._inventory)
 					
-					# Tells the other clients to place a building.
-					rpc("place_building_remote", tile_pos, requested_type)
-					
-					emit_signal("building_placed", building, requested_type, sender_id)
+					# Checks the buildings isn't null.
+					if building:
+						# Tells the other clients to place a building.
+						rpc("place_building_remote", tile_pos, requested_type)
+						
+						emit_signal("building_placed", building, requested_type, sender_id)
 		
 		else:
 			buy_tile_and_place_building(tile_pos, requested_type, sender_id)

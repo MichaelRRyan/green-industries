@@ -9,7 +9,7 @@ func _ready() -> void:
 		_state.state_machine = self
 		_state.enter(get_parent()) 
 
-func _process(_delta) -> void:
+func update(_delta) -> void:
 	_state.update(_delta)
 
 func transition_to(target_state) -> void:

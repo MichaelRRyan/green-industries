@@ -42,6 +42,10 @@ func _unhandled_input(event):
 			elif Tool.Type.BUY_LAND == _game_state.get_selected_tool():
 				var command = _command_factory.create_buy_land_command(mouse_tile)
 				command.execute()
+			
+			elif Tool.Type.DESTROY == _game_state.get_selected_tool():
+				var command = _command_factory.create_bulldoze_command(mouse_tile)
+				command.execute()
 
 
 # ------------------------------------------------------------------------------

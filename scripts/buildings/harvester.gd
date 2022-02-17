@@ -2,7 +2,6 @@ extends Node2D
 
 signal resource_gathered(resource)
 
-
 export var seconds_per_harvest : float = 5.0
 export(Tile.Type) var harvest_tile_type : int = Tile.Type.FOREST
 
@@ -25,6 +24,15 @@ func _ready() -> void:
 	if _terrain and (not Network.is_online or Network.state == Network.State.HOSTING):
 		$HarvestTimer.start(seconds_per_harvest)
 		_tile_position = _terrain.get_tile_from_global_position(global_position)
+		
+	var bulldoze_tool = Utility.get_dependency("bulldoze_tool")
+	bulldoze_tool.connect("building_destroyed", self, "destroy_building")
+
+
+
+func destroy_building(tile_pos : Vector2) -> void:
+	if _tile_position == tile_pos:
+		queue_free()
 
 
 # ------------------------------------------------------------------------------
