@@ -26,6 +26,10 @@ func _on_Exit_pressed():
 
 # ------------------------------------------------------------------------------
 func _ready():
+	# Resets the network upon entering the main menu.
+	Network.close_connection()
+	Network.state = Network.State.OFFLINE
+	
 	# Gets the buttons and connects their signals to animate them.
 	buttons = get_tree().get_nodes_in_group("button")
 	for button in buttons:
@@ -77,13 +81,6 @@ func _button_animate_shrink(button : Button):
 	var _r = tween.interpolate_property(button, "rect_scale", _BUTTON_EXPAND_SCALE, Vector2.ONE,
 		_BUTTON_ANIMATION_LENGTH, _BUTTON_TRANS_TYPE, _BUTTON_EASE_TYPE)
 	_r = tween.start()
-
-
-# ------------------------------------------------------------------------------
-func _ready():
-	# Resets the network upon entering the main menu.
-	Network.close_connection()
-	Network.state = Network.State.OFFLINE
 
 
 # ------------------------------------------------------------------------------
