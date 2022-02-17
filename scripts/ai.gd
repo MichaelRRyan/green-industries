@@ -1,5 +1,6 @@
 extends Node2D
 
+
 var ai_data = null
 onready var is_active = false
 var _command_factory : CommandFactories.CommandFactory = null
@@ -9,6 +10,7 @@ onready var _place_building_timer = get_node("PlaceBuildingTimer")
 const TILE_MAP_SIZE = 100
 var controlled_tiles = []
 var _terrain = null
+onready var _state_machine = get_node("StateMachine")
 
 func _ready():
 	_terrain = Utility.get_dependency("terrain", self, true)
@@ -34,6 +36,7 @@ func _set_inactive() -> void:
 	ai_data = null
 	
 func _on_BuyTileTimer_timeout():
+	_state_machine.transition_to(States.NoLandState)
 	var buy_tile : Vector2 = Vector2(randi() % TILE_MAP_SIZE, randi() % TILE_MAP_SIZE)
 	var still_looking = true
 	while _player_data_manager.owner_dict.has(buy_tile) or still_looking and is_active:
@@ -54,9 +57,11 @@ func _on_BuyTileTimer_timeout():
 		controlled_tiles.push_back(buy_tile)
 		_place_building_timer.start()
 		print("found tile at: " + "(" + str(buy_tile.x) + ", " + str(buy_tile.y) + ")")
+		_state_machine.transition_to(States.IdleState)
 
 
 func _on_PlaceBuildingTimer_timeout():
+	_state_machine.transition_to(States.NoResourceState)
 	if is_active:
 		var neighbours = Utility.get_neighbours(controlled_tiles.front())
 		var contains_trees = false
@@ -86,3 +91,5 @@ func _on_PlaceBuildingTimer_timeout():
 			command = _command_factory.create_buy_land_command(buy_tile, ai_data.id)
 			command.execute()
 			controlled_tiles.push_back(buy_tile)
+			_state_machine.transition_to(States.IdleState)
+
