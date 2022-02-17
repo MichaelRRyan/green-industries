@@ -29,7 +29,9 @@ func save_player_data_manager(player_data_manager):
 	save_dictionary["networked_players"] = net_dict
 	
 func save_pollution():
-	save_dictionary["pollution_level"] = Pollution.total()
+	var _pollution_manager = Utility.get_dependency("pollution_manager")
+	if _pollution_manager:
+		save_dictionary["pollution_level"] = _pollution_manager.get_pollution_percent()
 
 func save_terrain(terrain):
 	save_dictionary["terrain"] = terrain.get_tiles()

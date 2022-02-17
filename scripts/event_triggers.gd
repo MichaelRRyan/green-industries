@@ -1,5 +1,6 @@
 extends Control
 
+onready var _pollution_manager = Utility.get_dependency("pollution_manager", self, true)
 var inventory : Inventory
 var resource_manager
 
@@ -24,6 +25,8 @@ var pollution_printed_2 : bool
 var pollution_printed_3 : bool
 var pollution_printed_4 : bool
 var pollution_printed_5 : bool
+
+var _last_pollution = 0
 
 func _ready():
 	call_deferred("set_up")
@@ -99,41 +102,39 @@ func low_money():
 	element.get_node("AcceptDialog").popup()
 
 func pollution_levels():
-	if Pollution.total() == 10 and !pollution_printed_1:
+	var pollution = _pollution_manager.get_pollution_percent()
+	
+	if pollution > 10 and _last_pollution < 10:
 		var element = ObjectPool.take_node(POLLUTION_NAME)
 		self.add_child(element)
 		element.get_node("AcceptDialog").dialog_text  = "The world is at 10% of pollution"
 		element.get_node("AcceptDialog").popup()
-		pollution_printed_1 = true
-		pollution_printed_5 = false
-	elif Pollution.total() >= 25 and Pollution.total() <= 26 and !pollution_printed_2:
+		
+	elif pollution > 25 and _last_pollution < 25:
 		var element = ObjectPool.take_node(POLLUTION_NAME)
 		self.add_child(element)
 		element.get_node("AcceptDialog").dialog_text  = "The world is at 25% of pollution"
 		element.get_node("AcceptDialog").popup()
-		pollution_printed_2 = true
-		pollution_printed_1 = false
-	elif Pollution.total() == 50 and !pollution_printed_3:
+		
+	elif pollution > 50 and _last_pollution < 50:
 		var element = ObjectPool.take_node(POLLUTION_NAME)
 		self.add_child(element)
 		element.get_node("AcceptDialog").dialog_text  = "The world is at 50% of pollution"
 		element.get_node("AcceptDialog").popup()
-		pollution_printed_3 = true
-		pollution_printed_2 = false
-	elif Pollution.total() >= 75 and Pollution.total() <= 76 and !pollution_printed_4:
+		
+	elif pollution > 75 and _last_pollution < 75:
 		var element = ObjectPool.take_node(POLLUTION_NAME)
 		self.add_child(element)
 		element.get_node("AcceptDialog").dialog_text  = "The world is at 75% of pollution"
 		element.get_node("AcceptDialog").popup()
-		pollution_printed_4 = true
-		pollution_printed_3 = false
-	elif Pollution.total() == 100 and !pollution_printed_5:
+		
+	elif pollution > 99 and _last_pollution < 99:
 		var element = ObjectPool.take_node(POLLUTION_NAME)
 		self.add_child(element)
 		element.get_node("AcceptDialog").dialog_text  = "The world is at 100% of pollution"
 		element.get_node("AcceptDialog").popup()
-		pollution_printed_5 = true
-		pollution_printed_4 = false
+	
+	_last_pollution = pollution
 
 func _process(_delta):
 	pollution_levels()

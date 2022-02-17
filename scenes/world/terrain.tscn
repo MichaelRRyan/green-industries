@@ -282,7 +282,7 @@ cell_size = Vector2( 112, 96 )
 cell_half_offset = 0
 format = 1
 
-[node name="WorldGenerator" parent="." instance=ExtResource( 3 )]
+[node name="WorldGenerator" parent="." groups=["world_generator"] instance=ExtResource( 3 )]
 position = Vector2( 178, 186 )
 height/octaves = 3.0
 height/period = 9.6

@@ -1,5 +1,6 @@
 extends Node
 
+var pollution_caused = 0
 var _owned_buildings : Array = []
 onready var _inventory : Inventory = get_node("Inventory")
 var outline_id
