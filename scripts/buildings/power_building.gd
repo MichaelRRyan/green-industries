@@ -8,6 +8,8 @@ var nearby_buildings = []
 var powered_buildings = []
 var power_roots = {}
 
+onready var can_add_fuel = true
+
 # ------------------------------------------------------------------------------
 func _on_PowerBuilding_area_entered(area):
 	nearby_buildings.push_back(area)
@@ -92,6 +94,16 @@ func get_radius() -> float:
 
 func _ready():
 	get_node("CollisionShape2D").shape.radius = tile_radius * 110
+
+
+func destroy_building(tile_pos : Vector2) -> void:
+	if _tile_position == tile_pos:
+		can_add_fuel = false
+		Utility.get_dependency("event_triggers", self, true).no_power()
+		for building in powered_buildings:
+			building.remove_from_power_sources(self)
+		powered_buildings.clear()
+		queue_free()
 
 
 func is_powered() -> bool:

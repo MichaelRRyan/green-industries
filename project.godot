@@ -14,10 +14,45 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/classes/abstract_factory_pattern.gd"
 }, {
+"base": "Reference",
+"class": "CommandFactories",
+"language": "GDScript",
+"path": "res://scripts/classes/command_factory.gd"
+}, {
+"base": "Reference",
+"class": "Commands",
+"language": "GDScript",
+"path": "res://scripts/classes/command.gd"
+}, {
+"base": "Reference",
+"class": "FactoryFactory",
+"language": "GDScript",
+"path": "res://scripts/classes/factory_factory.gd"
+}, {
 "base": "Node",
 "class": "Inventory",
 "language": "GDScript",
 "path": "res://scripts/classes/inventory.gd"
+}, {
+"base": "Reference",
+"class": "LumberFactoryFactory",
+"language": "GDScript",
+"path": "res://scripts/classes/lumber_factory_factory.gd"
+}, {
+"base": "Reference",
+"class": "MetalFactoryFactory",
+"language": "GDScript",
+"path": "res://scripts/classes/metal_factory_factory.gd"
+}, {
+"base": "Reference",
+"class": "MineralsFactoryFactory",
+"language": "GDScript",
+"path": "res://scripts/classes/minerals_factory_factory.gd"
+}, {
+"base": "Reference",
+"class": "MineralsHarvesterFactory",
+"language": "GDScript",
+"path": "res://scripts/classes/minerals_harvester_factory.gd"
 }, {
 "base": "Reference",
 "class": "MineralsRefineryFactory",
@@ -25,9 +60,34 @@ _global_script_classes=[ {
 "path": "res://scripts/classes/minerals_refinery_factory_pattern.gd"
 }, {
 "base": "Reference",
+"class": "PowerPlantFactory",
+"language": "GDScript",
+"path": "res://scripts/classes/power_plant_factory.gd"
+}, {
+"base": "Reference",
+"class": "PylonFactory",
+"language": "GDScript",
+"path": "res://scripts/classes/pylon_factory.gd"
+}, {
+"base": "Reference",
 "class": "ResourceType",
 "language": "GDScript",
 "path": "res://scripts/classes/resource_type.gd"
+}, {
+"base": "Node",
+"class": "State",
+"language": "GDScript",
+"path": "res://scripts/classes/state.gd"
+}, {
+"base": "Reference",
+"class": "States",
+"language": "GDScript",
+"path": "res://scripts/classes/states.gd"
+}, {
+"base": "Reference",
+"class": "TerrainInterfaces",
+"language": "GDScript",
+"path": "res://scripts/terrain_interface.gd"
 }, {
 "base": "Reference",
 "class": "Tile",
@@ -40,17 +100,47 @@ _global_script_classes=[ {
 "path": "res://scripts/classes/tool_types.gd"
 }, {
 "base": "Reference",
+"class": "ToolInterfaces",
+"language": "GDScript",
+"path": "res://scripts/tools/tool_interfaces.gd"
+}, {
+"base": "Reference",
+"class": "WoodFactoryFactory",
+"language": "GDScript",
+"path": "res://scripts/classes/wood_factory_factory.gd"
+}, {
+"base": "Reference",
+"class": "WoodHarvesterFactory",
+"language": "GDScript",
+"path": "res://scripts/classes/wood_harvester_factory.gd"
+}, {
+"base": "Reference",
 "class": "WoodRefineryFactory",
 "language": "GDScript",
 "path": "res://scripts/classes/wood_refinery_factory.gd"
 } ]
 _global_script_class_icons={
 "AbstractFactory": "",
+"CommandFactories": "",
+"Commands": "",
+"FactoryFactory": "",
 "Inventory": "",
+"LumberFactoryFactory": "",
+"MetalFactoryFactory": "",
+"MineralsFactoryFactory": "",
+"MineralsHarvesterFactory": "",
 "MineralsRefineryFactory": "",
+"PowerPlantFactory": "",
+"PylonFactory": "",
 "ResourceType": "",
+"State": "",
+"States": "",
+"TerrainInterfaces": "",
 "Tile": "",
 "Tool": "",
+"ToolInterfaces": "",
+"WoodFactoryFactory": "",
+"WoodHarvesterFactory": "",
 "WoodRefineryFactory": ""
 }
 
@@ -77,8 +167,9 @@ config/icon="res://assets/images/powerPlant.png"
 Network="*res://scripts/server.gd"
 Utility="*res://scripts/utility.gd"
 TerrainData="*res://scripts/terrain_data.gd"
-Pollution="*res://scripts/pollution.gd"
 GetGameStat="*res://scripts/get_game_stat.gd"
+ObjectPool="*res://scripts/classes/object_pool.gd"
+Pollution="*res://scripts/pollution.gd"
 
 [editor_plugins]
 
@@ -227,6 +318,26 @@ select_4={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":52,"unicode":0,"echo":false,"script":null)
  ]
 }
+select_8={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":56,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+select_9={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":57,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+select_0={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":48,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+bulldoze_tool_shortcut={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":79,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [input_devices]
 
@@ -241,7 +352,3 @@ pointing/emulate_touch_from_mouse=true
 [physics]
 
 common/enable_pause_aware_picking=true
-
-[rendering]
-
-environment/default_environment="res://default_env.tres"

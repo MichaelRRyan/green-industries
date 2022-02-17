@@ -2,9 +2,10 @@
 
 [ext_resource path="res://scripts/terrain.gd" type="Script" id=1]
 [ext_resource path="res://assets/images/sprite_sheet.png" type="Texture" id=2]
-[ext_resource path="res://scenes/world_generator.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/world/terrain_generator.tscn" type="PackedScene" id=3]
 
 [sub_resource type="TileSet" id=1]
+resource_local_to_scene = true
 0/name = "0 Forest"
 0/texture = ExtResource( 2 )
 0/tex_offset = Vector2( 0, 0 )
@@ -191,7 +192,7 @@
 13/texture = ExtResource( 2 )
 13/tex_offset = Vector2( 0, 0 )
 13/modulate = Color( 1, 1, 1, 1 )
-13/region = Rect2( 640, 512, 128, 128 )
+13/region = Rect2( 640, 256, 128, 128 )
 13/tile_mode = 0
 13/occluder_offset = Vector2( 0, 0 )
 13/navigation_offset = Vector2( 0, 0 )
@@ -229,6 +230,48 @@
 15/shape_one_way_margin = 0.0
 15/shapes = [  ]
 15/z_index = 0
+16/name = "16 Lumber Factory"
+16/texture = ExtResource( 2 )
+16/tex_offset = Vector2( 0, 0 )
+16/modulate = Color( 1, 1, 1, 1 )
+16/region = Rect2( 640, 128, 128, 128 )
+16/tile_mode = 0
+16/occluder_offset = Vector2( 0, 0 )
+16/navigation_offset = Vector2( 0, 0 )
+16/shape_offset = Vector2( 0, 0 )
+16/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+16/shape_one_way = false
+16/shape_one_way_margin = 0.0
+16/shapes = [  ]
+16/z_index = 0
+17/name = "17 Minerals Factory"
+17/texture = ExtResource( 2 )
+17/tex_offset = Vector2( 0, 0 )
+17/modulate = Color( 1, 1, 1, 1 )
+17/region = Rect2( 640, 512, 128, 128 )
+17/tile_mode = 0
+17/occluder_offset = Vector2( 0, 0 )
+17/navigation_offset = Vector2( 0, 0 )
+17/shape_offset = Vector2( 0, 0 )
+17/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+17/shape_one_way = false
+17/shape_one_way_margin = 0.0
+17/shapes = [  ]
+17/z_index = 0
+18/name = "18 Wood factory"
+18/texture = ExtResource( 2 )
+18/tex_offset = Vector2( 0, 0 )
+18/modulate = Color( 1, 1, 1, 1 )
+18/region = Rect2( 640, 512, 128, 128 )
+18/tile_mode = 0
+18/occluder_offset = Vector2( 0, 0 )
+18/navigation_offset = Vector2( 0, 0 )
+18/shape_offset = Vector2( 0, 0 )
+18/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+18/shape_one_way = false
+18/shape_one_way_margin = 0.0
+18/shapes = [  ]
+18/z_index = 0
 
 [node name="Terrain" type="Node2D"]
 script = ExtResource( 1 )
@@ -239,5 +282,15 @@ cell_size = Vector2( 112, 96 )
 cell_half_offset = 0
 format = 1
 
-[node name="WorldGenerator" parent="." instance=ExtResource( 3 )]
+[node name="WorldGenerator" parent="." groups=["world_generator"] instance=ExtResource( 3 )]
 position = Vector2( 178, 186 )
+height/octaves = 3.0
+height/period = 9.6
+height/lacunarity = 0.25
+height/persistence = 0.39
+vegetation/octaves = 3.0
+vegetation/period = 12.075
+vegetation/lacunarity = 2.85
+vegetation/persistence = 0.7
+
+[connection signal="world_generated" from="WorldGenerator" to="." method="_on_WorldGenerator_world_generated"]

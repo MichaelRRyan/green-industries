@@ -5,11 +5,10 @@
 [node name="Camera" type="Camera2D"]
 position = Vector2( 565, 335 )
 current = true
-limit_left = 55
+limit_left = 66
 limit_top = 35
-limit_right = 11000
-limit_bottom = 9500
-limit_smoothed = true
+limit_right = 11207
+limit_bottom = 9598
 smoothing_enabled = true
 editor_draw_limits = true
 script = ExtResource( 1 )

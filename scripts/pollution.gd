@@ -47,6 +47,7 @@ func total():
 	var sum = grass_pollution + tree_pollution + carbon + water_pollution + mountain_pollution 
 	var average = sum / 5
 	var v = average / MAX_POLLUTION
+
 	return v * 100.0 # A percentage.
 	
 

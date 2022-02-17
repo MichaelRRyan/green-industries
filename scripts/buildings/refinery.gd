@@ -10,6 +10,7 @@ var data = null
 var resource_manager = null
 var num_ingredients = 0
 var ingredients = {}
+var inventory = null
 
 
 func set_output_material(material) -> void:
@@ -32,13 +33,13 @@ func _process(delta):
 
 func _add_resource_to_building(ingredient) -> void:
 	var id = ingredient.resource_id
-	var num_ingredient = data._inventory.get_quantity(resource_manager.get_resource_type(id))
+	var num_ingredient = inventory.get_quantity(resource_manager.get_resource_type(id))
 	if num_ingredient > 0:
 		if not ingredients.has(id):
 			ingredients[id] = 0
 		ingredients[id] += 1
-		data._inventory.remove_resources(resource_manager.get_resource_type(id), 1)
-		num_ingredient = data._inventory.get_quantity(resource_manager.get_resource_type(id))
+		inventory.remove_resources(resource_manager.get_resource_type(id), 1)
+		num_ingredient = inventory.get_quantity(resource_manager.get_resource_type(id))
 
 
 func _on_Refinery_input_event(viewport, event, shape_idx):
@@ -72,5 +73,8 @@ func _reduce_stored_resources() -> void:
 func _on_CreateResourceTimer_timeout():
 	if is_powered() and _has_all_required_ingredients():
 		_reduce_stored_resources()
-		data._inventory.add_resources(output_material, 1)
-		print("Amount of refined resource: " + str(data._inventory.get_quantity(output_material)))
+		inventory.add_resources(output_material, 1)
+		print("Amount of refined resource: " + str(inventory.get_quantity(output_material)))
+		
+func set_inventory(_inventory):
+	inventory = _inventory

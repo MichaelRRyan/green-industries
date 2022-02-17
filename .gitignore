@@ -6,7 +6,11 @@ export_presets.cfg
 # Project specific ignores
 builds/
 android/
+default_env.tres
 
 # Mono-specific ignores
 .mono/
 data_*/
+
+# Plugin-specific ignores
+.gut_editor_shortcuts.cfg

@@ -80,3 +80,10 @@ func _button_animate_shrink(button : Button):
 
 
 # ------------------------------------------------------------------------------
+func _ready():
+	# Resets the network upon entering the main menu.
+	Network.close_connection()
+	Network.state = Network.State.OFFLINE
+
+
+# ------------------------------------------------------------------------------

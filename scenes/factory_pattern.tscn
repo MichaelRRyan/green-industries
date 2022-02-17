@@ -1,8 +1,9 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scripts/factory_pattern.gd" type="Script" id=1]
-[ext_resource path="res://scenes/factory.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/buildings/factory.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/buildings/power_plant.tscn" type="PackedScene" id=3]
+
 
 [node name="Node" type="Node"]
 script = ExtResource( 1 )

@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/world/terrain_generator.gd" type="Script" id=1]
+
+[node name="WorldGenerator" type="Node2D"]
+script = ExtResource( 1 )
+height/octaves = 2
+height/period = 64
+height/lacunarity = 2.0
+height/persistence = 0.75
+vegetation/octaves = 2
+vegetation/period = 64
+vegetation/lacunarity = 2.0
+vegetation/persistence = 0.75
+randomize_seed = true
+generate = null
