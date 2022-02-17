@@ -292,6 +292,7 @@ __meta__ = {
 }
 
 [node name="time_left" parent="Header" instance=ExtResource( 7 )]
+mouse_filter = 2
 
 [node name="Footer" type="Panel" parent="."]
 anchor_left = 0.2
