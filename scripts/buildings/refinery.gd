@@ -44,9 +44,11 @@ func _add_resource_to_building(ingredient) -> void:
 
 func _on_Refinery_input_event(viewport, event, shape_idx):
 	if event.is_action_pressed("upgrade_factory") and respond_to_input:
-		for ingredient in output_material.recipe.ingredients:
-			_add_resource_to_building(ingredient)
+		_input_ingredients()
 
+func _input_ingredients():
+	for ingredient in output_material.recipe.ingredients:
+		_add_resource_to_building(ingredient)
 
 func _on_Timer_timeout():
 	respond_to_input = true

@@ -13,8 +13,13 @@ one_shot = true
 wait_time = 5.0
 one_shot = true
 
+[node name="WaitTimer" type="Timer" parent="."]
+wait_time = 0.001
+one_shot = true
+
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource( 2 )
 
 [connection signal="timeout" from="BuyTileTimer" to="." method="_on_BuyTileTimer_timeout"]
 [connection signal="timeout" from="PlaceBuildingTimer" to="." method="_on_PlaceBuildingTimer_timeout"]
+[connection signal="timeout" from="WaitTimer" to="." method="_on_WaitTimer_timeout"]
