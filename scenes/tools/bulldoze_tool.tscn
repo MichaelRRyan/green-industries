@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/tools/bulldoze_tool.gd" type="Script" id=1]
+
+[node name="BullDozeTool" type="Node2D" groups=["bulldoze_tool"]]
+script = ExtResource( 1 )

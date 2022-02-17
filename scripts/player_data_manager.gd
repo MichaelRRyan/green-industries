@@ -50,6 +50,7 @@ func _ready() -> void:
 
 #-------------------------------------------------------------------------------
 func _on_Network_player_connected(peer_id : int) -> void:
+	var ai_id = ai_data.front().id
 	ai_data.front().set_name("PlayerData" + str(peer_id))
 	ai_data.front().set_peer_id(peer_id)
 	networked_players[peer_id] = ai_data.front()
@@ -57,6 +58,9 @@ func _on_Network_player_connected(peer_id : int) -> void:
 	ais.front()._set_inactive()
 	var ai = ais.pop_front()
 	ai.queue_free()
+	for key in owner_dict:
+		if owner_dict[key].id == ai_id:
+			owner_dict[key].id = peer_id
 
 #-------------------------------------------------------------------------------
 func _on_Network_player_disconnected(peer_id : int) -> void:

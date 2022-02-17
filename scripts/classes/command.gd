@@ -47,6 +47,16 @@ class BuyLandCommand:
 		assert(false)
 
 
+class BullDozeCommand:
+	extends AbstractCommand
+	
+	var _bulldoze_tool = Utility.get_dependency("bulldoze_tool")
+	
+	func setup(_tile_pos : Vector2, _owner_id : int = 1) -> void:
+		assert(false)
+		
+	func execute() -> void:
+		assert(false)
 # ------------------------------------------------------------------------------
 # CONCRETE COMMANDS
 # ------------------------------------------------------------------------------
@@ -89,7 +99,21 @@ class OfflineBuyLandCommand:
 	func execute() -> void:
 		_buy_tool.buy_tile(_tile_pos, _owner_id)
 
-
+class OfflineBullDozeCommand:
+	extends BullDozeCommand
+	
+	var _tile_pos = Vector2.ZERO
+	var _owner_id = 1 # Defaults to local player (1).
+	
+	# --------------------------------------------------------------------------
+	func setup(tile_pos : Vector2, owner_id : int = 1) -> void:
+		_tile_pos = tile_pos
+		_owner_id = owner_id
+	
+	
+	# --------------------------------------------------------------------------
+	func execute() -> void:
+		_bulldoze_tool.bulldose_tile(_tile_pos, _owner_id)
 # ------------------------------------------------------------------------------
 # Used for hosted games.
 class HostBuildCommand:
@@ -130,7 +154,21 @@ class HostBuyLandCommand:
 	func execute() -> void:
 		_buy_tool.buy_tile(_tile_pos, _owner_id)
 
-
+class HostBullDozeCommand:
+	extends BullDozeCommand
+	
+	var _tile_pos = Vector2.ZERO
+	var _owner_id = 1 # Defaults to local player (1).
+	
+	# --------------------------------------------------------------------------
+	func setup(tile_pos : Vector2, owner_id : int = 1) -> void:
+		_tile_pos = tile_pos
+		_owner_id = owner_id
+	
+	
+	# --------------------------------------------------------------------------
+	func execute() -> void:
+		_bulldoze_tool.bulldose_tile(_tile_pos, _owner_id)
 # ------------------------------------------------------------------------------
 # Used for multiplayer games as the client.
 class ClientBuildCommand:
@@ -167,6 +205,17 @@ class ClientBuyLandCommand:
 	# --------------------------------------------------------------------------
 	func execute() -> void:
 		_buy_tool.rpc_id(1, "request_buy", _tile_pos)
-
-
 # ------------------------------------------------------------------------------
+
+class ClientBullDozeComand:
+	extends BullDozeCommand
+	var _tile_pos = Vector2.ZERO
+	
+	# --------------------------------------------------------------------------
+	func setup(tile_pos : Vector2, _unused_id : int = -1) -> void:
+		_tile_pos = tile_pos
+	
+	
+	# --------------------------------------------------------------------------
+	func execute() -> void:
+		_bulldoze_tool.rpc_id(1, "request_bulldoze", _tile_pos)

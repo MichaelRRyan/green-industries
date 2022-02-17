@@ -50,6 +50,8 @@ func _draw():
 
 
 remote func increase_fuel(is_caller: bool) -> void:
+	if not can_add_fuel:
+		return
 	if Network.is_online and is_caller:
 		rpc("increase_fuel", false)
 	if current_fuel_amount < max_fuel_amount:
