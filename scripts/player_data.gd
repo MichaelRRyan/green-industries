@@ -20,10 +20,13 @@ func on_building_placed(building : Node2D, type : int) -> void:
 		var _r = building.connect("resource_gathered", self, 
 			"_on_harvester_resource_gathered")
 
-	
+
 # ------------------------------------------------------------------------------
 func _on_harvester_resource_gathered(resource : ResourceType) -> void:
 	_inventory.add_resources(resource, 1)
 
 	
 # ------------------------------------------------------------------------------
+func accept(vistor) -> void:
+	vistor.save_player_data(self)
+	

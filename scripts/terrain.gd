@@ -6,13 +6,15 @@ export var _clear = false setget _set_clear, _get_clear
 
 var tile_size : Vector2  = Vector2.ZERO
 var l=10
-var test = 0
+var test = null
 onready var tile_map : TileMap = $TileMap
 onready var resources = 100
 var offset : Vector2 = Vector2(68, 64)
 var damage_dict = {health = 9}
 var _wood_resource = null
 var _minerals_resource = null
+const WIDTH = 100
+const HEIGHT = 100
 onready var event_triggers = Utility.get_dependency("event_triggers", self, true)
 onready var owner_dict = Utility.get_dependency("player_data_manager", self, true).owner_dict
 
@@ -43,13 +45,25 @@ func set_cellv(cell : Vector2, type : int) -> void:
 	if damage_dict.has(cell):
 		_remove_damage_info(cell)
 
+#makes the itle map a 2D array--------------------------------------------------
+func get_tiles():
+	var ah = []
+	for x in WIDTH:
+		ah.append([])
+		for y in HEIGHT:
+			ah[x].append($TileMap.get_cell(x,y))
+	return ah
+
 
 # ------------------------------------------------------------------------------
 # Propogating the method out from TileMap.
 func get_cellv(cell : Vector2) -> int:
 	return tile_map.get_cellv(cell)
 
-
+func accept(vistor) -> void:
+	vistor.save_terrain(self)
+	
+	
 # ------------------------------------------------------------------------------
 # This method should be refactored in the future to remove the hardcoding.
 func harvest_cell(cell : Vector2) -> ResourceType:

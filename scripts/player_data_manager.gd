@@ -69,3 +69,5 @@ func _on_Network_player_disconnected(peer_id : int) -> void:
 
 
 #-------------------------------------------------------------------------------
+func accept(vistor) -> void:
+	vistor.save_player_data_manager(self)

@@ -54,8 +54,13 @@ remote func add_to_owner_dict(tile_pos: Vector2, id) ->void:
 # ------------------------------------------------------------------------------
 func sync_owner_tile_map(tile_pos: Vector2, outline_id) ->void:
 	tile_map.set_cellv(tile_pos, outline_id)
+	
 
+func accept(vistor) -> void:
+	vistor.save_buy_tool(self)
+		 
 
+	
 # ------------------------------------------------------------------------------
 func check_availble(tile_pos : Vector2) ->bool:
 	if !owner_dict.has(tile_pos):

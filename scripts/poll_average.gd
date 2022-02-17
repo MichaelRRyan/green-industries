@@ -26,8 +26,12 @@ func update_grass_pollution_label():
 func total_pollution():
 	var sum = Pollution.total()
 	$op/pre.text = str(sum) + "%"
-	
-	
+
+func total():
+		var sum = Pollution.total()
+		return sum
+
+
 func show() -> void:
 	.show() # Calls show on the base class.
 	

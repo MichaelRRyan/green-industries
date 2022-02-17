@@ -150,6 +150,7 @@ func _get_tile_from_vegetation(noise_sample):
 		return Tile.Type.GRASS
 		
 	if noise_sample < 0.5:
+		
 		return Tile.Type.FOREST
 		
 	return Tile.Type.GRASS
