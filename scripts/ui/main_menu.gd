@@ -11,12 +11,12 @@ var buttons = []
 
 # ------------------------------------------------------------------------------
 func _on_Play_pressed():
-	var _value = get_tree().change_scene("res://scenes/lobby.tscn");
+	var _value = get_tree().change_scene("res://scenes/ui/lobby.tscn");
 
 
 # ------------------------------------------------------------------------------
 func _on_Options_pressed():
-	var _set = get_tree().change_scene("res://scenes/settings.tscn");
+	var _set = get_tree().change_scene("res://scenes/ui/settings.tscn");
 
 
 # ------------------------------------------------------------------------------

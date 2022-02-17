@@ -100,10 +100,6 @@ func _ready() -> void:
 		var resource_manager = Utility.get_dependency("resource_manager", self, true)
 		_wood_resource = resource_manager.get_resource_type_by_name("wood")
 		_minerals_resource = resource_manager.get_resource_type_by_name("minerals")
-		
-		if not Network.is_client():
-			randomize()
-			TerrainData.noise_seed = randi()
 			
 		$WorldGenerator.generate_world()
 

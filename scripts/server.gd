@@ -29,13 +29,6 @@ func _ready():
 	network.connect("peer_disconnected", self, "_peer_disconnected")
 	network.connect("connection_succeeded", self, "_on_connection_succeeded")
 	network.connect("connection_failed", self, "_on_connection_failed")
-	
-
-func solo_Player():
-	if state == State.SOLO:
-		emit_signal("single_player")
-		print("ONE PLAYER NOT A SERVER")
-		var _val = get_tree().change_scene("res://scenes/gameplay/gameplay.tscn")
 
 
 func start_server():
@@ -53,6 +46,7 @@ func close_connection():
 		network.close_connection()
 		state = State.OFFLINE
 		is_online = false
+		print("Connection closed")
 	
 
 func _peer_connected(peer_id):
