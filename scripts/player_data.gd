@@ -1,6 +1,6 @@
 extends Node
 
-var _owned_buildings : Array = []
+var owned_buildings : Dictionary = {}
 onready var _inventory : Inventory = get_node("Inventory")
 var outline_id
 var id = 0
@@ -13,7 +13,10 @@ func set_peer_id(peer_id : int) -> void:
 	
 # ------------------------------------------------------------------------------
 func on_building_placed(building : Node2D, type : int) -> void:
-	_owned_buildings.append(building)
+	if owned_buildings.has(type):
+		owned_buildings[type].append(building)
+	else:
+		owned_buildings[type] = [building]
 	
 	# Needs to be refactored in the future.
 	if type == Tile.Type.LUMBERJACK or type == Tile.Type.MINE:

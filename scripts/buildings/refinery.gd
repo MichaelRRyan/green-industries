@@ -27,7 +27,7 @@ func _ready():
 	resource_manager = Utility.get_dependency("resource_manager", self, true)
 	
 	
-func _process(delta):
+func _process(_delta):
 	powered.text = "powered" if is_powered() else "unpowered"
 
 
@@ -42,7 +42,7 @@ func _add_resource_to_building(ingredient) -> void:
 		num_ingredient = inventory.get_quantity(resource_manager.get_resource_type(id))
 
 
-func _on_Refinery_input_event(viewport, event, shape_idx):
+func _on_Refinery_input_event(_viewport, event, _shape_idx):
 	if event.is_action_pressed("upgrade_factory") and respond_to_input:
 		_input_ingredients()
 

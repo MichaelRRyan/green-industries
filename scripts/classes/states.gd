@@ -8,10 +8,8 @@ class IdleState:
 	
 	func enter(parent) -> void:
 		ai = parent
-		print ("Entered idle")
 	
 	func exit(_msg : = {}) -> void:
-		print ("Exited idle")
 		queue_free()
 	
 	func update(_delta : float) -> void:
@@ -25,18 +23,16 @@ class StartState:
 	
 	func enter(parent) -> void:
 		ai = parent
-		print ("Entered start state")
 	
 	func exit(_msg : = {}) -> void:
-		print ("Exited  start state")
 		queue_free()
 	
 	func update(_delta : float) -> void:
-		var buy_tile : Vector2 = Vector2(randi() % ai.TILE_MAP_SIZE, randi() % ai.TILE_MAP_SIZE)
+		var _buy_tile : Vector2 = Vector2(randi() % ai.TILE_MAP_SIZE, randi() % ai.TILE_MAP_SIZE)
 		var still_looking = true
-		while ai._player_data_manager.owner_dict.has(buy_tile) or still_looking:
-			buy_tile = Vector2(randi() % ai.TILE_MAP_SIZE, randi() % ai.TILE_MAP_SIZE)
-			var neighbours = Utility.get_neighbours(buy_tile)
+		while ai._player_data_manager.owner_dict.has(_buy_tile) or still_looking:
+			_buy_tile = Vector2(randi() % ai.TILE_MAP_SIZE, randi() % ai.TILE_MAP_SIZE)
+			var neighbours = Utility.get_neighbours(_buy_tile)
 			var contains_trees = false
 			var contains_minerals = false
 			for neighbour in neighbours:
@@ -44,12 +40,12 @@ class StartState:
 					contains_trees = true
 				elif ai._terrain.get_cellv(neighbour) == Tile.Type.STONE:
 					contains_minerals = true
-			if ai._terrain.get_cellv(buy_tile) == Tile.Type.GRASS and\
+			if ai._terrain.get_cellv(_buy_tile) == Tile.Type.GRASS and\
 				(contains_trees or contains_minerals):
 					still_looking = false
-		var command = ai._command_factory.create_buy_land_command(buy_tile, ai.ai_data.id)
+		var command = ai._command_factory.create_buy_land_command(_buy_tile, ai.ai_data.id)
 		command.execute()
-		ai.controlled_tiles.push_back(buy_tile)
+		ai.add_to_controlled(_buy_tile)
 		ai._wait_timer.start()
 		ai._place_building_timer.start()
 
@@ -61,25 +57,51 @@ class BuyLandState:
 	
 	func enter(parent) -> void:
 		ai = parent
-		print ("Entered no land state")
 	
 	func exit(_msg : = {}) -> void:
-		print ("Exited no land state")
 		queue_free()
 	
 	func update(_delta : float) -> void:
-		var neighbours = Utility.get_neighbours(ai.controlled_tiles.back())
+		var neighbours = Utility.get_neighbours(ai.controlled_tiles.front())
 		var _buy_tile
-		
+		var _resource_tile_found = false
 		for neighbour in neighbours:
 			if ai._terrain.get_cellv(neighbour) == Tile.Type.FOREST or\
 				ai._terrain.get_cellv(neighbour) == Tile.Type.STONE:
 					_buy_tile = neighbour
+					_resource_tile_found = true
 					break
+			
 		if _buy_tile != null:
 			var command = ai._command_factory.create_buy_land_command(_buy_tile, ai.ai_data.id)
 			command.execute()
-			ai.controlled_tiles.push_back(_buy_tile)
+			ai.add_to_controlled(_buy_tile)
+		ai._wait_timer.start()
+		ai.start_transitions = true
+
+class BuyEmptyLandState:
+	extends State
+	
+	var ai
+	
+	func enter(parent) -> void:
+		ai = parent
+	
+	func exit(_msg : = {}) -> void:
+		queue_free()
+	
+	func update(_delta : float) -> void:
+		var neighbours = Utility.get_neighbours(ai.controlled_tiles.front())
+		var _buy_tile
+		for neighbour in neighbours:
+			if ai._terrain.get_cellv(neighbour) == Tile.Type.GRASS:
+					_buy_tile = neighbour
+					break
+			
+		if _buy_tile != null:
+			var command = ai._command_factory.create_buy_land_command(_buy_tile, ai.ai_data.id)
+			command.execute()
+			ai.add_to_controlled(_buy_tile)
 		ai._wait_timer.start()
 
 #state to place harvester when no resources are had
@@ -90,14 +112,12 @@ class PlaceHarvesterState:
 		
 	func enter(parent) -> void:
 		ai = parent
-		print ("Entered place harvester state")
 	
 	func exit(_msg : = {}) -> void:
-		print ("Exited place harvester state")
 		queue_free()
 	
 	func update(_delta : float) -> void:
-		var neighbours = Utility.get_neighbours(ai.controlled_tiles.back())
+		var neighbours = Utility.get_neighbours(ai.controlled_tiles.front())
 		var contains_trees = false
 		var contains_minerals = false
 		for neighbour in neighbours:
@@ -110,18 +130,20 @@ class PlaceHarvesterState:
 			build_type = Tile.Type.LUMBERJACK
 		elif contains_minerals:
 			build_type = Tile.Type.MINE
-		var buy_tile : Vector2 = Vector2(randi() % ai.TILE_MAP_SIZE, randi() % ai.TILE_MAP_SIZE)
+		var _buy_tile : Vector2 = Vector2(randi() % ai.TILE_MAP_SIZE, randi() % ai.TILE_MAP_SIZE)
 		for neighbour in neighbours:
 			if ai._terrain.get_cellv(neighbour) == Tile.Type.FOREST and build_type == Tile.Type.LUMBERJACK:
-				buy_tile = neighbour
+				_buy_tile = neighbour
 				break
 			elif ai._terrain.get_cellv(neighbour) == Tile.Type.STONE and build_type == Tile.Type.MINE:
-				buy_tile = neighbour
+				_buy_tile = neighbour
 				break
 		if build_type != null:
 			var command = ai._command_factory.\
-				create_build_command(ai.controlled_tiles.back(), build_type, ai.ai_data.id)
+				create_build_command(ai.controlled_tiles.front(), build_type, ai.ai_data.id)
+			
 			command.execute()
+			ai.change_type(ai.controlled_tiles.front(), build_type)
 			ai._wait_timer.start()
 			ai._timer.start()
 
@@ -133,18 +155,17 @@ class NoPowerState:
 	
 	func enter(parent) -> void:
 		ai = parent
-		print ("Entered no power state")
 	
 	func exit(_msg : = {}) -> void:
-		print ("Exited no power state")
 		queue_free()
 	
 	func update(_delta : float) -> void:
-		if ai.ai_data._owned_buildings.has(Tile.Type.POWER_PLANT):
-			ai.ai_data._owned_buildings.has(Tile.Type.POWER_PLANT).increase_fuel()
+		if ai.controlled_tiles_dict.has(Tile.Type.POWER_PLANT):
+			ai.ai_data.owned_buildings[Tile.Type.POWER_PLANT].front().increase_fuel(5)
 			
-		elif ai.ai_data._owned_buildings.has(Tile.Type.WOOD_REFINERY):
-			var tile_pos = ai.ai_data._owned_buildings.has(Tile.Type.WOOD_REFINERY)
+		elif ai.ai_data.owned_buildings.has(Tile.Type.WOOD_REFINERY):
+			var tile_pos = ai._terrain.get_tile_from_global_position(\
+				ai.ai_data.owned_buildings[Tile.Type.WOOD_REFINERY].front().position)
 			var neighbours = Utility.get_neighbours(tile_pos)
 			
 			for neighbour in neighbours:
@@ -152,10 +173,12 @@ class NoPowerState:
 					var command = ai._command_factory.\
 					create_build_command(neighbour, Tile.Type.POWER_PLANT, ai.ai_data.id)
 					command.execute()
+					ai.change_type(neighbour, Tile.Type.POWER_PLANT)
 					break
 			
-		elif ai.ai_data._owned_buildings.has(Tile.Type.MINERALS_REFINERY):
-			var tile_pos = ai.ai_data._owned_buildings.has(Tile.Type.MINERALS_REFINERY)
+		elif ai.ai_data.owned_buildings.has(Tile.Type.MINERALS_REFINERY):
+			var tile_pos = ai._terrain.get_tile_from_global_position(\
+				ai.ai_data.owned_buildings[Tile.Type.MINERALS_REFINERY].front().position)
 			var neighbours = Utility.get_neighbours(tile_pos)
 			
 			for neighbour in neighbours:
@@ -163,10 +186,12 @@ class NoPowerState:
 					var command = ai._command_factory.\
 					create_build_command(neighbour, Tile.Type.POWER_PLANT, ai.ai_data.id)
 					command.execute()
+					ai.change_type(neighbour, Tile.Type.POWER_PLANT)
 					break
 			
-		elif ai.ai_data._owned_buildings.has(Tile.Type.WOOD_FACTORY):
-			var tile_pos = ai.ai_data._owned_buildings.has(Tile.Type.WOOD_FACTORY)
+		elif ai.ai_data.owned_buildings.has(Tile.Type.WOOD_FACTORY):
+			var tile_pos = ai._terrain.get_tile_from_global_position(\
+				ai.ai_data.owned_buildings[Tile.Type.WOOD_FACTORY].front().position)
 			var neighbours = Utility.get_neighbours(tile_pos)
 			
 			for neighbour in neighbours:
@@ -174,10 +199,12 @@ class NoPowerState:
 					var command = ai._command_factory.\
 					create_build_command(neighbour, Tile.Type.POWER_PLANT, ai.ai_data.id)
 					command.execute()
+					ai.change_type(neighbour, Tile.Type.POWER_PLANT)
 					break
 			
-		elif ai.ai_data._owned_buildings.has(Tile.Type.MINERALS_FACTORY):
-			var tile_pos = ai.ai_data._owned_buildings.has(Tile.Type.MINERALS_FACTORY)
+		elif ai.ai_data.owned_buildings.has(Tile.Type.MINERALS_FACTORY):
+			var tile_pos = ai._terrain.get_tile_from_global_position(\
+				ai.ai_data.owned_buildings[Tile.Type.MINERALS_FACTORY].front().position)
 			var neighbours = Utility.get_neighbours(tile_pos)
 			
 			for neighbour in neighbours:
@@ -185,28 +212,33 @@ class NoPowerState:
 					var command = ai._command_factory.\
 					create_build_command(neighbour, Tile.Type.POWER_PLANT, ai.ai_data.id)
 					command.execute()
+					ai.change_type(neighbour, Tile.Type.POWER_PLANT)
 					break
 			
-		elif ai.ai_data._owned_buildings.has(Tile.Type.METAL_FACTORY):
-			var tile_pos = ai.ai_data._owned_buildings.has(Tile.Type.METAL_FACTORY)
+		elif ai.ai_data.owned_buildings.has(Tile.Type.METAL_FACTORY):
+			var tile_pos = ai._terrain.get_tile_from_global_position(\
+				ai.ai_data.owned_buildings[Tile.Type.METAL_FACTORY].front().position)
 			var neighbours = Utility.get_neighbours(tile_pos)
 			
 			for neighbour in neighbours:
 				if ai._terrain.get_cellv(neighbour) == Tile.Type.GRASS:
-					var command = ai._command_factory.\
+					var command = ai.command_factory.\
 					create_build_command(neighbour, Tile.Type.POWER_PLANT, ai.ai_data.id)
 					command.execute()
+					ai.change_type(neighbour, Tile.Type.POWER_PLANT)
 					break
 			
-		elif ai.ai_data._owned_buildings.has(Tile.Type.LUMBER_FACTORY):
-			var tile_pos = ai.ai_data._owned_buildings.has(Tile.Type.LUMBER_FACTORY)
+		elif ai.ai_data.owned_buildings.has(Tile.Type.LUMBER_FACTORY):
+			var tile_pos = ai._terrain.get_tile_from_global_position(\
+				ai.ai_data.owned_buildings[Tile.Type.LUMBER_FACTORY].front().position)
 			var neighbours = Utility.get_neighbours(tile_pos)
 			
 			for neighbour in neighbours:
 				if ai._terrain.get_cellv(neighbour) == Tile.Type.GRASS:
-					var command = ai._command_factory.\
+					var command = ai.command_factory.\
 					create_build_command(neighbour, Tile.Type.POWER_PLANT, ai.ai_data.id)
 					command.execute()
+					ai.change_type(neighbour, Tile.Type.POWER_PLANT)
 					break
 		
 		ai._wait_timer.start()
@@ -220,26 +252,26 @@ class PlaceRefinaryState:
 	
 	func enter(parent) -> void:
 		ai = parent
-		print ("Entered place refinary state")
 	
 	func exit(_msg : = {}) -> void:
-		print ("Exited place refinary state")
 		queue_free()
 	
 	func update(_delta : float) -> void:
-		if ai.controlled_tiles.has(Tile.Type.GRASS):
-			var _tile_pos = ai.controlled_tiles.find(Tile.Type.GRASS)
+		if ai.controlled_tiles_dict.has(Tile.Type.GRASS):
+			var _tile_pos = ai.controlled_tiles_dict[Tile.Type.GRASS].front()
 			
 			if ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("wood")) > 0 \
-				and !ai.ai_data._owned_buildings.has(Tile.Type.WOOD_REFINERY):
+				and !ai.controlled_tiles_dict.has(Tile.Type.WOOD_REFINERY):
 					var command = ai._command_factory.\
 					create_build_command(_tile_pos, Tile.Type.WOOD_REFINERY, ai.ai_data.id)
 					command.execute()
+					ai.change_type(_tile_pos, Tile.Type.WOOD_REFINERY)
 			elif ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("minerals")) > 0 \
-				and !ai.ai_data._owned_buildings.has(Tile.Type.MINERALS_REFINERY):
+				and !ai.controlled_tiles_dict.has(Tile.Type.MINERALS_REFINERY):
 					var command = ai._command_factory.\
 					create_build_command(_tile_pos, Tile.Type.MINERALS_REFINERY, ai.ai_data.id)
 					command.execute()
+					ai.change_type(_tile_pos, Tile.Type.MINERALS_REFINERY)
 			
 		ai._wait_timer.start()
 
@@ -252,39 +284,41 @@ class PlaceFactoryState:
 	
 	func enter(parent) -> void:
 		ai = parent
-		print ("Entered place refinary state")
 	
 	func exit(_msg : = {}) -> void:
-		print ("Exited place refinary state")
 		queue_free()
 	
 	func update(_delta : float) -> void:
-		if ai.controlled_tiles.has(Tile.Type.GRASS):
-			var _tile_pos = ai.controlled_tiles.find(Tile.Type.GRASS)
+		if ai.controlled_tiles_dict.has(Tile.Type.GRASS):
+			var _tile_pos = ai.controlled_tiles_dict[Tile.Type.GRASS].front()
 			
 			if ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("wood")) > 0 \
-				and !ai.ai_data._owned_buildings.has(Tile.Type.WOOD_FACTORY):
+				and !ai.controlled_tiles_dict.has(Tile.Type.WOOD_FACTORY):
 					var command = ai._command_factory.\
 					create_build_command(_tile_pos, Tile.Type.WOOD_FACTORY, ai.ai_data.id)
 					command.execute()
+					ai.change_type(_tile_pos, Tile.Type.WOOD_FACTORY)
 				
 			elif ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("minerals")) > 0 \
-				and !ai.ai_data._owned_buildings.has(Tile.Type.MINERALS_FACTORY):
+				and !ai.controlled_tiles_dict.has(Tile.Type.MINERALS_FACTORY):
 					var command = ai._command_factory.\
 					create_build_command(_tile_pos, Tile.Type.MINERALS_FACTORY, ai.ai_data.id)
 					command.execute()
+					ai.change_type(_tile_pos, Tile.Type.MINERALS_FACTORY)
 				
 			elif ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("lumber")) > 0 \
-				and !ai.ai_data._owned_buildings.has(Tile.Type.LUMBER_FACTORY):
+				and !ai.controlled_tiles_dict.has(Tile.Type.LUMBER_FACTORY):
 					var command = ai._command_factory.\
 					create_build_command(_tile_pos, Tile.Type.LUMBER_FACTORY, ai.ai_data.id)
 					command.execute()
+					ai.change_type(_tile_pos, Tile.Type.LUMBER_FACTORY)
 				
 			elif ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("metal")) > 0 \
-				and !ai.ai_data._owned_buildings.has(Tile.Type.METAL_FACTORY):
+				and !ai.controlled_tiles_dict.has(Tile.Type.METAL_FACTORY):
 					var command = ai._command_factory.\
 					create_build_command(_tile_pos, Tile.Type.METAL_FACTORY, ai.ai_data.id)
 					command.execute()
+					ai.change_type(_tile_pos, Tile.Type.METAL_FACTORY)
 			
 			
 		ai._wait_timer.start()
@@ -298,18 +332,16 @@ class GiveResourceToRefinaryState:
 	
 	func enter(parent) -> void:
 		ai = parent
-		print ("Entered give resource to refinary state")
 	
 	func exit(_msg : = {}) -> void:
-		print ("Exited give resource to refinary state")
 		queue_free()
 	
 	func update(_delta : float) -> void:
 		if ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("wood")) > 0 \
-			and ai.ai_data._owned_buildings.has(Tile.Type.WOOD_REFINERY):
-				ai.ai_data._owned_buildings.has(Tile.Type.WOOD_REFINERY)._input_ingredients()
+			and ai.controlled_tiles_dict.has(Tile.Type.WOOD_REFINERY):
+				ai.controlled_tiles_dict.has(Tile.Type.WOOD_REFINERY)._input_ingredients()
 		if ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("minerals")) > 0 \
-			and ai.ai_data._owned_buildings.has(Tile.Type.MINERALS_REFINERY):
-				ai.ai_data._owned_buildings.has(Tile.Type.MINERALS_REFINERY)._input_ingredients()
+			and ai.controlled_tiles_dict.has(Tile.Type.MINERALS_REFINERY):
+				ai.controlled_tiles_dict.has(Tile.Type.MINERALS_REFINERY)._input_ingredients()
 			
 		ai._wait_timer.start()
