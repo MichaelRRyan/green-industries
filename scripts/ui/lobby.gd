@@ -31,6 +31,8 @@ func _on_HostButton_pressed():
 		Network.close_connection()
 		_host_button.text = "Host"
 		_ip_label.hide()
+		randomize()
+		TerrainData.noise_seed = randi()
 	else:
 		Network.start_server()
 		_host_button.text = "Close Server"
@@ -62,9 +64,11 @@ remote func begin_game():
 		var _val=get_tree().change_scene("res://scenes/gameplay/gameplay.tscn")
 
 
-func _on_solo_pressed():
+func _on_StartButton_pressed():
 	if Network.state == Network.State.OFFLINE:
 		Network.state == Network.State.SOLO
+		randomize()
+		TerrainData.noise_seed = randi()	
 		
 	var _r = get_tree().change_scene("res://scenes/gameplay/gameplay.tscn")
 		

@@ -265,4 +265,4 @@ __meta__ = {
 [connection signal="tab_changed" from="Background/TabContainer" to="." method="_on_TabContainer_tab_changed"]
 [connection signal="pressed" from="Background/TabContainer/Host/Scaler/HostButton" to="." method="_on_HostButton_pressed"]
 [connection signal="pressed" from="Background/TabContainer/Join/Scaler/join" to="." method="_on_JoinButton_pressed"]
-[connection signal="pressed" from="Background/StartButton" to="." method="_on_solo_pressed"]
+[connection signal="pressed" from="Background/StartButton" to="." method="_on_StartButton_pressed"]
