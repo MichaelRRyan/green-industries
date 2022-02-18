@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/background_music_quieter.ogg-faa41b4e32df6d6e88b9c123285fc59f.oggstr"
+
+[deps]
+
+source_file="res://assets/sounds/background_music_quieter.ogg"
+dest_files=[ "res://.import/background_music_quieter.ogg-faa41b4e32df6d6e88b9c123285fc59f.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

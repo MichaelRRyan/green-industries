@@ -7,6 +7,7 @@ onready var _world = Utility.get_dependency("world", self, true)
 onready var _terrain = Utility.get_dependency("terrain", self, true)
 onready var _buy_tool = Utility.get_dependency("buy_tool", self, true)
 onready var _networked_players = Utility.get_dependency("player_data_manager", self, true).networked_players
+onready var _sound = get_node("PlaceBuildingSound")
 
 var _building_type : int = Tile.Type.LUMBERJACK
 const CAN_PLACE_COLOUR : Color = Color(0 / 255,165.0 / 255,0,175.0 / 255)
@@ -78,12 +79,13 @@ func place_building(tile_pos : Vector2, id : int = 1, building_type: int = -1) -
 					buy_and_place_building(tile_pos, _building_type, id)
 				else:
 					buy_and_place_building(tile_pos, building_type, id)
-					
+				
 		else:
 			if building_type == -1:
 				buy_tile_and_place_building(tile_pos, _building_type, id)
 			else:
 				buy_tile_and_place_building(tile_pos, building_type, id)
+				
 
 
 # ------------------------------------------------------------------------------
@@ -159,6 +161,9 @@ func set_building(tile_pos : Vector2, building_type : int, inventory : Inventory
 		_terrain.tile_size * 0.5)
 	
 	_world.add_child(building)
+	_sound.position = (_terrain.get_global_position_from_tile(tile_pos) +
+		_terrain.tile_size * 0.5)
+	_sound.play()
 	
 	return building
 	
