@@ -1,12 +1,16 @@
 extends Node2D
 
-
+var buying = 0
 var ai_data = null
+var ai_resource = null
+var resource_manager = Utility.get_dependency("resource_manager", self, true)
+var ai_invertry = {}
 onready var is_active = false
 var _command_factory : CommandFactories.CommandFactory = null
 var _player_data_manager = Utility.get_dependency("player_data_manager")
 onready var _timer = get_node("BuyTileTimer")
 onready var _place_building_timer = get_node("PlaceBuildingTimer")
+onready var _resource_timer = get_node("BuyResourceTimer")
 onready var _wait_timer = get_node("WaitTimer")
 const TILE_MAP_SIZE = 100
 var controlled_tiles = []
@@ -52,10 +56,13 @@ func change_type(_tile_pos : Vector2, new_tile_type):
 # ------------------------------------------------------------------------------
 func _get_factory():
 	_command_factory = Utility.get_dependency("command_tool", self, true).command_factory
+	resource_manager = Utility.get_dependency("resource_manager", self, true)
 	_state_machine.transition_to(States.StartState)
 
+	
 func _set_player_data(player_data) -> void:
 	ai_data = player_data
+	is_active = true
 
 func _set_inactive() -> void:
 	ai_data = null
@@ -70,6 +77,15 @@ func _on_PlaceBuildingTimer_timeout():
 func _on_WaitTimer_timeout():
 	_state_machine.transition_to(States.IdleState)
 	is_idle_state = true
+	
+#buys  or sells the resource
+func _on_BuyResourceTimer_timeout():
+	_state_machine.transition_to(States.BuyResourceState)
+	
+
+
+func _on_SellResourceTimer_timeout():
+	_state_machine.transition_to(States.SellResourceState)
 	
 
 func _process(_delta):

@@ -9,6 +9,7 @@ class AbstractCommand:
 		assert(false)
 
 
+
 # ------------------------------------------------------------------------------
 # Abstract build command.
 class BuildCommand:
@@ -46,6 +47,29 @@ class BuyLandCommand:
 	func execute() -> void:
 		assert(false)
 
+class BuyCommand:
+	extends AbstractCommand
+	var _shop = Utility.get_dependency("resource_shop")
+	
+	
+	func setup(_resource , _amount,_owner_id : int = 1) -> void:
+		assert(false)
+		
+	# Pure virtual, throws an error if called.
+	func execute() -> void:
+		assert(false)
+		
+class SellCommand:
+	extends AbstractCommand
+	var _shop = Utility.get_dependency("resource_shop")
+	
+	
+	func setup(_resource , _amount,_owner_id : int = 1) -> void:
+		assert(false)
+		
+	# Pure virtual, throws an error if called.
+	func execute() -> void:
+		assert(false)
 
 class BullDozeCommand:
 	extends AbstractCommand
@@ -79,9 +103,11 @@ class OfflineBuildCommand:
 	# --------------------------------------------------------------------------
 	func execute() -> void:
 		_build_tool.place_building(_tile_pos, _owner_id, _building_type)
+	# --------------------------------------------------------------------------
+	
 
+	
 
-# ------------------------------------------------------------------------------
 # Used for offline games.
 class OfflineBuyLandCommand:
 	extends BuyLandCommand
@@ -99,6 +125,40 @@ class OfflineBuyLandCommand:
 	func execute() -> void:
 		_buy_tool.buy_tile(_tile_pos, _owner_id)
 
+class OfflineBuyCommand:
+	extends BuyCommand
+	
+	var _resource = null 
+	var _amount = 0
+	var _owner_id = 1
+	
+	func setup(resource , amount,owner_id : int = 1) -> void:
+		_resource = resource
+		_amount = amount
+		_owner_id = owner_id
+	
+		
+	func execute() -> void:
+		_shop.buy(_resource,_amount,_owner_id)
+
+
+class OfflineSellCommand:
+	extends SellCommand
+	
+	var _resource = null 
+	var _amount = 0
+	var _owner_id = 1
+	
+	func setup(resource , amount,owner_id : int = 1) -> void:
+		_resource = resource
+		_amount = amount
+		_owner_id = owner_id
+		
+	
+	func execute() -> void:
+		_shop.sell(_resource,_amount,_owner_id)
+		
+
 class OfflineBullDozeCommand:
 	extends BullDozeCommand
 	
@@ -115,6 +175,8 @@ class OfflineBullDozeCommand:
 	func execute() -> void:
 		_bulldoze_tool.bulldose_tile(_tile_pos, _owner_id)
 # ------------------------------------------------------------------------------
+
+
 # Used for hosted games.
 class HostBuildCommand:
 	extends BuildCommand
@@ -153,6 +215,41 @@ class HostBuyLandCommand:
 	# --------------------------------------------------------------------------
 	func execute() -> void:
 		_buy_tool.buy_tile(_tile_pos, _owner_id)
+
+
+#----------------------------------------------------------------------
+class HostBuyCommand:
+	extends BuyCommand
+	
+	var _resource = null 
+	var _amount = 0
+	var _owner_id = 1
+	
+	func setup(resource , amount,owner_id : int = 1) -> void:
+		_resource = resource
+		_amount = amount
+		_owner_id = owner_id
+	
+		
+	func execute() -> void:
+		_shop.buy(_resource,_amount,_owner_id)
+
+# ------------------------------------------------------------------------------
+class HostSellCommand:
+	extends SellCommand
+	
+	var _resource = null 
+	var _amount = 0
+	var _owner_id = 1
+	
+	func setup(resource , amount,owner_id : int = 1) -> void:
+		_resource = resource
+		_amount = amount
+		_owner_id = owner_id
+		
+	
+	func execute() -> void:
+		_shop.sell(_resource,_amount,_owner_id)
 
 class HostBullDozeCommand:
 	extends BullDozeCommand
@@ -206,6 +303,38 @@ class ClientBuyLandCommand:
 	func execute() -> void:
 		_buy_tool.rpc_id(1, "request_buy", _tile_pos)
 # ------------------------------------------------------------------------------
+class ClientBuyCommand:
+	extends BuyCommand
+	
+	var _resource = null 
+	var _amount = 0
+	var _owner_id = 1
+	
+	func setup(resource , amount,owner_id : int = 1) -> void:
+		_resource = resource
+		_amount = amount
+		_owner_id = owner_id
+	
+		
+	func execute() -> void:
+		_shop.buy(_resource,_amount,_owner_id)
+# ------------------------------------------------------------------------------
+class ClientSellCommand:
+	extends SellCommand
+	
+	var _resource = null 
+	var _amount = 0
+	var _owner_id = 1
+	
+	func setup(resource , amount,owner_id : int = 1) -> void:
+		_resource = resource
+		_amount = amount
+		_owner_id = owner_id
+		
+	
+	func execute() -> void:
+		_shop.sell(_resource,_amount,_owner_id)
+
 
 class ClientBullDozeComand:
 	extends BullDozeCommand

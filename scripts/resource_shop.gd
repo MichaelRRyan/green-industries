@@ -1,6 +1,7 @@
 extends Control
 
 var data = null
+var network_players = null
 var resource_manager = null
 onready var num_wood = 0
 onready var num_minerals = 0
@@ -18,8 +19,6 @@ const METALS_BUY_AMOUNT = 60
 const METALS_SELL_AMOUNT = 50
 const LUMBER_BUY_AMOUNT = 45
 const LUMBER_SELL_AMOUNT = 35
-
-
 # ------------------------------------------------------------------------------
 func toggle() -> void:
 	visible = not visible
@@ -31,9 +30,10 @@ func toggle() -> void:
 
 # ------------------------------------------------------------------------------
 func _ready():
+	var player_data_manager = Utility.get_dependency("player_data_manager", self, true)
 	resource_manager = Utility.get_dependency("resource_manager", self, true)
-	data = Utility.get_dependency("player_data_manager", self, true).local_player_data
-	data._inventory.change_money(200)
+	data = player_data_manager.local_player_data
+	network_players = player_data_manager.networked_players
 	_display_amounts()
 	print(data)
 
@@ -58,6 +58,7 @@ func _on_Wood_10_button_down():
 
 # ------------------------------------------------------------------------------
 func _on_Wood_All_button_down():
+	num_wood = data._inventory.get_quantity(resource_manager.get_resource_type_by_name("wood"))
 	num_wood = data._inventory.get_quantity(resource_manager.get_resource_type_by_name("wood"))
 	wood_amount.text = "Wood amount: " + str(num_wood)
 
@@ -162,6 +163,7 @@ func _on_Sell_button_down():
 
 # ------------------------------------------------------------------------------
 func _on_Buy_button_down():
+	
 	var total_cost = num_wood * WOOD_BUY_AMOUNT + num_minerals * MINERALS_BUY_AMOUNT +\
 		num_metal * METALS_BUY_AMOUNT + num_lumber * LUMBER_BUY_AMOUNT
 	if data._inventory.get_money() >= total_cost and (num_minerals > 0 or num_wood > 0 or \
@@ -204,5 +206,49 @@ func _reset():
 	metals_amount.text = "Metals amount: " + str(num_metal)
 # ------------------------------------------------------------------------------
 
+func buy(resource ,amount,owner_id : int = 1) -> void:
+	var resource_cost = 10000000000000
+	if resource.name == "wood":
+		resource_cost = WOOD_BUY_AMOUNT
+		print("bought_wood",amount)
+	elif resource.name == "minerals":
+		resource_cost = MINERALS_BUY_AMOUNT
+		print("bought_minerals",amount)
+	elif  resource.name == "lumber":
+		resource_cost = LUMBER_BUY_AMOUNT
+		print("bought_lumber",amount)
+	elif  resource.name == "metal":
+		resource_cost = METALS_BUY_AMOUNT
+		print("bought_metal",amount)
+	
+	var inventory = network_players[owner_id]._inventory
+	if inventory.get_money() >= resource_cost*amount:
+		inventory.change_money(-resource_cost*amount)
+		inventory.add_resources(resource,amount)
+		print(str(owner_id) + " bought " + resource.name + ". Curr: " + str(inventory.get_quantity(resource)))
 
 
+
+func sell(resource ,amount,owner_id : int = 1) -> void:
+	var resource_cost = 0
+	if resource.name == "wood":
+		resource_cost = WOOD_BUY_AMOUNT
+		print("sold_wood",amount)
+	elif resource.name == "minerals":
+		resource_cost = MINERALS_BUY_AMOUNT
+		print("sold_minerals",amount)
+	elif  resource.name == "lumber":
+		print("sold_lumber",amount)
+		resource_cost = LUMBER_BUY_AMOUNT
+	elif  resource.name == "metal":
+		resource_cost = METALS_BUY_AMOUNT
+		print("sold_metal",amount)
+	
+	var inventory = network_players[owner_id]._inventory
+	if inventory.get_quantity(resource) >= amount:
+		inventory.change_money(resource_cost * amount)
+		inventory.remove_resources(resource, amount)
+		print(str(owner_id) + " sold " + resource.name + ". Curr: " + str(inventory.get_quantity(resource)))
+
+		
+	
