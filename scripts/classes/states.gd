@@ -132,6 +132,22 @@ class PlaceHarvesterState:
 class NoPowerState:
 	extends State
 	
+
+	# --------------------------------------------------------------------------
+	func _place_power_plant_by_building(tile_type : int) -> void:
+		var tile_pos = _ai._terrain.get_tile_from_global_position(\
+			_ai.ai_data.owned_buildings[tile_type].front().position)
+		var neighbours = Utility.get_neighbours(tile_pos)
+		
+		while not neighbours.empty():
+			var neighbour = neighbours.pop_at(randi() % neighbours.size())
+			if _ai._terrain.is_tile_empty(neighbour):
+				var command = _ai._command_factory.\
+					create_build_command(neighbour, Tile.Type.POWER_PLANT, _ai.ai_data.id)
+				command.execute()
+				_ai.change_type(neighbour, Tile.Type.POWER_PLANT)
+				break
+	
 	
 	# --------------------------------------------------------------------------
 	func update(_delta : float) -> void:
@@ -139,82 +155,22 @@ class NoPowerState:
 			_ai.ai_data.owned_buildings[Tile.Type.POWER_PLANT].front().increase_fuel(5)
 			
 		elif _ai.ai_data.owned_buildings.has(Tile.Type.WOOD_REFINERY):
-			var tile_pos = _ai._terrain.get_tile_from_global_position(\
-				_ai.ai_data.owned_buildings[Tile.Type.WOOD_REFINERY].front().position)
-			var neighbours = Utility.get_neighbours(tile_pos)
-			
-			for neighbour in neighbours:
-				if _ai._terrain.get_cellv(neighbour) == Tile.Type.GRASS:
-					var command = _ai._command_factory.\
-					create_build_command(neighbour, Tile.Type.POWER_PLANT, _ai.ai_data.id)
-					command.execute()
-					_ai.change_type(neighbour, Tile.Type.POWER_PLANT)
-					break
+			_place_power_plant_by_building(Tile.Type.WOOD_REFINERY)
 			
 		elif _ai.ai_data.owned_buildings.has(Tile.Type.MINERALS_REFINERY):
-			var tile_pos = _ai._terrain.get_tile_from_global_position(\
-				_ai.ai_data.owned_buildings[Tile.Type.MINERALS_REFINERY].front().position)
-			var neighbours = Utility.get_neighbours(tile_pos)
-			
-			for neighbour in neighbours:
-				if _ai._terrain.get_cellv(neighbour) == Tile.Type.GRASS:
-					var command = _ai._command_factory.\
-					create_build_command(neighbour, Tile.Type.POWER_PLANT, _ai.ai_data.id)
-					command.execute()
-					_ai.change_type(neighbour, Tile.Type.POWER_PLANT)
-					break
+			_place_power_plant_by_building(Tile.Type.MINERALS_REFINERY)
 			
 		elif _ai.ai_data.owned_buildings.has(Tile.Type.WOOD_FACTORY):
-			var tile_pos = _ai._terrain.get_tile_from_global_position(\
-				_ai.ai_data.owned_buildings[Tile.Type.WOOD_FACTORY].front().position)
-			var neighbours = Utility.get_neighbours(tile_pos)
-			
-			for neighbour in neighbours:
-				if _ai._terrain.get_cellv(neighbour) == Tile.Type.GRASS:
-					var command = _ai._command_factory.\
-					create_build_command(neighbour, Tile.Type.POWER_PLANT, _ai.ai_data.id)
-					command.execute()
-					_ai.change_type(neighbour, Tile.Type.POWER_PLANT)
-					break
+			_place_power_plant_by_building(Tile.Type.WOOD_FACTORY)
 			
 		elif _ai.ai_data.owned_buildings.has(Tile.Type.MINERALS_FACTORY):
-			var tile_pos = _ai._terrain.get_tile_from_global_position(\
-				_ai.ai_data.owned_buildings[Tile.Type.MINERALS_FACTORY].front().position)
-			var neighbours = Utility.get_neighbours(tile_pos)
-			
-			for neighbour in neighbours:
-				if _ai._terrain.get_cellv(neighbour) == Tile.Type.GRASS:
-					var command = _ai._command_factory.\
-					create_build_command(neighbour, Tile.Type.POWER_PLANT, _ai.ai_data.id)
-					command.execute()
-					_ai.change_type(neighbour, Tile.Type.POWER_PLANT)
-					break
+			_place_power_plant_by_building(Tile.Type.MINERALS_FACTORY)
 			
 		elif _ai.ai_data.owned_buildings.has(Tile.Type.METAL_FACTORY):
-			var tile_pos = _ai._terrain.get_tile_from_global_position(\
-				_ai.ai_data.owned_buildings[Tile.Type.METAL_FACTORY].front().position)
-			var neighbours = Utility.get_neighbours(tile_pos)
-			
-			for neighbour in neighbours:
-				if _ai._terrain.get_cellv(neighbour) == Tile.Type.GRASS:
-					var command = _ai.command_factory.\
-					create_build_command(neighbour, Tile.Type.POWER_PLANT, _ai.ai_data.id)
-					command.execute()
-					_ai.change_type(neighbour, Tile.Type.POWER_PLANT)
-					break
+			_place_power_plant_by_building(Tile.Type.METAL_FACTORY)
 			
 		elif _ai.ai_data.owned_buildings.has(Tile.Type.LUMBER_FACTORY):
-			var tile_pos = _ai._terrain.get_tile_from_global_position(\
-				_ai.ai_data.owned_buildings[Tile.Type.LUMBER_FACTORY].front().position)
-			var neighbours = Utility.get_neighbours(tile_pos)
-			
-			for neighbour in neighbours:
-				if _ai._terrain.get_cellv(neighbour) == Tile.Type.GRASS:
-					var command = _ai.command_factory.\
-					create_build_command(neighbour, Tile.Type.POWER_PLANT, _ai.ai_data.id)
-					command.execute()
-					_ai.change_type(neighbour, Tile.Type.POWER_PLANT)
-					break
+			_place_power_plant_by_building(Tile.Type.LUMBER_FACTORY)
 		
 		_ai._wait_timer.start()
 
