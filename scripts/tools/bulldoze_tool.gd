@@ -6,6 +6,7 @@ onready var _game_state = Utility.get_dependency("game_state", self, true)
 onready var _world = Utility.get_dependency("world", self, true)
 onready var _terrain = Utility.get_dependency("terrain", self, true)
 onready var _networked_players = Utility.get_dependency("player_data_manager", self, true).networked_players
+onready var _sound = get_node("BulldozeSound")
 
 
 const CAN_PLACE_COLOUR : Color = Color(0 / 255,165.0 / 255,0,175.0 / 255)
@@ -45,11 +46,17 @@ func bulldose_tile(tile_pos : Vector2, id : int = 1) -> void:
 					if Network.is_online and not Network.is_client():
 						rpc("set_tile_type", tile_pos, Tile.Type.GRASS)
 					print("can remove the resource")
+					_sound.position = (_terrain.get_global_position_from_tile(tile_pos) +
+						_terrain.tile_size * 0.5)
+					_sound.play()
 				elif is_building(tile_pos):
 					_terrain.set_cellv(tile_pos, Tile.Type.DIRT)
 					if Network.is_online and not Network.is_client():
 						rpc("set_tile_type", tile_pos, Tile.Type.DIRT)
 					emit_signal("building_destroyed", tile_pos)
+					_sound.position = (_terrain.get_global_position_from_tile(tile_pos) +
+						_terrain.tile_size * 0.5)
+					_sound.play()
 				else:
 					print("cannot remove the resource")
 	

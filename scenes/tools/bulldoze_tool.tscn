@@ -1,6 +1,12 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/tools/bulldoze_tool.gd" type="Script" id=1]
+[ext_resource path="res://assets/sounds/buldoze.wav" type="AudioStream" id=2]
 
 [node name="BullDozeTool" type="Node2D" groups=["bulldoze_tool"]]
 script = ExtResource( 1 )
+
+[node name="BulldozeSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 2 )
+max_distance = 1000.0
+attenuation = 0.189465
