@@ -42,8 +42,9 @@ func increase_pollution(delta : float, building_position : Vector2) -> void:
 	# Increases the player's pollution caused.
 	# This is inefficient but it works.
 	var cell = _terrain.get_tile_from_global_position(building_position)
-	var player_id = _player_data_manager.owner_dict[cell].id
-	_player_data_manager.networked_players[player_id].pollution_caused += pollution_increase
+	if _player_data_manager.owner_dict.has(cell):
+		var player_id = _player_data_manager.owner_dict[cell].id
+		_player_data_manager.networked_players[player_id].pollution_caused += pollution_increase
 	
 	_pollute_by_amount(pollution_increase)
 	
@@ -71,6 +72,7 @@ func _start_pollute_timer():
 		/ (_MAX_POLLUTION - _TILE_POLLUTION_THRESHOLD))
 	
 	var wait_time = _BASE_SECONDS_BETWEEN_POLLUTION * speed_modifier
+	if wait_time == 0: wait_time = 0.1
 	print("Started pollute timer. Wait time: " + str(wait_time))
 	_pollute_timer.start(wait_time)
 
@@ -137,9 +139,12 @@ func _on_PolluteTimer_timeout() -> void:
 	if _pollution_percent >= _TILE_POLLUTION_THRESHOLD:
 		var cell = Vector2()
 		var alternative = -1
+		var attempts = 0
+		var max_attempts = 30
 		
 		# Loops until a polluted alternative is found for a tile.
-		while alternative < 0:
+		while alternative < 0 and attempts < max_attempts:
+			attempts += 1
 			
 			# If a tile was polluted before the random chance to pollute near hits.
 			if _last_polluted != null and randi() % 100 < _CHANCE_TO_POLLUTE_NEAR:
@@ -164,11 +169,12 @@ func _on_PolluteTimer_timeout() -> void:
 				var tile = _terrain.get_cellv(cell)
 				alternative = _get_polluted_alternative(tile)
 		
-		_last_polluted = cell
-		_terrain.set_cellv(cell, alternative)
-		emit_signal("cell_polluted", cell)
-		
-		print("Polluted tile " + str(cell))
+		if alternative >= 0:
+			_last_polluted = cell
+			_terrain.set_cellv(cell, alternative)
+			emit_signal("cell_polluted", cell)
+			
+			print("Polluted tile " + str(cell))
 		
 		_start_pollute_timer()
 	

@@ -18,21 +18,27 @@ func _ready() -> void:
 	colour_outlines.remove(0)
 	
 	if not Network.is_client():
+		
+		# Adds the AI.
 		var id = 1
 		for _i in range(9):
 			id += 1
-			var player_data = PlayerDataScene.instance()
-			add_child(player_data)
-			player_data.set_name("PlayerData" + str(id))
-			player_data.set_peer_id(id)
-			player_data.outline_id = colour_outlines.front()
-			colour_outlines.remove(0)
-			ai_data.append(player_data)
+			var data = PlayerDataScene.instance()
 			var new_ai = ai_scene.instance()
+			
+			add_child(data)
+			data.set_name("PlayerData" + str(id))
+			data.set_peer_id(id)
+			data.outline_id = colour_outlines.front()
+			colour_outlines.remove(0)
+			ai_data.append(data)
 			ais.append(new_ai)
 			add_child(new_ai)
-			ais.back()._set_player_data(player_data)
-			networked_players[id] = ai_data.back()
+			new_ai._set_player_data(data)
+			networked_players[id] = data
+		
+		for peer in Network.peer_ids:
+			_on_Network_player_connected(peer)
 		
 	# Connects to the player connected and disconnected signals if the host.
 	if Network.state == Network.State.HOSTING:
@@ -50,14 +56,19 @@ func _ready() -> void:
 
 #-------------------------------------------------------------------------------
 func _on_Network_player_connected(peer_id : int) -> void:
-	var ai_id = ai_data.front().id
-	ai_data.front().set_name("PlayerData" + str(peer_id))
-	ai_data.front().set_peer_id(peer_id)
-	networked_players[peer_id] = ai_data.front()
-	ai_data.pop_front()
-	ais.front()._set_inactive()
 	var ai = ais.pop_front()
+	var data = ai.ai_data
+	var ai_id = data.id
+	
+	ai._set_inactive()
 	ai.queue_free()
+	
+	data.set_name("PlayerData" + str(peer_id))
+	data.set_peer_id(peer_id)
+	
+	var _r = networked_players.erase(ai_id)
+	networked_players[peer_id] = data
+	
 	for key in owner_dict:
 		if owner_dict[key].id == ai_id:
 			owner_dict[key].id = peer_id

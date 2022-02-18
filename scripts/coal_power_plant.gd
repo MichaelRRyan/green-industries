@@ -57,8 +57,9 @@ remote func increase_fuel(is_caller: bool) -> void:
 	if current_fuel_amount < max_fuel_amount:
 		if current_fuel_amount == 0:
 			for building in nearby_buildings:
-				powered_buildings.append(building)
-				building.add_to_power_sources(self)
+				if not is_a_power_source(building):
+					powered_buildings.append(building)
+					building.add_to_power_sources(self)
 				
 		current_fuel_amount += fuel_increase_amount
 		current_fuel_amount = clamp(current_fuel_amount, 0, max_fuel_amount)
