@@ -7,7 +7,7 @@ func show() -> void:
 		.show() # Calls show on the base class.
 		
 		$TotalTrees/Value.text = str(_pollution_manager._total_trees)
-		$TotalPollution/Value.text = str(_pollution_manager.get_pollution_percentage())
+		$TotalPollution/Value.text = str(_pollution_manager.get_pollution_percent())
 
 	else:
 		print_debug("No pollution manager could be found.")
