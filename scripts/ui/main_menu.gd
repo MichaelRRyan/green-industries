@@ -1,10 +1,5 @@
 extends Control
 
-const _BUTTON_EXPAND_SCALE = Vector2(1.02, 1.02)
-const _BUTTON_ANIMATION_LENGTH = 0.1
-const _BUTTON_TRANS_TYPE = Tween.TRANS_BOUNCE
-const _BUTTON_EASE_TYPE = Tween.EASE_IN_OUT
-
 var _focus_grabbed = false
 var buttons = []
 
@@ -30,13 +25,8 @@ func _ready():
 	Network.close_connection()
 	Network.state = Network.State.OFFLINE
 	
-	# Gets the buttons and connects their signals to animate them.
+	Utility.setup_button_animations($Tween)
 	buttons = get_tree().get_nodes_in_group("button")
-	for button in buttons:
-		button.connect("focus_entered", self, "_button_animate_expand", [button])
-		button.connect("mouse_entered", self, "_button_animate_expand", [button])
-		button.connect("focus_exited", self, "_button_animate_shrink", [button])
-		button.connect("mouse_exited", self, "_button_animate_shrink", [button])
 
 	# If the buttons array is empty, run _input(event).
 	if buttons.empty():
@@ -66,21 +56,5 @@ func _input(event):
 		button.release_focus()
 		_focus_grabbed = false
 			
-
-# ------------------------------------------------------------------------------
-func _button_animate_expand(button : Button):
-	var tween : Tween = $Tween
-	var _r = tween.interpolate_property(button, "rect_scale", Vector2.ONE, _BUTTON_EXPAND_SCALE,
-		_BUTTON_ANIMATION_LENGTH, _BUTTON_TRANS_TYPE, _BUTTON_EASE_TYPE)
-	_r = tween.start()
-
-
-# ------------------------------------------------------------------------------
-func _button_animate_shrink(button : Button):
-	var tween : Tween = $Tween
-	var _r = tween.interpolate_property(button, "rect_scale", _BUTTON_EXPAND_SCALE, Vector2.ONE,
-		_BUTTON_ANIMATION_LENGTH, _BUTTON_TRANS_TYPE, _BUTTON_EASE_TYPE)
-	_r = tween.start()
-
 
 # ------------------------------------------------------------------------------

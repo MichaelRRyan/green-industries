@@ -1,5 +1,11 @@
 extends Node
 
+const _BUTTON_EXPAND_SCALE = Vector2(1.02, 1.02)
+const _BUTTON_ANIMATION_LENGTH = 0.1
+const _BUTTON_TRANS_TYPE = Tween.TRANS_BOUNCE
+const _BUTTON_EASE_TYPE = Tween.EASE_IN_OUT
+
+
 # ------------------------------------------------------------------------------
 func get_dependency(group_name : String, caller : Node = null, 
 					 is_vital : bool = false) -> Node:
@@ -67,3 +73,31 @@ func get_currency_format_string(number : int) -> String:
 	
 	# Assigns the new text.
 	return "$" + string
+
+
+# ------------------------------------------------------------------------------
+func setup_button_animations(tween : Tween) -> void:
+	# Gets the buttons and connects their signals to animate them.
+	var buttons = get_tree().get_nodes_in_group("button")
+	for button in buttons:
+		button.connect("focus_entered", self, "_button_animate_expand", [button, tween])
+		button.connect("mouse_entered", self, "_button_animate_expand", [button, tween])
+		button.connect("focus_exited", self, "_button_animate_shrink", [button, tween])
+		button.connect("mouse_exited", self, "_button_animate_shrink", [button, tween])
+
+
+# ------------------------------------------------------------------------------
+func _button_animate_expand(button : Button, tween : Tween):
+	var _r = tween.interpolate_property(button, "rect_scale", Vector2.ONE, _BUTTON_EXPAND_SCALE,
+		_BUTTON_ANIMATION_LENGTH, _BUTTON_TRANS_TYPE, _BUTTON_EASE_TYPE)
+	_r = tween.start()
+
+
+# ------------------------------------------------------------------------------
+func _button_animate_shrink(button : Button, tween : Tween):
+	var _r = tween.interpolate_property(button, "rect_scale", _BUTTON_EXPAND_SCALE, Vector2.ONE,
+		_BUTTON_ANIMATION_LENGTH, _BUTTON_TRANS_TYPE, _BUTTON_EASE_TYPE)
+	_r = tween.start()
+
+
+# ------------------------------------------------------------------------------
