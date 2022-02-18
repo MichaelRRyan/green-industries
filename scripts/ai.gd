@@ -119,16 +119,7 @@ func _on_PlaceBuildingTimer_timeout():
 # Buys  or sells the resource
 func _on_BuyResourceTimer_timeout():
 	_state_machine.transition_to(States.BuyResourceState)
-	
-#buys  or sells the resource
-func _on_BuyResourceTimer_timeout():
-	_state_machine.transition_to(States.BuyResourceState)
-	
 
-
-func _on_SellResourceTimer_timeout():
-	_state_machine.transition_to(States.SellResourceState)
-	
 
 # ------------------------------------------------------------------------------
 func _on_SellResourceTimer_timeout():
