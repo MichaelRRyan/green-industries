@@ -1,9 +1,22 @@
-[gd_resource type="Theme" load_steps=12 format=2]
+[gd_resource type="Theme" load_steps=13 format=2]
 
 [ext_resource path="res://resources/fonts/menu_button_font.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/font/hope_gold.ttf" type="DynamicFontData" id=2]
 
 [sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxFlat" id=11]
+bg_color = Color( 0.901961, 0.635294, 0.517647, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id=10]
 bg_color = Color( 0.901961, 0.635294, 0.517647, 1 )
@@ -64,6 +77,7 @@ Button/styles/normal = SubResource( 3 )
 Button/styles/pressed = SubResource( 3 )
 Label/colors/font_color = Color( 0.466667, 0.886275, 0.603922, 1 )
 LineEdit/colors/font_color = Color( 0.466667, 0.886275, 0.603922, 1 )
+LineEdit/styles/focus = SubResource( 11 )
 LineEdit/styles/normal = SubResource( 10 )
 Panel/styles/panel = SubResource( 2 )
 ProgressBar/colors/font_color = Color( 0.466667, 0.886275, 0.603922, 1 )
