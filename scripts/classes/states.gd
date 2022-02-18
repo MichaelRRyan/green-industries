@@ -75,6 +75,8 @@ class StartState:
 class BuyResourceTileState:
 	extends State
 	
+	
+	# --------------------------------------------------------------------------
 	func _find_unowned_tile_around(tile_pos : Vector2, tile_type : int) -> Vector2:
 		var neighbours = Utility.get_neighbours(tile_pos)
 		while not neighbours.empty():
@@ -115,6 +117,7 @@ class BuyResourceTileState:
 		
 		_ai.no_resources_nearby = true
 		state_machine.transition_to(IdleState)
+		
 #		while not neighbours.empty():
 #			var neighbour = neighbours.pop_at(randi() % neighbours.size())
 #			if not _ai.controlled_tiles.has(neighbour):
