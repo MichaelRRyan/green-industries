@@ -1,7 +1,7 @@
 class_name CommandFactories # Like a namespace, contains all the command factories.
 
 
-# ------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
 # The abstract command factory.
 class CommandFactory:
 	
@@ -26,7 +26,21 @@ class CommandFactory:
 		assert(false)
 		return Commands.BullDozeCommand.new()
 
-
+	# --------------------------------------------------------------------------
+	# Pure virtual, throws an error if called.
+	func create_buy_command( _resources,var _buy_amount : int, _owner_id : int = 1) \
+		-> Commands.BuyCommand:
+			
+		assert(false)
+		return Commands.BuyCommand.new()
+	
+	# --------------------------------------------------------------------------
+	# Pure virtual, throws an error if called.
+	func create_sell_command( _resources,var _buy_amount : int, _owner_id : int = 1) \
+		-> Commands.SellCommand:
+			
+		assert(false)
+		return Commands.SellCommand.new()
 # ------------------------------------------------------------------------------
 # Used for offline games.
 class OfflineCommandFactory:
@@ -54,7 +68,23 @@ class OfflineCommandFactory:
 		command.setup(_tile_pos, _owner_id)
 		return command
 
-
+# --------------------------------------------------------------------------
+	func create_buy_command( _resources,var _buy_amount : int, _owner_id : int = 1) \
+		-> Commands.BuyCommand:
+			
+		
+		var command = Commands.OfflineBuyCommand.new()
+		command.setup(_resources, _buy_amount,_owner_id)
+		return command
+	
+	# --------------------------------------------------------------------------
+	func create_sell_command( _resources,var _buy_amount : int, _owner_id : int = 1) \
+		-> Commands.SellCommand:
+			
+		
+		var command = Commands.OfflineSellCommand.new()
+		command.setup(_resources, _buy_amount,_owner_id)
+		return command
 # ------------------------------------------------------------------------------
 # Used for hosted games.
 class HostCommandFactory:
@@ -82,7 +112,25 @@ class HostCommandFactory:
 		command.setup(_tile_pos, _owner_id)
 		return command
 
-
+# --------------------------------------------------------------------------
+	func create_buy_command( _resources,var _buy_amount : int, _owner_id : int = 1) \
+		-> Commands.BuyCommand:
+			
+		
+		var command = Commands.HostBuyCommand.new()
+		command.setup(_resources, _buy_amount,_owner_id)
+		return command
+	
+	# --------------------------------------------------------------------------
+	func create_sell_command( _resources,var _buy_amount : int, _owner_id : int = 1) \
+		-> Commands.SellCommand:
+			
+		
+		var command = Commands.HostSellCommand.new()
+		command.setup(_resources, _buy_amount,_owner_id)
+		return command
+		
+		
 # ------------------------------------------------------------------------------
 # Used for multiplayer games as the client.
 class ClientCommandFactory:
@@ -110,3 +158,19 @@ class ClientCommandFactory:
 		command.setup(_tile_pos, _owner_id)
 		return command
 # ------------------------------------------------------------------------------
+func create_buy_command( _resources,var _buy_amount : int, _owner_id : int = 1) \
+		-> Commands.BuyCommand:
+			
+		
+		var command = Commands.ClientBuyCommand.new()
+		command.setup(_resources, _buy_amount,_owner_id)
+		return command
+	
+	# --------------------------------------------------------------------------
+func create_sell_command( _resources,var _buy_amount : int, _owner_id : int = 1) \
+		-> Commands.SellCommand:
+			
+		
+		var command = Commands.ClientSellCommand.new()
+		command.setup(_resources, _buy_amount,_owner_id)
+		return command

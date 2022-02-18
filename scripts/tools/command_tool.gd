@@ -2,6 +2,7 @@ extends Node
 
 var command_factory : CommandFactories.CommandFactory = null
 
+
 func _ready():
 	if Network.is_host():
 		command_factory = CommandFactories.HostCommandFactory.new()
@@ -11,5 +12,6 @@ func _ready():
 		print("Client commands")
 	else:
 		command_factory = CommandFactories.OfflineCommandFactory.new()
+		
 		print("Offline commands")
 

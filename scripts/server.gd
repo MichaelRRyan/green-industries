@@ -22,6 +22,8 @@ var port = 1909
 var max_players = 10
 var is_online = false # Stored as an alternative to state for quick checks.
 var current_players = 0
+var peer_ids = []
+
 
 func _ready():
 	network.connect("peer_connected", self, "_peer_connected")
@@ -49,8 +51,8 @@ func close_connection():
 	
 
 func _peer_connected(peer_id):
-	print("peer connected")
 	current_players += 1
+	peer_ids.append(peer_id)
 	emit_signal("player_connected", peer_id)
 	print("Peer " + str(peer_id) + " Connected")
 	
@@ -65,6 +67,10 @@ remote func save_terrain_data(noise_seed):
 	
 	
 func _peer_disconnected(peer_id):
+	var pos = peer_ids.find(peer_id)
+	if pos != -1:
+		peer_ids.remove(pos)
+		
 	emit_signal("player_disconnected", peer_id)
 	print("Peer " + str(peer_id) + " Disconnected")
 

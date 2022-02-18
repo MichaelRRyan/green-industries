@@ -10,11 +10,19 @@ func _ready() -> void:
 		_state.enter(get_parent()) 
 
 func update(_delta) -> void:
-	_state.update(_delta)
+	if _state:
+		_state.update(_delta)
 
 func transition_to(target_state) -> void:
 	if _state != null:
 		_state.exit()
+		_state = null
+	
+	# If a transition timer can be found, pauses.
+	var timer = find_node("TransitionTimer")
+	if timer:
+		timer.start()
+		yield(timer, "timeout") 
 	
 	_state = target_state.new()
 	_state.enter(get_parent())

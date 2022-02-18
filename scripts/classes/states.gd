@@ -345,3 +345,173 @@ class GiveResourceToRefinaryState:
 				ai.controlled_tiles_dict.has(Tile.Type.MINERALS_REFINERY)._input_ingredients()
 			
 		ai._wait_timer.start()
+
+class BuyResourceState:
+	extends State
+	
+	var resource_manager = Utility.get_dependency("resource_manager", self, true)
+	var ai = null
+	var amount = 5
+	const max_amount = 100
+	
+	func enter(parent) -> void:
+		ai = parent
+	
+	func exit(_msg : = {}) -> void:
+		queue_free()
+	
+	func update(_delta : float) -> void:
+		
+		#if it doesnt have a certain thing but the resources for it ^^ 
+		if ai.ai_data.owned_buildings.has(Tile.Type.WOOD_FACTORY) == false: 
+			amount = 5 
+			var buy_command = ai._command_factory.\
+				create_buy_command(resource_manager.get_resource_type_by_name("wood"),amount,ai.ai_data.id)
+			buy_command.execute()		
+		elif ai.ai_data.owned_buildings.has(Tile.Type.WOOD_FACTORY) == true and \
+			ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("wood"))<=max_amount:
+				amount = 1
+				var buy_command = ai._command_factory.\
+					create_buy_command(resource_manager.get_resource_type_by_name("wood"),amount,ai.ai_data.id)
+				buy_command.execute()
+	
+			#---------------------------------------------------------------------------------------
+		if ai.ai_data.owned_buildings.has(Tile.Type.LUMBER_FACTORY) == false: 
+			amount = 5 
+			var buy_command = ai._command_factory.\
+				create_buy_command(resource_manager.get_resource_type_by_name("lumber"),amount,ai.ai_data.id)
+			buy_command.execute()		
+		if ai.ai_data.owned_buildings.has(Tile.Type.LUMBER_FACTORY) == true and \
+			 ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("lumber"))<=max_amount:
+				amount = 1
+				var buy_command = ai._command_factory.\
+					create_buy_command(resource_manager.get_resource_type_by_name("lumber"),amount,ai.ai_data.id)
+				buy_command.execute() 
+		#---------------------------------------------------------------------------------------
+		if ai.ai_data.owned_buildings.has(Tile.Type.METAL_FACTORY) == false: 
+			amount = 5 
+			var buy_command = ai._command_factory.\
+				create_buy_command(resource_manager.get_resource_type_by_name("metal"),amount,ai.ai_data.id)
+			buy_command.execute()		
+		if ai.ai_data.owned_buildings.has(Tile.Type.METAL_FACTORY) == true and \
+			 ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("metal"))<=max_amount:
+				amount = 1
+				var buy_command = ai._command_factory.\
+					create_buy_command(resource_manager.get_resource_type_by_name("metal"),amount,ai.ai_data.id)
+				buy_command.execute() 
+		#---------------------------------------------------------------------------------------
+		if ai.ai_data.owned_buildings.has(Tile.Type.MINERALS_FACTORY) == false: 
+			amount = 5 
+			var buy_command = ai._command_factory.\
+				create_buy_command(resource_manager.get_resource_type_by_name("minerals"),amount,ai.ai_data.id)
+			buy_command.execute()		
+		elif ai.ai_data.owned_buildings.has(Tile.Type.MINERALS_FACTORY) == true and \
+			ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("minerals"))<=max_amount:
+				amount = 1
+				var buy_command = ai._command_factory.\
+					create_buy_command(resource_manager.get_resource_type_by_name("minerals"),amount,ai.ai_data.id)
+				buy_command.execute()
+		#---------------------------------------------------------------------------------------
+		if ai.ai_data.owned_buildings.has(Tile.Type.MINERALS_REFINERY) == false: 
+			amount = 5 
+			var buy_command = ai._command_factory.\
+				create_buy_command(resource_manager.get_resource_type_by_name("minerals"),amount,ai.ai_data.id)
+			buy_command.execute()		
+		elif ai.ai_data.owned_buildings.has(Tile.Type.MINERALS_REFINERY) == true and \
+			ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("minerals"))<=max_amount:
+				amount = 1
+				var buy_command = ai._command_factory.\
+					create_buy_command(resource_manager.get_resource_type_by_name("minerals"),amount,ai.ai_data.id)
+				buy_command.execute()
+		#--------------------------------------------------------------------------------------
+		if ai.ai_data.owned_buildings.has(Tile.Type.WOOD_REFINERY) == false: 
+			amount = 5 
+			var buy_command = ai._command_factory.\
+				create_buy_command(resource_manager.get_resource_type_by_name("wood"),amount,ai.ai_data.id)
+			buy_command.execute()		
+		elif ai.ai_data.owned_buildings.has(Tile.Type.WOOD_FACTORY) == true and \
+			ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("wood"))<=max_amount:
+				amount = 1
+				var buy_command = ai._command_factory.\
+					create_buy_command(resource_manager.get_resource_type_by_name("wood"),amount,ai.ai_data.id)
+				buy_command.execute()
+		ai._wait_timer.start()
+	
+
+class SellResourceState:
+	extends State
+	
+	var resource_manager = Utility.get_dependency("resource_manager", self, true)
+	var ai = null
+	var amount = 5
+	const max_amount = 100 
+	#to get profit
+	func enter(parent) -> void:
+		ai = parent
+	
+	func exit(_msg : = {}) -> void:
+		queue_free()
+
+	func update(_delta : float) -> void:
+		
+		#if it doesnt have a certain thing but the resources for it ^^ 		
+		if ai.ai_data.owned_buildings.has(Tile.Type.WOOD_FACTORY) == true and \
+			 ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("wood"))<=max_amount:
+				if ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("wood"))>=50:
+					amount = 10
+				else:
+					amount = 5 
+				var sell_command = ai._command_factory.\
+					create_sell_command(resource_manager.get_resource_type_by_name("wood"),amount,ai.ai_data.id)
+				sell_command.execute()
+	
+			#---------------------------------------------------------------------------------------			
+		if ai.ai_data.owned_buildings.has(Tile.Type.LUMBER_FACTORY) == true and \
+			ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("lumber"))<=max_amount:
+				if ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("lumber"))>=50:
+					amount = 10
+				else:
+					amount = 5 
+				var sell_command = ai._command_factory.\
+					create_sell_command(resource_manager.get_resource_type_by_name("lumber"),amount,ai.ai_data.id)
+				sell_command.execute() 
+		#---------------------------------------------------------------------------------------			
+		if ai.ai_data.owned_buildings.has(Tile.Type.METAL_FACTORY) == true and \
+			ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("metal"))<=max_amount:
+				if ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("metal"))>=50:
+					amount = 10
+				else:
+					amount = 5 
+				var sell_command = ai._command_factory.\
+					create_sell_command(resource_manager.get_resource_type_by_name("metal"),amount,ai.ai_data.id)
+				sell_command.execute() 
+		#---------------------------------------------------------------------------------------			
+		if ai.ai_data.owned_buildings.has(Tile.Type.MINERALS_FACTORY) == true and \
+			ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("minerals"))<=max_amount:
+				if ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("minerals"))>=50:
+					amount = 10
+				else:
+					amount = 5 
+				var sell_command = ai._command_factory.\
+					create_sell_command(resource_manager.get_resource_type_by_name("minerals"),amount,ai.ai_data.id)
+				sell_command.execute()
+		#---------------------------------------------------------------------------------------
+		if ai.ai_data.owned_buildings.has(Tile.Type.MINERALS_REFINERY) == true and ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("minerals"))<=max_amount:
+			if ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("minerals"))>=50:
+				amount = 10
+			else:
+				amount = 5 
+			var sell_command = ai._command_factory.\
+				create_sell_command(resource_manager.get_resource_type_by_name("minerals"),amount,ai.ai_data.id)
+			sell_command.execute()
+		#--------------------------------------------------------------------------------------
+		if ai.ai_data.owned_buildings.has(Tile.Type.WOOD_FACTORY) == true and ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("wood"))<=max_amount:
+			if ai.ai_data._inventory.get_quantity(resource_manager.get_resource_type_by_name("wood"))>=50:
+				amount = 10
+			else:
+				amount = 5 
+			var sell_command = ai._command_factory.\
+				create_sell_command(resource_manager.get_resource_type_by_name("wood"),amount,ai.ai_data.id)
+			sell_command.execute()
+		ai._wait_timer.start()
+		
