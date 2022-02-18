@@ -31,6 +31,7 @@ func transition_to(target_state) -> void:
 		yield(timer, "timeout") 
 	
 	_state = target_state.new()
+	_state.state_machine = self
 	_state.enter(get_parent())
 	emit_signal("transitioned", _state.name)
 

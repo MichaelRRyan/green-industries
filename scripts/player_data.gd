@@ -1,5 +1,6 @@
 extends Node
 
+signal resource_harvested(resource)
 
 var owned_buildings : Dictionary = {}
 var pollution_caused = 0
@@ -29,6 +30,7 @@ func on_building_placed(building : Node2D, type : int) -> void:
 # ------------------------------------------------------------------------------
 func _on_harvester_resource_gathered(resource : ResourceType) -> void:
 	_inventory.add_resources(resource, 1)
+	emit_signal("resource_harvested", resource)
 
 	
 # ------------------------------------------------------------------------------

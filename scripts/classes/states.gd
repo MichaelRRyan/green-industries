@@ -8,7 +8,30 @@ class IdleState:
 	
 	# --------------------------------------------------------------------------
 	func update(_delta : float) -> void:
-		pass
+		if !_ai.controlled_tiles_dict.has(Tile.Type.GRASS):
+			state_machine.transition_to(BuyEmptyLandState)
+			
+		elif (_ai.ai_data._inventory.get_quantity(_ai._resource_manager.get_resource_type_by_name("minerals")) > 0 and\
+				!_ai.ai_data.owned_buildings.has(Tile.Type.MINERALS_FACTORY)) or\
+				(_ai.ai_data._inventory.get_quantity(_ai._resource_manager.get_resource_type_by_name("wood")) > 0 and\
+				!_ai.ai_data.owned_buildings.has(Tile.Type.WOOD_FACTORY)):
+					state_machine.transition_to(PlaceFactoryState)
+					
+		elif !_ai.controlled_tiles_dict.has(Tile.Type.POWER_PLANT) or (_ai.controlled_tiles_dict.has(Tile.Type.POWER_PLANT)\
+				and !_ai.ai_data.owned_buildings[Tile.Type.POWER_PLANT].front().is_powered()):
+					state_machine.transition_to(NoPowerState)
+					
+		elif (_ai.ai_data._inventory.get_quantity(_ai._resource_manager.get_resource_type_by_name("minerals")) > 0 and\
+				!_ai.ai_data.owned_buildings.has(Tile.Type.MINERALS_REFINERY)) or\
+				(_ai.ai_data._inventory.get_quantity(_ai._resource_manager.get_resource_type_by_name("wood")) and\
+				!_ai.ai_data.owned_buildings.has(Tile.Type.WOOD_REFINERY)):
+					state_machine.transition_to(PlaceRefinaryState)
+					
+		elif (_ai.ai_data._inventory.get_quantity(_ai._resource_manager.get_resource_type_by_name("lumber")) > 0 and\
+				!_ai.ai_data.owned_buildings.has(Tile.Type.LUMBER_FACTORY)) or\
+				(_ai.ai_data._inventory.get_quantity(_ai._resource_manager.get_resource_type_by_name("metal")) and\
+				!_ai.ai_data.owned_buildings.has(Tile.Type.METAL_FACTORY)):
+					state_machine.transition_to(PlaceFactoryState)
 
 
 # ------------------------------------------------------------------------------
@@ -37,8 +60,8 @@ class StartState:
 		var command = _ai._command_factory.create_buy_land_command(_buy_tile, _ai.ai_data.id)
 		command.execute()
 		_ai.add_to_controlled(_buy_tile)
-		_ai._wait_timer.start()
 		_ai._place_building_timer.start()
+		state_machine.transition_to(IdleState)
 
 
 # ------------------------------------------------------------------------------
@@ -63,8 +86,7 @@ class BuyLandState:
 			var command = _ai._command_factory.create_buy_land_command(_buy_tile, _ai.ai_data.id)
 			command.execute()
 			_ai.add_to_controlled(_buy_tile)
-		_ai._wait_timer.start()
-		_ai.start_transitions = true
+		state_machine.transition_to(IdleState)
 
 
 # ------------------------------------------------------------------------------
@@ -85,7 +107,7 @@ class BuyEmptyLandState:
 			var command = _ai._command_factory.create_buy_land_command(_buy_tile, _ai.ai_data.id)
 			command.execute()
 			_ai.add_to_controlled(_buy_tile)
-		_ai._wait_timer.start()
+		state_machine.transition_to(IdleState)
 
 
 # ------------------------------------------------------------------------------
@@ -123,7 +145,7 @@ class PlaceHarvesterState:
 			
 			command.execute()
 			_ai.change_type(_ai.controlled_tiles.front(), build_type)
-			_ai._wait_timer.start()
+			state_machine.transition_to(IdleState)
 			_ai._timer.start()
 
 
@@ -172,7 +194,7 @@ class NoPowerState:
 		elif _ai.ai_data.owned_buildings.has(Tile.Type.LUMBER_FACTORY):
 			_place_power_plant_by_building(Tile.Type.LUMBER_FACTORY)
 		
-		_ai._wait_timer.start()
+		state_machine.transition_to(IdleState)
 
 
 # ------------------------------------------------------------------------------
@@ -201,7 +223,7 @@ class PlaceRefinaryState:
 					command.execute()
 					_ai.change_type(_tile_pos, Tile.Type.MINERALS_REFINERY)
 			
-		_ai._wait_timer.start()
+		state_machine.transition_to(IdleState)
 
 
 # ------------------------------------------------------------------------------
@@ -246,7 +268,7 @@ class PlaceFactoryState:
 					_ai.change_type(_tile_pos, Tile.Type.METAL_FACTORY)
 			
 			
-		_ai._wait_timer.start()
+		state_machine.transition_to(IdleState)
 
 
 # ------------------------------------------------------------------------------
@@ -266,7 +288,7 @@ class GiveResourceToRefinaryState:
 			and _ai.controlled_tiles_dict.has(Tile.Type.MINERALS_REFINERY):
 				_ai.controlled_tiles_dict.has(Tile.Type.MINERALS_REFINERY)._input_ingredients()
 			
-		_ai._wait_timer.start()
+		state_machine.transition_to(IdleState)
 
 
 # ------------------------------------------------------------------------------
@@ -354,7 +376,7 @@ class BuyResourceState:
 				var buy_command = _ai._command_factory.\
 					create_buy_command(resource_manager.get_resource_type_by_name("wood"),amount,_ai.ai_data.id)
 				buy_command.execute()
-		_ai._wait_timer.start()
+		state_machine.transition_to(IdleState)
 	
 
 # ------------------------------------------------------------------------------
@@ -429,7 +451,7 @@ class SellResourceState:
 			var sell_command = _ai._command_factory.\
 				create_sell_command(resource_manager.get_resource_type_by_name("wood"),amount,_ai.ai_data.id)
 			sell_command.execute()
-		_ai._wait_timer.start()
+		state_machine.transition_to(IdleState)
 		
 
 # ------------------------------------------------------------------------------
