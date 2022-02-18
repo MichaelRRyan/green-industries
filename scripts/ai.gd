@@ -84,19 +84,19 @@ func _process(_delta):
 					_state_machine.transition_to(States.PlaceFactoryState)
 					is_idle_state = false
 		elif !controlled_tiles_dict.has(Tile.Type.POWER_PLANT) or (controlled_tiles_dict.has(Tile.Type.POWER_PLANT)\
-			and !ai_data.owned_buildings[Tile.Type.POWER_PLANT].front().is_powered()):
-				_state_machine.transition_to(States.NoPowerState)
-				is_idle_state = false
-		elif ai_data._inventory.get_quantity(_resource_manager.get_resource_type_by_name("minerals")) > 0 or\
-				ai_data._inventory.get_quantity(_resource_manager.get_resource_type_by_name("wood")) and\
-				!ai_data.owned_buildings.has(Tile.Type.MINERALS_REFINERY) or\
-				!ai_data.owned_buildings.has(Tile.Type.WOOD_REFINERY):
+				and !ai_data.owned_buildings[Tile.Type.POWER_PLANT].front().is_powered()):
+					_state_machine.transition_to(States.NoPowerState)
+					is_idle_state = false
+		elif (ai_data._inventory.get_quantity(_resource_manager.get_resource_type_by_name("minerals")) > 0 and\
+				!ai_data.owned_buildings.has(Tile.Type.MINERALS_REFINERY)) or\
+				(ai_data._inventory.get_quantity(_resource_manager.get_resource_type_by_name("wood")) and\
+				!ai_data.owned_buildings.has(Tile.Type.WOOD_REFINERY)):
 					_state_machine.transition_to(States.PlaceRefinaryState)
 					is_idle_state = false
-		elif ai_data._inventory.get_quantity(_resource_manager.get_resource_type_by_name("lumber")) > 0 or\
-				ai_data._inventory.get_quantity(_resource_manager.get_resource_type_by_name("metal")) and\
-				!ai_data.owned_buildings.has(Tile.Type.LUMBER_FACTORY) or\
-				!ai_data.owned_buildings.has(Tile.Type.METAL_FACTORY):
+		elif (ai_data._inventory.get_quantity(_resource_manager.get_resource_type_by_name("lumber")) > 0 and\
+				!ai_data.owned_buildings.has(Tile.Type.LUMBER_FACTORY)) or\
+				(ai_data._inventory.get_quantity(_resource_manager.get_resource_type_by_name("metal")) and\
+				!ai_data.owned_buildings.has(Tile.Type.METAL_FACTORY)):
 					_state_machine.transition_to(States.PlaceFactoryState)
 					is_idle_state = false
 	if ai_data:
