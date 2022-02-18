@@ -42,9 +42,13 @@ func bulldose_tile(tile_pos : Vector2, id : int = 1) -> void:
 			if owner_dict[tile_pos].id == id:
 				if is_resource(tile_pos):
 					_terrain.set_cellv(tile_pos, Tile.Type.GRASS)
+					if Network.is_online and not Network.is_client():
+						rpc("set_tile_type", tile_pos, Tile.Type.GRASS)
 					print("can remove the resource")
 				elif is_building(tile_pos):
 					_terrain.set_cellv(tile_pos, Tile.Type.DIRT)
+					if Network.is_online and not Network.is_client():
+						rpc("set_tile_type", tile_pos, Tile.Type.DIRT)
 					emit_signal("building_destroyed", tile_pos)
 				else:
 					print("cannot remove the resource")
@@ -71,10 +75,26 @@ func is_building(tile_pos : Vector2) -> bool:
 remote func request_bulldoze(tile_pos : Vector2) -> void:
 	var _sender_id = get_tree().get_rpc_sender_id()
 	
-	if owner_dict.has(tile_pos):
-		pass
+	if not _terrain.is_tile_empty(tile_pos):
+		# If the tile is already owned.
+		if owner_dict.has(tile_pos):
+			# If we own the tile.
+			if owner_dict[tile_pos].id == _sender_id:
+				if is_resource(tile_pos):
+					_terrain.set_cellv(tile_pos, Tile.Type.GRASS)
+					rpc("set_tile_type", tile_pos, Tile.Type.GRASS)
+					print("can remove the resource")
+				elif is_building(tile_pos):
+					_terrain.set_cellv(tile_pos, Tile.Type.DIRT)
+					rpc("set_tile_type", tile_pos, Tile.Type.DIRT)
+					emit_signal("building_destroyed", tile_pos)
+				else:
+					print("cannot remove the resource")
 
-
+remote func set_tile_type(tile_pos : Vector2, tile_type) -> void:
+	_terrain.set_cellv(tile_pos, tile_type)
+	if tile_type != Tile.Type.GRASS:
+		emit_signal("building_destroyed", tile_pos)
 # ------------------------------------------------------------------------------
 func _process(_delta):
 	if Tool.Type.DESTROY == _game_state.get_selected_tool():
