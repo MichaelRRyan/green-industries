@@ -1,0 +1,144 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://resources/fonts/title_font.tres" type="DynamicFont" id=1]
+[ext_resource path="res://resources/themes/menu_theme.tres" type="Theme" id=2]
+[ext_resource path="res://scripts/ui/Instructions.gd" type="Script" id=3]
+
+[node name="Instructions" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="Panel" parent="."]
+anchor_right = 0.25
+anchor_bottom = 0.25
+rect_scale = Vector2( 4, 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenteredTitleSection" type="CenterContainer" parent="Background"]
+anchor_right = 1.0
+margin_bottom = 26.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="Background/CenteredTitleSection"]
+margin_left = 26.0
+margin_right = 229.0
+margin_bottom = 26.0
+custom_fonts/font = ExtResource( 1 )
+text = "Instructions"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TabContainer" type="TabContainer" parent="Background"]
+anchor_right = 2.0
+anchor_bottom = 2.0
+margin_top = 28.0
+margin_bottom = -28.0
+rect_scale = Vector2( 0.5, 0.5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Buildings" type="Tabs" parent="Background/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 23.0
+
+[node name="Scaler" type="Control" parent="Background/TabContainer/Buildings"]
+anchor_right = 0.5
+anchor_bottom = 0.5
+rect_scale = Vector2( 2, 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Background/TabContainer/Buildings/Scaler"]
+margin_left = 40.0
+margin_top = -0.5
+margin_right = 216.0
+margin_bottom = 13.5
+text = "Building = (number to select it)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="factory" type="Label" parent="Background/TabContainer/Buildings/Scaler"]
+margin_left = 2.0
+margin_top = 17.75
+margin_right = 68.0
+margin_bottom = 31.75
+text = "LumberJack = 1,
+Mine = 2,
+Lumber_Factory = 3,
+Metal_Factory = 4,
+Minerals_Factory = 5
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="factory2" type="Label" parent="Background/TabContainer/Buildings/Scaler"]
+margin_left = 131.25
+margin_top = 16.75
+margin_right = 252.25
+margin_bottom = 109.75
+text = "Wood_Factory = 6,
+Power Plant = 7,
+Pylon = 8,
+Wood Refinery = 9,
+Mineral Refinery = 0
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Icons" type="Tabs" parent="Background/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Scaler" type="Control" parent="Background/TabContainer/Icons"]
+anchor_right = 0.5
+anchor_bottom = 0.5
+rect_scale = Vector2( 2, 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Background/TabContainer/Icons/Scaler"]
+margin_right = 257.0
+margin_bottom = 45.0
+text = "Bulldoze : Select building to remove
+Shop: allow you to buy and sell resources
+Build: Lets you create a building if you
+have the money
+Buy_Tile: lets you buy any tile not
+already owned"
+
+[node name="Back" type="Button" parent="Background" groups=["button"]]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 106.75
+margin_top = -15.75
+margin_right = 133.75
+margin_bottom = -2.75
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="Background/Back" to="." method="_on_Back_pressed"]

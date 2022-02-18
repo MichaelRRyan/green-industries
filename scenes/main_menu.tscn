@@ -83,8 +83,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Help" type="Button" parent="Sections/Buttons" groups=["button"]]
+margin_top = 51.0
+margin_right = 256.0
+margin_bottom = 64.0
+text = "HELP"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Tween" type="Tween" parent="."]
 
 [connection signal="pressed" from="Sections/Buttons/PlayButton" to="." method="_on_Play_pressed"]
 [connection signal="pressed" from="Sections/Buttons/OptionsButton" to="." method="_on_Options_pressed"]
 [connection signal="pressed" from="Sections/Buttons/ExitButton" to="." method="_on_Exit_pressed"]
+[connection signal="pressed" from="Sections/Buttons/Help" to="." method="_on_Help_pressed"]

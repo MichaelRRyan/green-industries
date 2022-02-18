@@ -58,3 +58,7 @@ func _input(event):
 			
 
 # ------------------------------------------------------------------------------
+
+
+func _on_Help_pressed():
+	var _set = get_tree().change_scene("res://scenes/Instructions.tscn");
