@@ -4,7 +4,6 @@ signal player_connected(peer_id)
 signal player_disconnected(peer_id)
 signal connection_succeeded
 signal server_opened
-signal single_player
 
 const SERVER_ID = 1
 

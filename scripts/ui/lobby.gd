@@ -9,6 +9,8 @@ onready var _player_list = find_node("PlayerListBackground")
 onready var _host_button = find_node("HostButton")
 
 func _ready():
+	Utility.setup_button_animations($Tween)
+	
 	var host : String = "Unknown"
 	
 	if OS.has_feature("Windows"):
@@ -29,7 +31,7 @@ func _on_HostButton_pressed():
 	
 	if Network.state != Network.State.OFFLINE:
 		Network.close_connection()
-		_host_button.text = "Host"
+		_host_button.text = "Open Server"
 		_ip_label.hide()
 		randomize()
 		TerrainData.noise_seed = randi()
@@ -66,7 +68,7 @@ remote func begin_game():
 
 func _on_StartButton_pressed():
 	if Network.state == Network.State.OFFLINE:
-		Network.state == Network.State.SOLO
+		Network.state = Network.State.SOLO
 		randomize()
 		TerrainData.noise_seed = randi()	
 		
@@ -83,3 +85,7 @@ func set_connect_type(host):
 
 func _on_TabContainer_tab_changed(tab):
 	_player_list.visible = tab == 0
+
+
+func _on_Back_pressed():
+	var _r = get_tree().change_scene("res://scenes/main_menu.tscn")

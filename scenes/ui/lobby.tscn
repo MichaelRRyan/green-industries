@@ -14,6 +14,7 @@ corner_radius_bottom_left = 5
 [node name="Lobby" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+rect_pivot_offset = Vector2( -51, 227 )
 theme = ExtResource( 2 )
 script = ExtResource( 5 )
 __meta__ = {
@@ -69,14 +70,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HostButton" type="Button" parent="Background/TabContainer/Host/Scaler"]
+[node name="HostButton" type="Button" parent="Background/TabContainer/Host/Scaler" groups=["button"]]
+anchor_left = 0.5
 anchor_top = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = 10.75
+margin_left = -57.0
 margin_top = -22.0
-margin_right = 70.75
+margin_right = 57.0
 margin_bottom = -3.0
-text = "Host"
+text = "Open Server"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -87,11 +90,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -57.0
-margin_top = -18.5
-margin_right = 98.0
-margin_bottom = -5.5
-rect_scale = Vector2( 0.860384, 1.0025 )
+margin_left = -77.5
+margin_top = -34.5
+margin_right = 77.5
+margin_bottom = -21.5
 text = "IP:[PRIVATE_IP]"
 align = 1
 __meta__ = {
@@ -128,7 +130,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="join" type="Button" parent="Background/TabContainer/Join/Scaler"]
+[node name="join" type="Button" parent="Background/TabContainer/Join/Scaler" groups=["button"]]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -150,7 +152,7 @@ margin_bottom = 119.438
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 text = "Invalid IP Address"
 
-[node name="StartButton" type="Button" parent="Background"]
+[node name="StartButton" type="Button" parent="Background" groups=["button"]]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -164,88 +166,111 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Back" type="Button" parent="Background" groups=["button"]]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 22.25
+margin_top = -18.5
+margin_right = 49.25
+margin_bottom = -5.5
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="PlayerListBackground" type="Panel" parent="."]
-anchor_right = 0.475
-anchor_bottom = 0.29
+anchor_right = 0.318
+anchor_bottom = 0.16
 margin_left = 24.0
 margin_top = 170.0
 margin_right = 24.0
 margin_bottom = 170.0
-rect_scale = Vector2( 2, 2 )
+rect_scale = Vector2( 3, 3 )
 custom_styles/panel = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PlayerList" type="VBoxContainer" parent="PlayerListBackground"]
-anchor_right = 1.0
+[node name="PlayerListLeft" type="VBoxContainer" parent="PlayerListBackground"]
+anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = 20.0
-margin_top = 1.0
+margin_top = 6.0
 margin_right = -5.0
 margin_bottom = -5.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Player1" type="Label" parent="PlayerListBackground/PlayerList"]
-margin_right = 461.0
+[node name="Player1" type="Label" parent="PlayerListBackground/PlayerListLeft"]
+margin_right = 137.0
 margin_bottom = 13.0
-text = "Player 1"
+text = "1. Player 1"
 
-[node name="Player2" type="Label" parent="PlayerListBackground/PlayerList"]
+[node name="Player2" type="Label" parent="PlayerListBackground/PlayerListLeft"]
 margin_top = 17.0
-margin_right = 461.0
+margin_right = 137.0
 margin_bottom = 30.0
-text = "Player 2 (AI)"
+text = "2. Player 2 (AI)"
 
-[node name="Player3" type="Label" parent="PlayerListBackground/PlayerList"]
+[node name="Player3" type="Label" parent="PlayerListBackground/PlayerListLeft"]
 margin_top = 34.0
-margin_right = 461.0
+margin_right = 137.0
 margin_bottom = 47.0
-text = "Player 3 (AI)"
+text = "3. Player 3 (AI)"
 
-[node name="Player4" type="Label" parent="PlayerListBackground/PlayerList"]
+[node name="Player4" type="Label" parent="PlayerListBackground/PlayerListLeft"]
 margin_top = 51.0
-margin_right = 461.0
+margin_right = 137.0
 margin_bottom = 64.0
-text = "Player 4 (AI)"
+text = "4. Player 4 (AI)"
 
-[node name="Player5" type="Label" parent="PlayerListBackground/PlayerList"]
+[node name="Player5" type="Label" parent="PlayerListBackground/PlayerListLeft"]
 margin_top = 68.0
-margin_right = 461.0
+margin_right = 137.0
 margin_bottom = 81.0
-text = "Player 5 (AI)"
+text = "5. Player 5 (AI)"
 
-[node name="Player6" type="Label" parent="PlayerListBackground/PlayerList"]
-margin_top = 85.0
-margin_right = 461.0
-margin_bottom = 98.0
-text = "Player 6 (AI)"
+[node name="PlayerListRight" type="VBoxContainer" parent="PlayerListBackground"]
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 6.0
+margin_right = -5.0
+margin_bottom = -5.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Player7" type="Label" parent="PlayerListBackground/PlayerList"]
-margin_top = 102.0
-margin_right = 461.0
-margin_bottom = 115.0
-text = "Player 7 (AI)"
+[node name="Player6" type="Label" parent="PlayerListBackground/PlayerListRight"]
+margin_right = 137.0
+margin_bottom = 13.0
+text = "6. Player 6 (AI)"
 
-[node name="Player8" type="Label" parent="PlayerListBackground/PlayerList"]
-margin_top = 119.0
-margin_right = 461.0
-margin_bottom = 132.0
-text = "Player 8 (AI)"
+[node name="Player7" type="Label" parent="PlayerListBackground/PlayerListRight"]
+margin_top = 17.0
+margin_right = 137.0
+margin_bottom = 30.0
+text = "7. Player 7 (AI)"
 
-[node name="Player9" type="Label" parent="PlayerListBackground/PlayerList"]
-margin_top = 136.0
-margin_right = 461.0
-margin_bottom = 149.0
-text = "Player 9 (AI)"
+[node name="Player8" type="Label" parent="PlayerListBackground/PlayerListRight"]
+margin_top = 34.0
+margin_right = 137.0
+margin_bottom = 47.0
+text = "8. Player 8 (AI)"
 
-[node name="Player10" type="Label" parent="PlayerListBackground/PlayerList"]
-margin_top = 153.0
-margin_right = 461.0
-margin_bottom = 166.0
-text = "Player 10 (AI)"
+[node name="Player9" type="Label" parent="PlayerListBackground/PlayerListRight"]
+margin_top = 51.0
+margin_right = 137.0
+margin_bottom = 64.0
+text = "9. Player 9 (AI)"
+
+[node name="Player10" type="Label" parent="PlayerListBackground/PlayerListRight"]
+margin_top = 68.0
+margin_right = 137.0
+margin_bottom = 81.0
+text = "10. Player 10 (AI)"
 
 [node name="Connecting" type="Panel" parent="."]
 visible = false
@@ -263,7 +288,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Tween" type="Tween" parent="."]
+
 [connection signal="tab_changed" from="Background/TabContainer" to="." method="_on_TabContainer_tab_changed"]
 [connection signal="pressed" from="Background/TabContainer/Host/Scaler/HostButton" to="." method="_on_HostButton_pressed"]
 [connection signal="pressed" from="Background/TabContainer/Join/Scaler/join" to="." method="_on_JoinButton_pressed"]
 [connection signal="pressed" from="Background/StartButton" to="." method="_on_StartButton_pressed"]
+[connection signal="pressed" from="Background/Back" to="." method="_on_Back_pressed"]
