@@ -14,6 +14,7 @@ onready var _resource_timer = get_node("BuyResourceTimer")
 const TILE_MAP_SIZE = 100
 var controlled_tiles = []
 var controlled_tiles_dict : Dictionary = {}
+var no_resources_nearby = false
 
 var _terrain = null
 onready var _state_machine = get_node("StateMachine")

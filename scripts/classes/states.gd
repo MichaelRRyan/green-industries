@@ -8,7 +8,14 @@ class IdleState:
 	
 	# --------------------------------------------------------------------------
 	func update(_delta : float) -> void:
-		if !_ai.controlled_tiles_dict.has(Tile.Type.GRASS):
+		# If the AI owns 2 or more tiles but has no resources.
+		if (not _ai.no_resources_nearby and
+			_ai.controlled_tiles.size() >= 2 and
+			!_ai.controlled_tiles_dict.has(Tile.Type.FOREST) and
+			!_ai.controlled_tiles_dict.has(Tile.Type.STONE)):
+			state_machine.transition_to(BuyResourceTileState)
+			
+		elif !_ai.controlled_tiles_dict.has(Tile.Type.GRASS):
 			state_machine.transition_to(BuyEmptyLandState)
 			
 		elif (_ai.ai_data._inventory.get_quantity(_ai._resource_manager.get_resource_type_by_name("minerals")) > 0 and\
@@ -63,6 +70,56 @@ class StartState:
 		_ai._place_building_timer.start()
 		state_machine.transition_to(IdleState)
 
+
+# ------------------------------------------------------------------------------
+class BuyResourceTileState:
+	extends State
+	
+	func _find_unowned_tile_around(tile_pos : Vector2, tile_type : int) -> Vector2:
+		var neighbours = Utility.get_neighbours(tile_pos)
+		while not neighbours.empty():
+			var neighbour = neighbours.pop_at(randi() % neighbours.size())
+			if not _ai.controlled_tiles.has(neighbour):
+				if tile_type == _ai._terrain.get_cellv(neighbour):
+					return neighbour
+		
+		return Vector2(-1, -1)
+	
+	
+	# --------------------------------------------------------------------------
+	func update(_delta : float) -> void:
+		# Search for a resource tile.
+		#var checked = []
+		#var origin = _ai.controlled_tiles.front() # First tile bought.
+		#var neighbours = Utility.get_neighbours(origin)
+		
+		if _ai.controlled_tiles_dict.has(Tile.Type.LUMBERJACK):
+			for pos in _ai.controlled_tiles_dict[Tile.Type.LUMBERJACK]:
+				var tile = _find_unowned_tile_around(pos, Tile.Type.FOREST)
+				if tile.x != -1: 
+					var command = _ai._command_factory.create_buy_land_command(tile, _ai.ai_data.id)
+					command.execute()
+					_ai.add_to_controlled(tile)
+					state_machine.transition_to(IdleState)
+					return
+		
+		if _ai.controlled_tiles_dict.has(Tile.Type.MINE):
+			for pos in _ai.controlled_tiles_dict[Tile.Type.MINE]:
+				var tile = _find_unowned_tile_around(pos, Tile.Type.STONE)
+				if tile.x != -1: 
+					var command = _ai._command_factory.create_buy_land_command(tile, _ai.ai_data.id)
+					command.execute()
+					_ai.add_to_controlled(tile)
+					state_machine.transition_to(IdleState)
+					return
+		
+		_ai.no_resources_nearby = true
+		state_machine.transition_to(IdleState)
+#		while not neighbours.empty():
+#			var neighbour = neighbours.pop_at(randi() % neighbours.size())
+#			if not _ai.controlled_tiles.has(neighbour):
+#				pass
+	
 
 # ------------------------------------------------------------------------------
 #state to buy land when all land is used up or ai has no land
