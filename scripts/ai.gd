@@ -73,7 +73,7 @@ func _on_WaitTimer_timeout():
 	
 
 func _process(_delta):
-	if is_idle_state and start_transitions and ai_data:
+	if is_idle_state and start_transitions:
 		if !controlled_tiles_dict.has(Tile.Type.GRASS):
 			_state_machine.transition_to(States.BuyEmptyLandState)
 			is_idle_state = false
@@ -99,4 +99,5 @@ func _process(_delta):
 				!ai_data.owned_buildings.has(Tile.Type.METAL_FACTORY):
 					_state_machine.transition_to(States.PlaceFactoryState)
 					is_idle_state = false
+	if ai_data:
 		_state_machine.update(_delta)

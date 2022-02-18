@@ -30,9 +30,9 @@ func _ready() -> void:
 			ai_data.append(player_data)
 			var new_ai = ai_scene.instance()
 			ais.append(new_ai)
+			add_child(new_ai)
 			ais.back()._set_player_data(player_data)
 			networked_players[id] = ai_data.back()
-			add_child(new_ai)
 		
 	# Connects to the player connected and disconnected signals if the host.
 	if Network.state == Network.State.HOSTING:
