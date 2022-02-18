@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://scripts/factory.gd" type="Script" id=2]
+[ext_resource path="res://scripts/factory.gd" type="Script" id=1]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 54.4518
@@ -8,7 +8,7 @@ radius = 54.4518
 [node name="Factory" type="Area2D"]
 collision_layer = 2
 collision_mask = 2
-script = ExtResource( 2 )
+script = ExtResource( 1 )
 mouse_over = Color( 0.721569, 0.207843, 0.207843, 1 )
 mouse_out = Color( 1, 1, 1, 1 )
 
@@ -16,10 +16,10 @@ mouse_out = Color( 1, 1, 1, 1 )
 shape = SubResource( 1 )
 
 [node name="Label" type="Label" parent="."]
-margin_left = 39.0
-margin_top = 17.0
-margin_right = 73.0
-margin_bottom = 31.0
+margin_left = -20.0
+margin_top = 34.0
+margin_right = 14.0
+margin_bottom = 48.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "1"
 __meta__ = {
@@ -37,6 +37,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="CreateMoneyTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
 [connection signal="input_event" from="." to="." method="_on_Factory_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_Factory_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_Factory_mouse_exited"]
+[connection signal="timeout" from="CreateMoneyTimer" to="." method="_on_CreateMoneyTimer_timeout"]

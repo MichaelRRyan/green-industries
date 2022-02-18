@@ -11,12 +11,12 @@ var buttons = []
 
 # ------------------------------------------------------------------------------
 func _on_Play_pressed():
-	var _value = get_tree().change_scene("res://scenes/lobby.tscn");
+	var _value = get_tree().change_scene("res://scenes/ui/lobby.tscn");
 
 
 # ------------------------------------------------------------------------------
 func _on_Options_pressed():
-	var _set = get_tree().change_scene("res://scenes/settings.tscn");
+	var _set = get_tree().change_scene("res://scenes/ui/settings.tscn");
 
 
 # ------------------------------------------------------------------------------
@@ -26,6 +26,10 @@ func _on_Exit_pressed():
 
 # ------------------------------------------------------------------------------
 func _ready():
+	# Resets the network upon entering the main menu.
+	Network.close_connection()
+	Network.state = Network.State.OFFLINE
+	
 	# Gets the buttons and connects their signals to animate them.
 	buttons = get_tree().get_nodes_in_group("button")
 	for button in buttons:

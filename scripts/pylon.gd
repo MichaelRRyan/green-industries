@@ -29,9 +29,7 @@ func _on_Pylon_mouse_entered():
 
 func _on_Pylon_mouse_exited():
 	display_energy_circle = false
-	
+
+
 func _ready():
-	#name = str(Network.pylons)
 	add_to_group("pylons")
-	Network.pylons += 1
-	print(Network.pylons)

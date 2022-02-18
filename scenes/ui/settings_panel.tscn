@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/font/matchup_pro.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://scripts/settings_panel.gd" type="Script" id=2]
+[ext_resource path="res://scripts/ui/settings_panel.gd" type="Script" id=2]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.454902, 0.92549, 0.486275, 1 )
