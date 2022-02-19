@@ -31,6 +31,7 @@ func before_all() -> void:
 	_gameplay = GameplayScene.instance()
 	add_child(_gameplay)
 	
+	# Allows the game to be fully set up before running the tests.
 	yield(yield_for(0.1), YIELD)
 	
 	# Finds a child node with the terrain name and ensures it's not null.
