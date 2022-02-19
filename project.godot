@@ -167,9 +167,9 @@ config/icon="res://assets/images/powerPlant.png"
 Network="*res://scripts/server.gd"
 Utility="*res://scripts/utility.gd"
 TerrainData="*res://scripts/terrain_data.gd"
+Pollution="*res://scripts/pollution.gd"
 GetGameStat="*res://scripts/get_game_stat.gd"
 ObjectPool="*res://scripts/classes/object_pool.gd"
-Pollution="*res://scripts/pollution.gd"
 
 [editor_plugins]
 

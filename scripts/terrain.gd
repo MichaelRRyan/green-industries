@@ -24,7 +24,7 @@ var _minerals_resource = null
 # Will be used to allow for more empty tiles to be added later (e.g. dirt).
 func is_tile_empty(tile : Vector2) -> bool:
 	var type = tile_map.get_cellv(tile)
-	return type == Tile.Type.GRASS
+	return type == Tile.Type.GRASS or type == Tile.Type.MEADOW
 
 # ------------------------------------------------------------------------------
 # This method will later be extended to account for the hexagonal shape.

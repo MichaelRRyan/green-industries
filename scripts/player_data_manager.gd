@@ -2,6 +2,8 @@ extends Node
 
 onready var local_player_data = get_node("PlayerData")
 
+const PLAYER_START_MONEY = 30000
+
 var PlayerDataScene = preload("res://scenes/player_data.tscn")
 var owner_dict = {}
 var ai_scene = load("res://scenes/ai.tscn")
@@ -40,6 +42,8 @@ func _ready() -> void:
 		for peer in Network.peer_ids:
 			_on_Network_player_connected(peer)
 		
+		
+		
 	# Connects to the player connected and disconnected signals if the host.
 	if Network.state == Network.State.HOSTING:
 		var _r = Network.connect("player_connected", self, "_on_Network_player_connected")
@@ -51,7 +55,7 @@ func _ready() -> void:
 		if player_data and get_tree().network_peer != null:
 			player_data.set_name("PlayerData" + str(get_tree().get_network_unique_id()))
 	
-
+	call_deferred("_set_all_players_money")
 
 
 #-------------------------------------------------------------------------------
@@ -84,5 +88,14 @@ func _on_Network_player_disconnected(peer_id : int) -> void:
 
 
 #-------------------------------------------------------------------------------
+func _set_all_players_money() -> void:
+	for player in networked_players.values():
+		player._inventory.set_money(PLAYER_START_MONEY)
+
+
+#-------------------------------------------------------------------------------
 func accept(vistor) -> void:
 	vistor.save_player_data_manager(self)
+
+
+#-------------------------------------------------------------------------------
