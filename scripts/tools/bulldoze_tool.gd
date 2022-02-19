@@ -6,6 +6,7 @@ onready var _game_state = Utility.get_dependency("game_state", self, true)
 onready var _world = Utility.get_dependency("world", self, true)
 onready var _terrain = Utility.get_dependency("terrain", self, true)
 onready var _networked_players = Utility.get_dependency("player_data_manager", self, true).networked_players
+onready var _sound = get_node("BulldozeSound")
 
 
 const CAN_PLACE_COLOUR : Color = Color(0 / 255,165.0 / 255,0,175.0 / 255)
@@ -42,10 +43,20 @@ func bulldose_tile(tile_pos : Vector2, id : int = 1) -> void:
 			if owner_dict[tile_pos].id == id:
 				if is_resource(tile_pos):
 					_terrain.set_cellv(tile_pos, Tile.Type.GRASS)
+					if Network.is_online and not Network.is_client():
+						rpc("set_tile_type", tile_pos, Tile.Type.GRASS)
 					print("can remove the resource")
+					_sound.position = (_terrain.get_global_position_from_tile(tile_pos) +
+						_terrain.tile_size * 0.5)
+					_sound.play()
 				elif is_building(tile_pos):
 					_terrain.set_cellv(tile_pos, Tile.Type.DIRT)
+					if Network.is_online and not Network.is_client():
+						rpc("set_tile_type", tile_pos, Tile.Type.DIRT)
 					emit_signal("building_destroyed", tile_pos)
+					_sound.position = (_terrain.get_global_position_from_tile(tile_pos) +
+						_terrain.tile_size * 0.5)
+					_sound.play()
 				else:
 					print("cannot remove the resource")
 	
@@ -71,10 +82,26 @@ func is_building(tile_pos : Vector2) -> bool:
 remote func request_bulldoze(tile_pos : Vector2) -> void:
 	var _sender_id = get_tree().get_rpc_sender_id()
 	
-	if owner_dict.has(tile_pos):
-		pass
+	if not _terrain.is_tile_empty(tile_pos):
+		# If the tile is already owned.
+		if owner_dict.has(tile_pos):
+			# If we own the tile.
+			if owner_dict[tile_pos].id == _sender_id:
+				if is_resource(tile_pos):
+					_terrain.set_cellv(tile_pos, Tile.Type.GRASS)
+					rpc("set_tile_type", tile_pos, Tile.Type.GRASS)
+					print("can remove the resource")
+				elif is_building(tile_pos):
+					_terrain.set_cellv(tile_pos, Tile.Type.DIRT)
+					rpc("set_tile_type", tile_pos, Tile.Type.DIRT)
+					emit_signal("building_destroyed", tile_pos)
+				else:
+					print("cannot remove the resource")
 
-
+remote func set_tile_type(tile_pos : Vector2, tile_type) -> void:
+	_terrain.set_cellv(tile_pos, tile_type)
+	if tile_type != Tile.Type.GRASS:
+		emit_signal("building_destroyed", tile_pos)
 # ------------------------------------------------------------------------------
 func _process(_delta):
 	if Tool.Type.DESTROY == _game_state.get_selected_tool():

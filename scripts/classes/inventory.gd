@@ -123,6 +123,7 @@ func _ready():
 		_resource_manager = managers[0]
 	_money = 30000
 	
+	
 # ------------------------------------------------------------------------------
 func _process(_delta):
 	#GetGameStat.stats = get_money()
