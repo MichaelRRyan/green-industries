@@ -80,7 +80,7 @@ func _set_player_data(player_data) -> void:
 
 # ------------------------------------------------------------------------------
 # Checks if a resource has been harvested and updates the tile.
-func _on_resource_harvested(resource : ResourceType):
+func _on_resource_harvested(_resource : ResourceType):
 	# Checks all owned forest resources.
 	if controlled_tiles_dict.has(Tile.Type.FOREST):
 		for forest_pos in controlled_tiles_dict[Tile.Type.FOREST]:
